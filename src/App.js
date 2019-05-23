@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import { Login } from './views/login/login';
+import {Main} from './views/login/main'
 function App() {
   return (
     <div className="App">
-      <Login/>
+      <Main/>
       
     </div>
   );
