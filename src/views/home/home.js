@@ -8,7 +8,7 @@ import { SideMenu } from "./sideMenu";
 import {HomeHeader} from './homeHeader'
 import {Control} from '../control/control'
 const { Content } = Layout;
-export function Home() {
+export function Home(props) {
   const [collapse, setCollapse] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const toggle = () => {
@@ -30,7 +30,7 @@ export function Home() {
             }}
           >
           <Switch>
-            <Route component={Control} path='/home/control'></Route>
+            <Route component={Control} path={`${props.match.url}/control`}></Route>
           </Switch>
           </Content>
         </Layout>
