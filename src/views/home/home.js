@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import {Switch,Route} from 'react-router-dom'
 import {
   Layout,
   Modal
 } from "antd";
 import { SideMenu } from "./sideMenu";
 import {HomeHeader} from './homeHeader'
+import {Control} from '../control/control'
 const { Content } = Layout;
 export function Home() {
   const [collapse, setCollapse] = useState(false);
@@ -15,7 +17,7 @@ export function Home() {
   const accountProps={collapse,toggle,setModalVisible}
   return (
     <>
-      <Layout>
+      <Layout style={{height:'100%'}}>
         <SideMenu collapse={collapse} />
         <Layout>
           <HomeHeader {...accountProps}></HomeHeader>
@@ -26,7 +28,11 @@ export function Home() {
               background: "#fff",
               minHeight: 280
             }}
-          />
+          >
+          <Switch>
+            <Route component={Control} path='/home/control'></Route>
+          </Switch>
+          </Content>
         </Layout>
       </Layout>
       <Modal

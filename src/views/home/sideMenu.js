@@ -1,5 +1,6 @@
 import React from "react";
 import { Layout, Menu, Icon } from "antd";
+import {Link} from 'react-router-dom'
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 export function SideMenu(props) {
@@ -12,8 +13,10 @@ export function SideMenu(props) {
               <span>API Master</span>
             </Menu.Item>
             <Menu.Item key="1">
+              <Link to='/home/control'>
               <Icon type="control" />
               <span>控制台</span>
+              </Link>
             </Menu.Item>
             <SubMenu
               key="sub1"
