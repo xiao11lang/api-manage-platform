@@ -1,5 +1,6 @@
-import { Modal, Menu, Layout, Icon, Button } from "antd";
+import { Modal, Menu, Layout, Button } from "antd";
 import React from "react";
+import {SelfInfo} from './accountContent/selfInfo'
 const { Sider, Content } = Layout;
 export function AccountModal(props) {
   return (
@@ -10,9 +11,10 @@ export function AccountModal(props) {
         footer={<Button onClick={props.hide}>关闭</Button>}
         className="accountModal"
         closable={false}
+        style={{height:500}}
       >
-        <Layout>
-          <Sider theme="light">
+        <Layout style={{height:'100%'}}>
+          <Sider theme="light" style={{height:'100%'}}>
             <Menu mode="inline" defaultSelectedKeys={["1"]}>
               <Menu.Item key="1">
                 <span>个人信息</span>
@@ -28,7 +30,9 @@ export function AccountModal(props) {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Content>content</Content>
+          <Content style={{height:'100%'}}>
+            <SelfInfo/>
+          </Content>
         </Layout>
       </Modal>
     </>
