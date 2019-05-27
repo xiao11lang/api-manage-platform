@@ -1,8 +1,22 @@
 import { Modal, Menu, Layout, Button } from "antd";
-import React from "react";
-import {SelfInfo} from './accountContent/selfInfo'
+import React, { useState } from "react";
+import { SelfInfo } from "./accountContent/selfInfo";
+import { Password } from "./accountContent/password";
 const { Sider, Content } = Layout;
 export function AccountModal(props) {
+  const [key, setKey] = useState("1");
+  const getChildren = key => {
+    const map = {
+      "1": SelfInfo,
+      "2": Password
+    };
+    return map[key];
+  };
+  const Children = getChildren(key);
+  const handleClick = ({ key }) => {
+    setKey(key);
+  };
+
   return (
     <>
       <Modal
@@ -11,11 +25,15 @@ export function AccountModal(props) {
         footer={<Button onClick={props.hide}>关闭</Button>}
         className="accountModal"
         closable={false}
-        style={{height:500}}
+        style={{ height: 500 }}
       >
-        <Layout style={{height:'100%'}}>
-          <Sider theme="light" style={{height:'100%'}}>
-            <Menu mode="inline" defaultSelectedKeys={["1"]}>
+        <Layout style={{ height: "100%" }}>
+          <Sider theme="light" style={{ height: "100%" }}>
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={[key]}
+              onClick={handleClick}
+            >
               <Menu.Item key="1">
                 <span>个人信息</span>
               </Menu.Item>
@@ -30,8 +48,8 @@ export function AccountModal(props) {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Content style={{height:'100%'}}>
-            <SelfInfo/>
+          <Content style={{ height: "100%" }}>
+            <Children />
           </Content>
         </Layout>
       </Modal>
