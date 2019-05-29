@@ -7,14 +7,18 @@
     padding: 0;
     height: 400px;
   }
-  .invite{
+  .invite,.mail{
     .ant-card-body{
       display: flex;
       align-items: center;
       .link{
         flex-grow: 1;
-        margin-left: 20px;
+        margin: 0 20px;
+        padding-left: 10px;
         border: none
+      }
+      .about{
+        flex-grow: 1;
       }
     }
   }

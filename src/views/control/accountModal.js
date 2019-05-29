@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { SelfInfo } from "./accountContent/selfInfo";
 import { Password } from "./accountContent/password";
 import {Invite} from './accountContent/invite'
+import {Mail} from './accountContent/mail'
 const { Sider, Content } = Layout;
 export function AccountModal(props) {
   const [key, setKey] = useState("1");
@@ -10,7 +11,8 @@ export function AccountModal(props) {
     const map = {
       "1": SelfInfo,
       "2": Password,
-      '3':Invite
+      '3':Invite,
+      '4':Mail
     };
     return map[key];
   };
