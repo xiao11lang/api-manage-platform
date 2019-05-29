@@ -2,13 +2,15 @@ import { Modal, Menu, Layout, Button } from "antd";
 import React, { useState } from "react";
 import { SelfInfo } from "./accountContent/selfInfo";
 import { Password } from "./accountContent/password";
+import {Invite} from './accountContent/invite'
 const { Sider, Content } = Layout;
 export function AccountModal(props) {
   const [key, setKey] = useState("1");
   const getChildren = key => {
     const map = {
       "1": SelfInfo,
-      "2": Password
+      "2": Password,
+      '3':Invite
     };
     return map[key];
   };
