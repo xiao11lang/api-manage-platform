@@ -14,13 +14,14 @@ export function SelfInfo() {
       <InfoRow style={{ marginBottom: 20 }} label="姓名">
         <Input placeholder="小食蚁螂" style={{ width: 250 }} />
       </InfoRow>
-      <InfoRow label="性别">
+      <InfoRow label="性别" style={{ marginBottom: 20 }}>
         <Select defaultValue="male" style={{ width: 250 }}>
           <Option value="male">男</Option>
           <Option value="female">女</Option>
           <Option value="unkoown">未知</Option>
         </Select>
       </InfoRow>
+      <InfoRow ><Button>保存</Button></InfoRow>
     </>
   );
 }

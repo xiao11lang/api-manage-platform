@@ -1,6 +1,6 @@
 import React from 'react'
 import {InfoRow} from './infoRow'
-import {Input} from 'antd'
+import {Input,Button} from 'antd'
 export function Password(){
     return (
         <>
@@ -10,9 +10,10 @@ export function Password(){
             <InfoRow label='新密码' style={{ marginBottom: 20 }}>
                 <Input style={{width:250}}/>
             </InfoRow>
-            <InfoRow label='确认新密码'>
+            <InfoRow label='确认新密码' style={{ marginBottom: 20 }}>
                 <Input style={{width:250}}/>
             </InfoRow>
+            <InfoRow ><Button>保存</Button></InfoRow>
         </>
     )
 }
