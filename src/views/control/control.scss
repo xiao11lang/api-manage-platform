@@ -23,3 +23,18 @@
     }
   }
 }
+.info-card {
+  .message-row{
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 2px;
+    margin-bottom: 5px;
+    &:hover{
+      background: #e6e5e5
+    }
+  }
+}
