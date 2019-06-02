@@ -34,19 +34,21 @@ export function SideMenu(props) {
           <SubMenu
             key="sub1"
             title={
-              <Link to="/home/api">
-                <span>
-                  <Icon type="api" />
-                  <span>API管理与测试</span>
-                </span>
-              </Link>
+              <span>
+                <Icon type="api" />
+                <span>API管理与测试</span>
+              </span>
             }
           >
             <Menu.Item key="2">
-              <span>API管理</span>
+              <Link to="/home/api">
+                <span>API管理</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <span>API测试</span>
+              <Link to="/home/api">
+                <span>API测试</span>
+              </Link>
             </Menu.Item>
           </SubMenu>
 
