@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,createContext } from "react";
 import {Switch,Route} from 'react-router-dom'
 import {
   Layout,
@@ -7,10 +7,13 @@ import {
 import { SideMenu } from "./sideMenu";
 import {HomeHeader} from './homeHeader'
 import {Control} from '../control/control'
+import {Api} from '../api/api'
 const { Content } = Layout;
+export const ApiCtx=createContext()
 export function Home(props) {
   const [collapse, setCollapse] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [key,setKey]=useState(2)
   const toggle = () => {
     setCollapse(!collapse);
   };
@@ -18,9 +21,10 @@ export function Home(props) {
   return (
     <>
       <Layout style={{height:'100%'}}>
-        <SideMenu collapse={collapse} />
+        <SideMenu collapse={collapse} setKey={setKey}/>
         <Layout>
           <HomeHeader {...accountProps}></HomeHeader>
+          <ApiCtx.Provider value={key}>
           <Content
             style={{
               margin: "24px 16px",
@@ -31,8 +35,10 @@ export function Home(props) {
           >
           <Switch>
             <Route component={Control} path={`${props.match.url}/control`}></Route>
+            <Route component={Api} path={`${props.match.url}/api`}></Route>
           </Switch>
           </Content>
+          </ApiCtx.Provider>
         </Layout>
       </Layout>
       <Modal
