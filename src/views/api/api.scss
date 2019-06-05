@@ -1,3 +1,11 @@
 .api-top{
-    display: flex
+    display: flex;
+    justify-content: space-between;
+    .left-top{
+        display: flex;
+    }
+    .ant-input-group{
+        width: auto;
+        margin-right: 40px
+    }
 }
