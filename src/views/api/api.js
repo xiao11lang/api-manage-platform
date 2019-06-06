@@ -8,7 +8,7 @@ export function Api(){
     const key=useContext(ApiCtx)
     return (
         <>
-        <TopAction/>
+        <TopAction currentKey={key}/>
             {key==='2'?<Manage/>:<Test/>}
         </>
     )
