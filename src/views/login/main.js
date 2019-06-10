@@ -12,7 +12,7 @@ const tabList = [
     tab: "注册"
   }
 ];
-export function Main() {
+export function Main(props) {
   const style = { marginBottom: "20px" };
   const [key, setKey] = useState("login");
   const getTitle = key => {
@@ -33,7 +33,7 @@ export function Main() {
           setKey(key);
         }}
       >
-        {key === "login" ? <Login style={style} /> : <Register style={style} />}
+        {key === "login" ? <Login style={style} /> : <Register style={style} history={props.history} setLoginState={props.setLoginState}/>}
       </Card>
     </>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Icon, Input, Button, Tooltip } from "antd";
 import { useNameValidate, usePasswordValidate } from "./validate";
+import {register} from '../../api/user'
 export function Register(props) {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
@@ -25,13 +26,22 @@ export function Register(props) {
   const submit = () => {
     if (!nameValid) {
       setNameTip(true);
+      return 
     }
     if (!passValid) {
       setPassTip(true);
+      return 
     }
     if(pass!==passConfirm){
         setConfirmPassTip(true)
+        return 
     }
+    register({
+      name,pass
+    }).then(()=>{
+      props.setLoginState(true)
+      props.history.push('/home/control')
+    })
   };
   return (
     <>

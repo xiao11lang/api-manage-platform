@@ -1,5 +1,5 @@
 import React, { useState,createContext } from "react";
-import {Switch,Route} from 'react-router-dom'
+import {Switch,Route,Redirect} from 'react-router-dom'
 import {
   Layout,
   Modal,Icon
@@ -20,6 +20,7 @@ export function Home(props) {
   };
   const accountProps={collapse,toggle,setModalVisible}
   return (
+    props.loginState?
     <>
       <Layout style={{height:'100%'}} className='home'>
         <SideMenu collapse={collapse} setKey={setKey}/>
@@ -54,6 +55,6 @@ export function Home(props) {
         <div><Icon type='check' style={{margin:'0 20px'}}/><span>工作组12138</span></div>
         <div><Icon type='plus' style={{margin:'0 20px'}}/><span>新建/加入工作组</span></div>
       </Modal>
-    </>
+    </>:<Redirect to='/'/>
   );
 }
