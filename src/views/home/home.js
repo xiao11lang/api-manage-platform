@@ -2,12 +2,13 @@ import React, { useState,createContext } from "react";
 import {Switch,Route} from 'react-router-dom'
 import {
   Layout,
-  Modal
+  Modal,Icon
 } from "antd";
 import { SideMenu } from "./sideMenu";
 import {HomeHeader} from './homeHeader'
 import {Control} from '../control/control'
 import {Api} from '../api/api'
+import './home.scss'
 const { Content } = Layout;
 export const ApiCtx=createContext()
 export function Home(props) {
@@ -20,7 +21,7 @@ export function Home(props) {
   const accountProps={collapse,toggle,setModalVisible}
   return (
     <>
-      <Layout style={{height:'100%'}}>
+      <Layout style={{height:'100%'}} className='home'>
         <SideMenu collapse={collapse} setKey={setKey}/>
         <Layout>
           <HomeHeader {...accountProps}></HomeHeader>
@@ -42,13 +43,17 @@ export function Home(props) {
         </Layout>
       </Layout>
       <Modal
+      className='workspace'
         visible={modalVisible}
         footer={null}
         title="切换工作组"
         onCancel={() => {
           setModalVisible(false);
         }}
-      />
+      >
+        <div><Icon type='check' style={{margin:'0 20px'}}/><span>工作组12138</span></div>
+        <div><Icon type='plus' style={{margin:'0 20px'}}/><span>新建/加入工作组</span></div>
+      </Modal>
     </>
   );
 }
