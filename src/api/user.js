@@ -6,3 +6,10 @@ export function register(data){
         data
     })
 }
+export function login(data){
+    return fetch({
+        method:'post',
+        url:'/login',
+        data
+    })
+}

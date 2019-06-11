@@ -33,7 +33,7 @@ export function Main(props) {
           setKey(key);
         }}
       >
-        {key === "login" ? <Login style={style} /> : <Register style={style} history={props.history} setLoginState={props.setLoginState}/>}
+        {key === "login" ? <Login style={style} history={props.history} setLoginState={props.setLoginState}/> : <Register style={style} history={props.history} setLoginState={props.setLoginState}/>}
       </Card>
     </>
   );

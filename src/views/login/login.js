@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Icon, Input, Button, Tooltip } from "antd";
 import { useNameValidate, usePasswordValidate } from "./validate";
+import {login} from '../../api/user'
 export function Login(props) {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
@@ -19,10 +20,19 @@ export function Login(props) {
   const submit = () => {
      if(!nameValid){
          setNameTip(true)
+         return
      }
      if(!passValid){
         setPassTip(true)
+        return 
      }
+     login({
+       name:name,
+       pass:pass
+     }).then(()=>{
+      props.setLoginState(true)
+      props.history.push('/home/control')
+     })
   };
   return (
     <>
