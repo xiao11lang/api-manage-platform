@@ -13,3 +13,10 @@ export function login(data){
         data
     })
 }
+export function update(data){
+    return fetch({
+        method:'post',
+        url:'/updateInfo',
+        data
+    })
+}
