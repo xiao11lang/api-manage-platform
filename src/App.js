@@ -4,6 +4,13 @@ import { Switch, Route } from "react-router-dom";
 import { Main } from "./views/login/main";
 import { Home } from "./views/home/home";
 export const UserCtx = createContext(null);
+function useUserInfo(initial){
+  const [userInfo, setInfo] = useState(initial);
+  const setUserInfo=(info)=>{
+    setInfo(Object.assign({},userInfo,info))
+  }
+  return [userInfo,setUserInfo]
+}
 function App() {
   const [loginState, setLoginState] = useState(false);
   const [userInfo, setUserInfo] = useState({});

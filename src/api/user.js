@@ -27,3 +27,10 @@ export function changePass(data){
         data
     })
 }
+export function uploadAvatar(data){
+    return fetch({
+        method:'post',
+        url:'/uploadAvatar',
+        data
+    })
+}

@@ -1,37 +1,80 @@
 import React, { useContext, useState } from "react";
-import { Button, Input, Icon, Select, Upload,Modal } from "antd";
+import { Button, Input, Icon, Select, Upload, Modal } from "antd";
 import { InfoRow } from "./infoRow";
 import { UserCtx } from "../../../App";
-import { update } from "./../../../api/user";
+import { update,uploadAvatar } from "./../../../api/user";
 const Option = Select.Option;
+function getBase64(file,callback) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    const fd=new FormData()
+    fd.append('file',file)
+    fd.append('id',1)
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      callback()
+      uploadAvatar(fd)
+      resolve(reader.result);
+    }
+    reader.onerror = error => reject(error);
+  });
+}
 export function SelfInfo() {
   const { userInfo, setUserInfo } = useContext(UserCtx);
-  const [sex, setSex] = useState("male");
+  const [sex, setSex] = useState("");
   const [name, setName] = useState();
+  const [uploaded,setUploaded]=useState(false)//图片是否上传成功
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewVisible, setPreviewVisible] = useState(false);
   const handleNameChange = e => {
     setName(e.target.value);
   };
   const save = () => {
     const data = {
       id: userInfo.id,
-      sex: sex,
-      name: name||userInfo.name
+      sex: sex||userInfo.sex,
+      name: name || userInfo.name
     };
-    update(data).then((res) => {
+    update(data).then(res => {
       setUserInfo(data);
       Modal.success({
-        content:res.detail,
-        centered:true
-      })
+        content: res.detail,
+        centered: true
+      });
     });
   };
+  const handleCancel = () => setPreviewVisible(false);
+
+  const handlePreview = () => {
+    setPreviewVisible(true);
+  };
+
+  const handleChange = async ({ file,fileList }) => {
+    let url = await getBase64(file,setUploaded.bind(null,true));
+    setUploaded(true);
+    setPreviewImage(url);
+  };
+  const uploadButton = (
+    <div>
+      <Icon type="plus" />
+      <div className="ant-upload-text">上传</div>
+    </div>
+  );
   return (
     <>
       <InfoRow style={{ margin: "20px 0" }} label="头像">
-        <Icon type="user" style={{ marginRight: 20 }} />
-        <Upload>
-          <Button type="primary">更换头像</Button>
-        </Upload>
+        <div className='upload-con'>
+          <img src={userInfo.avatar} alt="avatar" onClick={handlePreview}/>
+          <Upload
+            listType="picture-card"
+            fileList={[]}
+            beforeUpload={()=>{return false}}
+            onChange={handleChange}
+            data={{ id: userInfo.id }}
+          >
+            {uploadButton}
+          </Upload>
+        </div>
       </InfoRow>
       <InfoRow style={{ marginBottom: 20 }} label="姓名">
         <Input
@@ -54,6 +97,9 @@ export function SelfInfo() {
       <InfoRow>
         <Button onClick={save}>保存</Button>
       </InfoRow>
+      <Modal visible={previewVisible} footer={null} onCancel={handleCancel}>
+        <img alt="example" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
     </>
   );
 }
