@@ -20,3 +20,10 @@ export function update(data){
         data
     })
 }
+export function changePass(data){
+    return fetch({
+        method:'post',
+        url:'/changePass',
+        data
+    })
+}

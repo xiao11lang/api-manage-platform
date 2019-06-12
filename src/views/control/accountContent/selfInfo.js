@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Input, Icon, Select, Upload } from "antd";
+import { Button, Input, Icon, Select, Upload,Modal } from "antd";
 import { InfoRow } from "./infoRow";
 import { UserCtx } from "../../../App";
 import { update } from "./../../../api/user";
@@ -15,10 +15,14 @@ export function SelfInfo() {
     const data = {
       id: userInfo.id,
       sex: sex,
-      name: name
+      name: name||userInfo.name
     };
-    update(data).then(() => {
+    update(data).then((res) => {
       setUserInfo(data);
+      Modal.success({
+        content:res.detail,
+        centered:true
+      })
     });
   };
   return (

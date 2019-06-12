@@ -29,6 +29,7 @@ export function AccountModal(props) {
         footer={<Button onClick={props.hide}>关闭</Button>}
         className="accountModal"
         closable={false}
+        destroyOnClose={true}
         style={{ height: 500 }}
       >
         <Layout style={{ height: "100%" }}>
