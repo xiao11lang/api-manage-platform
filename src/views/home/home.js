@@ -20,7 +20,7 @@ export function Home(props) {
   };
   const accountProps={collapse,toggle,setModalVisible}
   return (
-    props.loginState||true?
+    props.loginState?
     <>
       <Layout style={{height:'100%'}} className='home'>
         <SideMenu collapse={collapse} setKey={setKey}/>

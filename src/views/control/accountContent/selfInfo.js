@@ -4,16 +4,11 @@ import { InfoRow } from "./infoRow";
 import { UserCtx } from "../../../App";
 import { update,uploadAvatar } from "./../../../api/user";
 const Option = Select.Option;
-function getBase64(file,callback) {
+function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    const fd=new FormData()
-    fd.append('file',file)
-    fd.append('id',1)
     reader.readAsDataURL(file);
     reader.onload = () => {
-      callback()
-      uploadAvatar(fd)
       resolve(reader.result);
     }
     reader.onerror = error => reject(error);
@@ -49,10 +44,19 @@ export function SelfInfo() {
     setPreviewVisible(true);
   };
 
-  const handleChange = async ({ file,fileList }) => {
+  const handleChange = async ({ file }) => {
+    const fd=new FormData()
+    fd.append('file',file)
+    fd.append('id',userInfo.id)
     let url = await getBase64(file,setUploaded.bind(null,true));
-    setUploaded(true);
     setPreviewImage(url);
+    let res=await uploadAvatar(fd)
+    setUploaded(true)
+    setUserInfo(Object.assign({},userInfo,{avatar:res.url}))
+    Modal.success({
+      content:res.detail,
+      centered:true
+    })
   };
   const uploadButton = (
     <div>
@@ -64,13 +68,12 @@ export function SelfInfo() {
     <>
       <InfoRow style={{ margin: "20px 0" }} label="头像">
         <div className='upload-con'>
-          <img src={userInfo.avatar} alt="avatar" onClick={handlePreview}/>
+          {uploaded?<img alt='avatar' src={previewImage}/>:<img src={`http://localhost/img/${userInfo.avatar}`} alt="avatar" onClick={handlePreview}/>}
           <Upload
             listType="picture-card"
             fileList={[]}
             beforeUpload={()=>{return false}}
             onChange={handleChange}
-            data={{ id: userInfo.id }}
           >
             {uploadButton}
           </Upload>
