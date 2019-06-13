@@ -26,7 +26,7 @@ export function Home(props) {
     setMessageShow(true);
     setMesKey(key)
   }
-  const accountProps = { collapse, toggle, setModalVisible,setMessageKey };
+  const accountProps = { collapse, toggle, setModalVisible,setMessageKey };//顶部的props
   return props.loginState||true ? (
     <>
       <Layout style={{ height: "100%" }} className="home">

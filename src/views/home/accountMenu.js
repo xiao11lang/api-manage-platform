@@ -1,10 +1,11 @@
 import React from "react";
 import { Menu, Icon } from "antd";
+import IconFont from './../../components/iconfont';
 export const Account = (props) => {
   return (
     <Menu onClick={props.handleClick}>
       <Menu.Item key='0'>
-        <Icon type="info-circle" />
+        <IconFont type="iconxiaoxi" />
         消息
       </Menu.Item>
       <Menu.Item key='1'>
@@ -12,11 +13,7 @@ export const Account = (props) => {
         账户设置
       </Menu.Item>
       <Menu.Item key='2'>
-        <Icon type="rollback" />
-        消息
-      </Menu.Item>
-      <Menu.Item key='3'>
-        <Icon type="close-circle" />
+        <IconFont type="icontuichudenglu" />
         退出登录
       </Menu.Item>
     </Menu>

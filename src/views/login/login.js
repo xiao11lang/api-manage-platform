@@ -32,7 +32,10 @@ export function Login(props) {
       name: name,
       pass: pass
     }).then((res) => {
-      setUserInfo(res.info)
+      setUserInfo({
+        mes:res.mes,
+        ...res.info
+      })
       props.setLoginState(true);
       props.history.push("/home/control");
     });
