@@ -9,18 +9,24 @@ import "./home.scss";
 import {MessageModal} from './message/messageModal'
 const { Content } = Layout;
 export const ApiCtx = createContext();
+export const MessageCtx=createContext()
 export function Home(props) {
   const [collapse, setCollapse] = useState(false);//左侧折叠
   const [modalVisible, setModalVisible] = useState(false);//工作组模态框
   const [key, setKey] = useState(2);//左侧选项
   const [messageShow,setMessageShow]=useState(false)//消息模态框
+  const [mesKey, setMesKey] = useState(0);//消息模态框key
   const toggle = () => {
     setCollapse(!collapse);
   };
   const hideMessage=()=>{
     setMessageShow(false)
   }
-  const accountProps = { collapse, toggle, setModalVisible,setMessageShow };
+  const setMessageKey=(key)=>{
+    setMessageShow(true);
+    setMesKey(key)
+  }
+  const accountProps = { collapse, toggle, setModalVisible,setMessageKey };
   return props.loginState||true ? (
     <>
       <Layout style={{ height: "100%" }} className="home">
@@ -38,7 +44,7 @@ export function Home(props) {
             >
               <Switch>
                 <Route
-                  component={Control}
+                  render={()=><MessageCtx.Provider value={setMessageKey}><Control/></MessageCtx.Provider>}
                   path={`${props.match.url}/control`}
                 />
                 <Route component={Api} path={`${props.match.url}/api`} />
@@ -65,7 +71,7 @@ export function Home(props) {
           <span>新建/加入工作组</span>
         </div>
       </Modal>
-      {messageShow?<MessageModal hide={hideMessage}/>:null}
+      {messageShow?<MessageModal hide={hideMessage} mesKey={mesKey}/>:null}
     </>
   ) : (
     <Redirect to="/" />

@@ -6,8 +6,8 @@ const { Header } = Layout;
 export function HomeHeader(props) {
   const {userInfo}=useContext(UserCtx)
   const handleClick=({key})=>{
-    if(key=='0'){
-      props.setMessageShow(true)
+    if(key==='0'){
+      props.setMessageKey('1')
     }
   }
   return (

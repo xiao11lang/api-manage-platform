@@ -22,7 +22,7 @@ export function MessageModal(props) {
           <Sider theme="light" style={{ height: "100%" }}>
             <Menu
               mode="inline"
-              defaultSelectedKeys={[key]}
+              defaultSelectedKeys={[props.mesKey]}
               onClick={handleClick}
             >
               <Menu.Item key="1">

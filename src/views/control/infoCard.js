@@ -1,8 +1,10 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import {Card} from 'antd'
+import { MessageCtx } from '../home/home';
 function CardRow(props){
+    const setMessageKey=useContext(MessageCtx)
     return (
-        <div className='message-row'>
+        <div className='message-row' onClick={()=>{setMessageKey(props.mesKey)}}>
             <span>{props.title}</span>
             <span>{props.number}</span>
         </div>
@@ -10,7 +12,7 @@ function CardRow(props){
 }
 export function InfoCard(props){
     const list=props.cardList.map((value,index)=>{
-        return <CardRow {...value} key={index}></CardRow>
+        return <CardRow {...value} key={index} mesKey={String(index+1)}></CardRow>
     })
     return (
         <>
