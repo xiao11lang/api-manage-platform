@@ -1,50 +1,54 @@
-import React, { useState,createContext } from "react";
-import {Switch,Route,Redirect} from 'react-router-dom'
-import {
-  Layout,
-  Modal,Icon
-} from "antd";
+import React, { useState, createContext } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { Layout, Modal, Icon } from "antd";
 import { SideMenu } from "./sideMenu";
-import {HomeHeader} from './homeHeader'
-import {Control} from '../control/control'
-import {Api} from '../api/api'
-import './home.scss'
+import { HomeHeader } from "./homeHeader";
+import { Control } from "../control/control";
+import { Api } from "../api/api";
+import "./home.scss";
+import {MessageModal} from './message/messageModal'
 const { Content } = Layout;
-export const ApiCtx=createContext()
+export const ApiCtx = createContext();
 export function Home(props) {
-  const [collapse, setCollapse] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [key,setKey]=useState(2)
+  const [collapse, setCollapse] = useState(false);//左侧折叠
+  const [modalVisible, setModalVisible] = useState(false);//工作组模态框
+  const [key, setKey] = useState(2);//左侧选项
+  const [messageShow,setMessageShow]=useState(false)//消息模态框
   const toggle = () => {
     setCollapse(!collapse);
   };
-  const accountProps={collapse,toggle,setModalVisible}
-  return (
-    props.loginState?
+  const hideMessage=()=>{
+    setMessageShow(false)
+  }
+  const accountProps = { collapse, toggle, setModalVisible,setMessageShow };
+  return props.loginState||true ? (
     <>
-      <Layout style={{height:'100%'}} className='home'>
-        <SideMenu collapse={collapse} setKey={setKey}/>
+      <Layout style={{ height: "100%" }} className="home">
+        <SideMenu collapse={collapse} setKey={setKey} />
         <Layout>
-          <HomeHeader {...accountProps}></HomeHeader>
+          <HomeHeader {...accountProps} />
           <ApiCtx.Provider value={key}>
-          <Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              background: "#fff",
-              minHeight: 280
-            }}
-          >
-          <Switch>
-            <Route component={Control} path={`${props.match.url}/control`}></Route>
-            <Route component={Api} path={`${props.match.url}/api`}></Route>
-          </Switch>
-          </Content>
+            <Content
+              style={{
+                margin: "24px 16px",
+                padding: 24,
+                background: "#fff",
+                minHeight: 280
+              }}
+            >
+              <Switch>
+                <Route
+                  component={Control}
+                  path={`${props.match.url}/control`}
+                />
+                <Route component={Api} path={`${props.match.url}/api`} />
+              </Switch>
+            </Content>
           </ApiCtx.Provider>
         </Layout>
       </Layout>
       <Modal
-      className='workspace'
+        className="workspace"
         visible={modalVisible}
         footer={null}
         title="切换工作组"
@@ -52,9 +56,18 @@ export function Home(props) {
           setModalVisible(false);
         }}
       >
-        <div><Icon type='check' style={{margin:'0 20px'}}/><span>工作组12138</span></div>
-        <div><Icon type='plus' style={{margin:'0 20px'}}/><span>新建/加入工作组</span></div>
+        <div>
+          <Icon type="check" style={{ margin: "0 20px" }} />
+          <span>工作组12138</span>
+        </div>
+        <div>
+          <Icon type="plus" style={{ margin: "0 20px" }} />
+          <span>新建/加入工作组</span>
+        </div>
       </Modal>
-    </>:<Redirect to='/'/>
+      {messageShow?<MessageModal hide={hideMessage}/>:null}
+    </>
+  ) : (
+    <Redirect to="/" />
   );
 }

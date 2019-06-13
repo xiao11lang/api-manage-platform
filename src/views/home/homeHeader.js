@@ -5,6 +5,11 @@ import {UserCtx} from '../../App'
 const { Header } = Layout;
 export function HomeHeader(props) {
   const {userInfo}=useContext(UserCtx)
+  const handleClick=({key})=>{
+    if(key=='0'){
+      props.setMessageShow(true)
+    }
+  }
   return (
     <>
       <Header style={{ background: "#fff", paddingLeft: 20 }}>
@@ -30,7 +35,7 @@ export function HomeHeader(props) {
             </Button>
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
-            <Dropdown overlay={Account}>
+            <Dropdown overlay={<Account handleClick={handleClick}/>}>
               <span>
                 <Badge count={1}>
                   <Avatar shape="round" icon="user" />

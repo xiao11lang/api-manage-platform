@@ -1,0 +1,22 @@
+.messageModal {
+    width: 800px!important;
+    .ant-modal-body {
+      padding: 0;
+      height: 400px;
+    }
+    .invite,.mail{
+      .ant-card-body{
+        display: flex;
+        align-items: center;
+        .link{
+          flex-grow: 1;
+          margin: 0 20px;
+          padding-left: 10px;
+          border: none
+        }
+        .about{
+          flex-grow: 1;
+        }
+      }
+    }
+  }
