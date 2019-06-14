@@ -6,12 +6,12 @@ function CardRow(props){
     return (
         <div className='message-row' onClick={()=>{setMessageKey(props.mesKey)}}>
             <span>{props.title}</span>
-            <span>{props.number}</span>
+            <span>{props.count}</span>
         </div>
     )
 }
 export function InfoCard(props){
-    const list=props.cardList.map((value,index)=>{
+    const list=props.mesList.map((value,index)=>{
         return <CardRow {...value} key={index} mesKey={String(index+1)}></CardRow>
     })
     return (

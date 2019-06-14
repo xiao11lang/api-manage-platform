@@ -34,6 +34,7 @@ export function Login(props) {
     }).then((res) => {
       setUserInfo({
         mes:res.mes,
+        mesCount:res.mesCount,
         ...res.info
       })
       props.setLoginState(true);
