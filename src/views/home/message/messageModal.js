@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Modal, Layout, Menu, Button, Dropdown } from "antd";
 import IconFont from "./../../../components/iconfont";
 import { MessageList } from "./list";
 import { MessageDetail } from "./detail";
 import "./message.scss";
 import { UserCtx } from "./../../../App";
+import { getMessageList } from "../../../api/message";
 const { Sider, Content } = Layout;
 const MenuAction = () => {
   return (
@@ -22,11 +23,23 @@ const MenuAction = () => {
 };
 export function MessageModal(props) {
   const { userInfo } = useContext(UserCtx);
-  const [key, setKey] = useState("1");
+  const [key, setKey] = useState(props.mesKey);
   const [detailShow, setDetailShow] = useState(false);
+  const [mesList,setMesList]=useState([])
+  const [mesIndex,setMesIndex]=useState(0)
   const handleClick = ({ key }) => {
+    setDetailShow(false);
     setKey(key);
   };
+  useEffect(() => {
+    const typeArr = ["official", "project", "person"];
+    getMessageList({
+      id: userInfo.id,
+      type: typeArr[key - 1]
+    }).then((res)=>{
+      setMesList(res.list)
+    });
+  }, [key, userInfo.id]);
   const itemStyle = {
     display: "flex",
     justifyContent: "space-between",
@@ -51,11 +64,11 @@ export function MessageModal(props) {
               onClick={handleClick}
             >
               <Menu.Item key="1" style={itemStyle}>
-                <span>项目通知</span>
+                <span>官方通知</span>
                 <MenuAction />
               </Menu.Item>
               <Menu.Item key="2" style={itemStyle}>
-                <span>官方通知</span>
+                <span>项目通知</span>
                 <MenuAction />
               </Menu.Item>
               <Menu.Item key="3" style={itemStyle}>
@@ -67,13 +80,14 @@ export function MessageModal(props) {
           <Content style={{ height: "100%" }}>
             {detailShow ? (
               <MessageDetail
-                mes={userInfo.mes[0]}
+                mes={mesList[mesIndex]}
                 hideDetail={() => setDetailShow(false)}
               />
             ) : (
               <MessageList
-                mesList={userInfo.mes}
+                mesList={mesList}
                 showDetail={() => setDetailShow(true)}
+                setMesIndex={setMesIndex}
               />
             )}
           </Content>

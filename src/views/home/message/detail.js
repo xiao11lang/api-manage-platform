@@ -2,7 +2,8 @@ import React from "react";
 import { Button, Divider } from "antd";
 import IconFont from "./../../../components/iconfont";
 export function MessageDetail(props) {
-  const { title, content } = props.mes;
+  const { title, content,createdAt } = props.mes;
+  const time=new Date(createdAt).toLocaleString()
   return (
     <div className="message-detail">
       <div className="detail-top">
@@ -18,7 +19,7 @@ export function MessageDetail(props) {
       <Divider />
       <div className="detail-title">
         <p>{title}</p>
-        <p>2019 06 13 12:12</p>
+        <p>{time}</p>
       </div>
       <Divider />
       <div className="detail-content">{content}</div>
