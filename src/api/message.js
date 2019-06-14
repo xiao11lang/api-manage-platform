@@ -13,3 +13,10 @@ export function getMessageList(data){
         data
     })
 }
+export function changeMesState(data){
+    return fetch({
+        method:'post',
+        url:'/changeMesState',
+        data
+    })
+}
