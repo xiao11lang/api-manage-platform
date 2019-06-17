@@ -1,10 +1,8 @@
 import { AccountManage } from "./account";
-import React, { useContext } from "react";
+import React from "react";
 import { Divider } from "antd";
 import { InfoCard } from "./infoCard";
-import { UserCtx } from "./../../App";
-export function Control() {
-  const { userInfo } = useContext(UserCtx);
+export function Control(props) {
   const titleArr = [
     ["official", "官方通知"],
     ["project", "项目通知"],
@@ -15,7 +13,7 @@ export function Control() {
     mesList.push({
       title: title[1],
       type: title[0],
-      count: userInfo.mesCount[title[0]]
+      count: props.mesCount[title[0]]
     });
   });
   return (

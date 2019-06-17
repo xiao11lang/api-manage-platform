@@ -6,6 +6,13 @@ export function getMessage(data){
         data
     })
 }
+export function getMesCount(data){
+    return fetch({
+        method:'post',
+        url:'/getMesCount',
+        data
+    })
+}
 export function getMessageList(data){
     return fetch({
         method:'post',

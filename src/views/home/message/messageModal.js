@@ -39,7 +39,7 @@ export function MessageModal(props) {
     }).then((res)=>{
       setMesList(res.list)
     });
-  }, [key, userInfo.id]);
+  }, [key, userInfo.id,props.unRead]);
   const itemStyle = {
     display: "flex",
     justifyContent: "space-between",
@@ -88,6 +88,8 @@ export function MessageModal(props) {
                 mesList={mesList}
                 showDetail={() => setDetailShow(true)}
                 setMesIndex={setMesIndex}
+                setUnRead={props.setUnRead}
+                unRead={props.unRead}
               />
             )}
           </Content>

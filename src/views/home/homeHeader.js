@@ -37,7 +37,7 @@ export function HomeHeader(props) {
           <Col span={10} style={{ textAlign: "center" }}>
             <Dropdown overlay={<Account handleClick={handleClick}/>}>
               <span>
-                <Badge count={1}>
+                <Badge count={props.unRead}>
                   <Avatar shape="round" icon="user" />
                 </Badge>
                 <Button type="link">{userInfo.name}</Button>

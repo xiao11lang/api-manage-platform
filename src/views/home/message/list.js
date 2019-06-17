@@ -7,7 +7,11 @@ export function MessageList(props) {
   const handleClick = item => {
     props.showDetail();
     props.setMesIndex(item.index);
-    changeMesState({ id: item.id });
+    if(!item.hasRead){
+      changeMesState({ id: item.id }).then(()=>{
+        props.setUnRead(props.unRead-1)
+      })
+    }
   };
   return (
     <>
