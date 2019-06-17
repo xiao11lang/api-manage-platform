@@ -21,16 +21,11 @@ export function MessageList(props) {
                 handleClick(item);
               }}
               style={{
-                border: "1px solid #e8e8e8",
-                marginBottom: 10,
-                padding: "0 10px",
-                borderRadius: 4,
-                background:item.hasRead?'':'rgb(232,232,232)'
+                background: item.hasRead ? "" : "rgb(232,232,232)"
               }}
+              className="message-list-con"
             >
-              <List.Item
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
+              <List.Item>
                 {item.title}
                 <IconFont type="iconguanbi" />
               </List.Item>

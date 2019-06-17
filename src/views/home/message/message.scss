@@ -1,35 +1,45 @@
 .messageModal {
-    width: 800px!important;
-    .ant-modal-body {
-      padding: 0;
-      height: 400px;
-      ul{
-        height: 100%
-      }
-    }
-    .ant-layout-content{
-      background: white
-    }
-    .invite,.mail{
-      .ant-card-body{
-        display: flex;
-        align-items: center;
-        .link{
-          flex-grow: 1;
-          margin: 0 20px;
-          padding-left: 10px;
-          border: none
-        }
-        .about{
-          flex-grow: 1;
-        }
-      }
-    }
-    .message-detail{
-      padding: 0 16px;
-      .detail-top{
-        padding: 10px 0
-      }
-      
+  width: 800px !important;
+  .ant-modal-body {
+    padding: 0;
+    height: 400px;
+    ul {
+      height: 100%;
     }
   }
+  .ant-layout-content {
+    background: white;
+  }
+  .invite,
+  .mail {
+    .ant-card-body {
+      display: flex;
+      align-items: center;
+      .link {
+        flex-grow: 1;
+        margin: 0 20px;
+        padding-left: 10px;
+        border: none;
+      }
+      .about {
+        flex-grow: 1;
+      }
+    }
+  }
+  .message-detail {
+    padding: 0 16px;
+    .detail-top {
+      padding: 10px 0;
+    }
+  }
+  .message-list-con {
+    border: 1px solid #e8e8e8;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border-radius: 4px;
+    .ant-list-item{
+      display: flex;
+      justify-content: space-between
+    }
+  }
+}
