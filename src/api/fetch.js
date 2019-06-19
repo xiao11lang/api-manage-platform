@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {config} from './config'
 import {Modal} from 'antd'
+axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.getItem('api_master_token')}`
 export function fetch(options) {
     return new Promise((resolve, reject) => {
       const instance = axios.create({

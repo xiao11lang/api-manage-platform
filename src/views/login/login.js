@@ -32,6 +32,7 @@ export function Login(props) {
       name: name,
       pass: pass
     }).then((res) => {
+      localStorage.setItem('api_master_token',res.token)
       setUserInfo({
         mes:res.mes,
         mesCount:res.mesCount,
