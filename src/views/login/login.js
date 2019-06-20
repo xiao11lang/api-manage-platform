@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Icon, Input, Button, Tooltip } from "antd";
 import { useNameValidate, usePasswordValidate } from "./validate";
 import { login } from "../../api/user";
-import { UserCtx } from "../../App";
 export function Login(props) {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
@@ -10,7 +9,6 @@ export function Login(props) {
   const [passTip, setPassTip] = useState(false);
   const nameValid = useNameValidate(name);
   const passValid = usePasswordValidate(pass);
-  const {setUserInfo}=useContext(UserCtx)
   const handleNameChange = e => {
     setName(e.target.value);
     setNameTip(false);
@@ -33,11 +31,6 @@ export function Login(props) {
       pass: pass
     }).then((res) => {
       localStorage.setItem('api_master_token',res.token)
-      setUserInfo({
-        mes:res.mes,
-        mesCount:res.mesCount,
-        ...res.info
-      })
       props.setLoginState(true);
       props.history.push("/home/control");
     });

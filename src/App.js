@@ -20,7 +20,7 @@ function App() {
           />
           <Route
             path="/home"
-            render={props => <Home loginState={loginState} {...props} userInfo={userInfo}/>}
+            render={props => <Home loginState={loginState} {...props} userInfo={userInfo} setUserInfo={setUserInfo} />}
           />
         </Switch>
       </UserCtx.Provider>
