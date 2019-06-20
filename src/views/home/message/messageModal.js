@@ -1,11 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Layout, Menu, Button, Dropdown } from "antd";
 import IconFont from "./../../../components/iconfont";
 import { MessageList } from "./list";
 import { MessageDetail } from "./detail";
 import "./message.scss";
-import { UserCtx } from "./../../../App";
-import { getMessageList } from "../../../api/message";
 const { Sider, Content } = Layout;
 const MenuAction = () => {
   return (
@@ -22,24 +20,14 @@ const MenuAction = () => {
   );
 };
 export function MessageModal(props) {
-  const { userInfo } = useContext(UserCtx);
   const [key, setKey] = useState(props.mesKey);
   const [detailShow, setDetailShow] = useState(false);
-  const [mesList,setMesList]=useState([])
-  const [mesIndex,setMesIndex]=useState(0)
+  const [mesDetail,setMesDetail]=useState({})
+  const typeArr = ["official", "project", "person"];
   const handleClick = ({ key }) => {
     setDetailShow(false);
     setKey(key);
   };
-  useEffect(() => {
-    const typeArr = ["official", "project", "person"];
-    getMessageList({
-      id: userInfo.id,
-      type: typeArr[key - 1]
-    }).then((res)=>{
-      setMesList(res.list)
-    });
-  }, [key, userInfo.id,props.unRead]);
   const itemStyle = {
     display: "flex",
     justifyContent: "space-between",
@@ -80,16 +68,16 @@ export function MessageModal(props) {
           <Content style={{ height: "100%" }}>
             {detailShow ? (
               <MessageDetail
-                mes={mesList[mesIndex]}
+                mes={mesDetail}
                 hideDetail={() => setDetailShow(false)}
               />
             ) : (
               <MessageList
-                mesList={mesList}
                 showDetail={() => setDetailShow(true)}
-                setMesIndex={setMesIndex}
+                setMesDetail={setMesDetail}
                 setUnRead={props.setUnRead}
                 unRead={props.unRead}
+                type={typeArr[key-1]}
               />
             )}
           </Content>

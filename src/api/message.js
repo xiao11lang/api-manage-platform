@@ -13,6 +13,13 @@ export function getMesCount(data){
         data
     })
 }
+export function deleteMes(data){
+    return fetch({
+        method:'post',
+        url:'/deleteMes',
+        data
+    })
+}
 export function getMessageList(data){
     return fetch({
         method:'post',

@@ -1,18 +1,37 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { List } from "antd";
 import IconFont from "./../../../components/iconfont";
-import { changeMesState } from "./../../../api/message";
+import { changeMesState,deleteMes,getMessageList } from "./../../../api/message";
 export function MessageList(props) {
-  const list = props.mesList;
+  const [list,setList]=useState([])
   const handleClick = item => {
     props.showDetail();
-    props.setMesIndex(item.index);
+    props.setMesDetail(list[item.index]);
     if(!item.hasRead){
       changeMesState({ id: item.id }).then(()=>{
         props.setUnRead(props.unRead-1)
       })
     }
   };
+  const handleDelete=(e,item)=>{
+    e.stopPropagation()
+    deleteMes({id:item.id}).then(()=>{
+      if(!item.hasRead){
+        props.setUnRead(props.unRead-1)
+      }
+      let curList=list.filter((mes)=>{
+        return mes.id!==item.id
+      })
+      setList(curList)
+    })
+  }
+  useEffect(()=>{
+    getMessageList({
+      type:props.type
+    }).then((res)=>{
+      setList(res.list)
+    })
+  },[props.type])
   return (
     <>
       <List
@@ -31,7 +50,7 @@ export function MessageList(props) {
             >
               <List.Item>
                 {item.title}
-                <IconFont type="iconguanbi" />
+                <div onClick={(e)=>{handleDelete(e,item)}}><IconFont type="iconguanbi" /></div>
               </List.Item>
             </div>
           );
