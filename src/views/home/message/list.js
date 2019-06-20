@@ -1,37 +1,72 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { List } from "antd";
 import IconFont from "./../../../components/iconfont";
-import { changeMesState,deleteMes,getMessageList } from "./../../../api/message";
+import {
+  changeMesState,
+  deleteMes,
+  getMessageList
+} from "./../../../api/message";
 export function MessageList(props) {
-  const [list,setList]=useState([])
+  const [list, setList] = useState([]);
   const handleClick = item => {
     props.showDetail();
-    props.setMesDetail(list[item.index]);
-    if(!item.hasRead){
-      changeMesState({ id: item.id }).then(()=>{
-        props.setUnRead(props.unRead-1)
-      })
+    props.setMesDetail(Object.assign({}, list[item.index]));
+    if (!item.hasRead) {
+      changeMesState({ id: item.id }).then(() => {
+        props.setUnRead(props.unRead - 1);
+      });
     }
   };
-  const handleDelete=(e,item)=>{
-    e.stopPropagation()
-    deleteMes({id:item.id}).then(()=>{
-      if(!item.hasRead){
-        props.setUnRead(props.unRead-1)
+  const handleDelete = (e, item) => {
+    e.stopPropagation();
+    deleteMes({ id: item.id }).then(() => {
+      if (!item.hasRead) {
+        props.setUnRead(props.unRead - 1);
       }
-      let curList=list.filter((mes)=>{
-        return mes.id!==item.id
-      })
-      setList(curList)
-    })
-  }
-  useEffect(()=>{
+      let curList = list.filter(mes => {
+        return mes.id !== item.id;
+      });
+      setList(curList);
+    });
+  };
+  useEffect(() => {
     getMessageList({
-      type:props.type
-    }).then((res)=>{
-      setList(res.list)
-    })
-  },[props.type])
+      type: props.type
+    }).then(res => {
+      setList(res.list);
+    });
+  }, [props.type]);
+  useEffect(() => {
+    if (props.allRead) {
+      const curList = list.map(mes => {
+        return Object.assign({}, mes, { hasRead: 1 });
+      });
+      setList(curList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.allRead]);
+  useEffect(() => {
+    if (props.allDelete) {
+      let count = 0;
+      list.forEach(mes => {
+        if (!mes.hasRead) {
+          count = count + 1;
+        }
+      }, 0);
+      props.setUnRead(props.unRead - count);
+      setList([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.allDelete]);
+  useEffect(() => {
+    if (props.deleteIndex !== "") {
+      let curList = list.filter((mes, index) => {
+        return index !== props.deleteIndex;
+      });
+      setList(curList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.deleteIndex]);
   return (
     <>
       <List
@@ -50,7 +85,13 @@ export function MessageList(props) {
             >
               <List.Item>
                 {item.title}
-                <div onClick={(e)=>{handleDelete(e,item)}}><IconFont type="iconguanbi" /></div>
+                <div
+                  onClick={e => {
+                    handleDelete(e, item);
+                  }}
+                >
+                  <IconFont type="iconguanbi" />
+                </div>
               </List.Item>
             </div>
           );

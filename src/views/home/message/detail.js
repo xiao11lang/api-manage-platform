@@ -1,9 +1,17 @@
 import React from "react";
 import { Button, Divider } from "antd";
 import IconFont from "./../../../components/iconfont";
+import { deleteMes } from "../../../api/message";
 export function MessageDetail(props) {
-  const { title, content,createdAt } = props.mes;
+  const { title, content,createdAt,id } = props.mes;
   const time=new Date(createdAt).toLocaleString()
+  const handleDelete=()=>{
+    deleteMes({
+      id:id
+    }).then(()=>{
+      props.hideDetail()
+    })
+  }
   return (
     <div className="message-detail">
       <div className="detail-top">
@@ -11,11 +19,11 @@ export function MessageDetail(props) {
           <IconFont type="iconfanhui2" />
           返回
         </Button>
-        <Button>
+        <Button onClick={handleDelete}>
           <IconFont type="iconshanchu" />
           删除
         </Button>
-      </div>
+      </div> 
       <Divider />
       <div className="detail-title">
         <p>{title}</p>

@@ -34,3 +34,17 @@ export function changeMesState(data){
         data
     })
 }
+export function setAllMesRead(data){
+    return fetch({
+        method:'post',
+        url:'/setAllMes',
+        data
+    })
+}
+export function deleteAllMes(data){
+    return fetch({
+        method:'post',
+        url:'/deleteAllMes',
+        data
+    })
+}
