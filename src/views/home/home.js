@@ -9,6 +9,7 @@ import "./home.scss";
 import { MessageModal } from "./message/messageModal";
 import { getMesCount } from "../../api/message";
 import { getInfo } from "../../api/user";
+import { getTeamInfo } from "../../api/workTeam";
 const { Content } = Layout;
 export const ApiCtx = createContext();
 export const MessageCtx = createContext();
@@ -33,6 +34,12 @@ export function Home(props) {
   useEffect(() => {
     getInfo().then(res => {
       props.setUserInfo(res.info);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    getTeamInfo().then(res => {
+      props.setTeamInfo(res.info);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -94,7 +101,7 @@ export function Home(props) {
       >
         <div>
           <Icon type="check" style={{ margin: "0 20px" }} />
-          <span>工作组12138</span>
+          <span>工作组 {props.teamInfo.name}</span>
         </div>
         <div>
           <Icon type="plus" style={{ margin: "0 20px" }} />

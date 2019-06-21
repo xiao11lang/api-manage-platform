@@ -1,0 +1,15 @@
+.create-workspace{
+    width: 800px!important;
+    .create-team,.join-team{
+        p{
+            margin-bottom: 5px
+        }
+        p.title{
+            font-weight: bold
+        }
+        p.middle{
+            display: flex;
+            justify-content: space-between
+        }
+    }
+}

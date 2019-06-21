@@ -1,10 +1,12 @@
-import React,{useContext} from "react";
+import React,{useContext,useState} from "react";
 import { Layout, Row, Col, Button, Badge, Avatar, Dropdown } from "antd";
 import { Account } from "./accountMenu";
 import {UserCtx} from '../../App'
+import {CreateModal} from './workTeam/createModal'
 const { Header } = Layout;
 export function HomeHeader(props) {
-  const {userInfo}=useContext(UserCtx)
+  const {userInfo,teamInfo}=useContext(UserCtx)
+  const [createVisible, setCreateVisible] = useState(false)
   const handleClick=({key})=>{
     if(key==='0'){
       props.setMessageKey('1')
@@ -31,12 +33,12 @@ export function HomeHeader(props) {
                 props.setModalVisible(true);
               }}
             >
-              工作组
+              {`工作组${teamInfo.name}`}
             </Button>
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
             <Dropdown overlay={<Account handleClick={handleClick}/>}>
-              <span>
+              <span onClick={()=>{setCreateVisible(true)}}>
                 <Badge count={props.unRead}>
                   <Avatar shape="round" icon="user" />
                 </Badge>
@@ -46,6 +48,7 @@ export function HomeHeader(props) {
           </Col>
         </Row>
       </Header>
+      <CreateModal createVisible={createVisible} setCreateVisible={setCreateVisible}/>
     </>
   );
 }

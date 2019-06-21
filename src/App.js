@@ -7,10 +7,12 @@ export const UserCtx = createContext(null);
 function App() {
   const [loginState, setLoginState] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const [teamInfo,setTeamInfo]=useState({})
+  const forwardInfo={ userInfo: userInfo, setUserInfo: setUserInfo,teamInfo:teamInfo,setTeamInfo:setTeamInfo }
   return (
     <div className="app">
       <UserCtx.Provider
-        value={{ userInfo: userInfo, setUserInfo: setUserInfo }}
+        value={forwardInfo}
       >
         <Switch>
           <Route
@@ -20,7 +22,7 @@ function App() {
           />
           <Route
             path="/home"
-            render={props => <Home loginState={loginState} {...props} userInfo={userInfo} setUserInfo={setUserInfo} />}
+            render={props => <Home loginState={loginState} {...props} {...forwardInfo}/>}
           />
         </Switch>
       </UserCtx.Provider>
