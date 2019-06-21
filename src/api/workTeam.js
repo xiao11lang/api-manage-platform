@@ -1,10 +1,4 @@
 import {fetch} from './fetch'
-export function getTeamInfo(){
-    return fetch({
-        method:'get',
-        url:'/getTeamInfo',
-    })
-}
 export function checkExist(data){
     return fetch({
         method:'post',

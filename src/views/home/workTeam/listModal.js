@@ -1,15 +1,18 @@
 import React from "react";
 import { Modal, Icon } from "antd";
 import "./workTeam.scss";
+import { changeWorkTeam } from "./../../../api/user";
 export function ListModal(props) {
   const setCreateShow = () => {
     props.setListVisible(false);
     props.setCreateVisible(true);
   };
-  const switchTeam=(team)=>{
-      props.setListVisible(false)
-      props.setTeamInfo(team)
-  }
+  const switchTeam = team => {
+    changeWorkTeam({ teamId: team.id }).then(() => {
+      props.setListVisible(false);
+      props.setTeamInfo(team);
+    });
+  };
   return (
     <>
       <Modal
@@ -24,7 +27,7 @@ export function ListModal(props) {
       >
         {props.teamList.map(team => {
           return (
-            <div key={team.id} onClick={()=>switchTeam(team)}>
+            <div key={team.id} onClick={() => switchTeam(team)}>
               <Icon type="check" style={{ margin: "0 20px" }} />
               <span>工作组 {team.name}</span>
             </div>

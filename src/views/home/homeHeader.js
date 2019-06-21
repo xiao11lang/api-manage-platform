@@ -5,7 +5,6 @@ import { UserCtx } from "../../App";
 import { CreateModal } from "./workTeam/createModal";
 import { ListModal } from "./workTeam/listModal";
 import { getTeamList } from "../../api/workTeam";
-import { getTeamInfo } from './../../api/workTeam';
 const { Header } = Layout;
 export function HomeHeader(props) {
   const { userInfo} = useContext(UserCtx);
@@ -14,11 +13,14 @@ export function HomeHeader(props) {
   const [listVisible, setListVisible] = useState(false);
   const [teamList, setTeamList] = useState([]);
   useEffect(() => {
-    getTeamInfo().then(res => {
-      setTeamInfo(res.info);
+    getTeamList().then(res => {
+      const curTeam=res.list.filter((team)=>{
+        return team.id===userInfo.workTeamId
+      })
+      setTeamList(res.list);
+      setTeamInfo(curTeam[0]?curTeam[0]:{})
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userInfo]);
   const handleClick = ({ key }) => {
     if (key === "0") {
       props.setMessageKey("1");

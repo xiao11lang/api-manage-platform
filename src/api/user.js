@@ -40,3 +40,10 @@ export function uploadAvatar(data){
         data
     })
 }
+export function changeWorkTeam(data){
+    return fetch({
+        method:'post',
+        url:'/changeWorkTeam',
+        data
+    })
+}
