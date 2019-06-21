@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Layout, Modal, Icon } from "antd";
+import { Layout } from "antd";
 import { SideMenu } from "./sideMenu";
 import { HomeHeader } from "./homeHeader";
 import { Control } from "../control/control";
@@ -9,13 +9,11 @@ import "./home.scss";
 import { MessageModal } from "./message/messageModal";
 import { getMesCount } from "../../api/message";
 import { getInfo } from "../../api/user";
-import { getTeamInfo } from "../../api/workTeam";
 const { Content } = Layout;
 export const ApiCtx = createContext();
 export const MessageCtx = createContext();
 export function Home(props) {
   const [collapse, setCollapse] = useState(false); //左侧折叠
-  const [modalVisible, setModalVisible] = useState(false); //工作组模态框
   const [key, setKey] = useState(2); //左侧选项
   const [messageShow, setMessageShow] = useState(false); //消息模态框
   const [mesKey, setMesKey] = useState(0); //消息模态框key
@@ -35,13 +33,7 @@ export function Home(props) {
     getInfo().then(res => {
       props.setUserInfo(res.info);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    getTeamInfo().then(res => {
-      props.setTeamInfo(res.info);
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     getMesCount({ id: props.userInfo.id }).then(res => {
@@ -56,7 +48,6 @@ export function Home(props) {
   const accountProps = {
     collapse,
     toggle,
-    setModalVisible,
     setMessageKey,
     unRead
   }; //顶部的props
@@ -90,24 +81,6 @@ export function Home(props) {
           </ApiCtx.Provider>
         </Layout>
       </Layout>
-      <Modal
-        className="workspace"
-        visible={modalVisible}
-        footer={null}
-        title="切换工作组"
-        onCancel={() => {
-          setModalVisible(false);
-        }}
-      >
-        <div>
-          <Icon type="check" style={{ margin: "0 20px" }} />
-          <span>工作组 {props.teamInfo.name}</span>
-        </div>
-        <div>
-          <Icon type="plus" style={{ margin: "0 20px" }} />
-          <span>新建/加入工作组</span>
-        </div>
-      </Modal>
       {messageShow ? (
         <MessageModal
           hide={hideMessage}

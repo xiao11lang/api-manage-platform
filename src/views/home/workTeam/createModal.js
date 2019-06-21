@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "./workTeam.scss";
 import { Modal, Card, Button, Input } from "antd";
 import IconFont from "./../../../components/iconfont";
-import { checkExist } from "../../../api/workTeam";
+import { checkExist,initTeam } from "../../../api/workTeam";
 export function CreateModal(props) {
-  const [selectKey, setSelectKey] = useState("create");
-  const [btnDisabled, setBtnDisabled] = useState(false);
-  const [show, setShow] = useState(false);
-  const [teamId,setTeamId]=useState('')
+  const [selectKey, setSelectKey] = useState("create");//选中的为新建或加入
+  const [btnDisabled, setBtnDisabled] = useState(false);//确认按钮是否可用
+  const [show, setShow] = useState(false);//是否展示查询工作组id的组件
+  const [teamId,setTeamId]=useState('')//工作组id值
   const handleCreate = () => {
     setSelectKey("create");
     setShow(false);
@@ -28,6 +28,14 @@ export function CreateModal(props) {
   const handleInput=(e)=>{
     setTeamId(e.target.value)
   }
+  const submit=()=>{
+    if(selectKey==='create'){
+      initTeam().then((res)=>{
+        props.setCreateVisible(false)
+        props.setTeamInfo(res.info)
+      })
+    }
+  }
   return (
     <>
       <Modal
@@ -45,7 +53,7 @@ export function CreateModal(props) {
             >
               取消
             </Button>
-            <Button type="primary" disabled={btnDisabled}>
+            <Button type="primary" disabled={btnDisabled} onClick={submit}>
               确认
             </Button>
           </div>

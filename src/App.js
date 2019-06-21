@@ -7,8 +7,7 @@ export const UserCtx = createContext(null);
 function App() {
   const [loginState, setLoginState] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [teamInfo,setTeamInfo]=useState({})
-  const forwardInfo={ userInfo: userInfo, setUserInfo: setUserInfo,teamInfo:teamInfo,setTeamInfo:setTeamInfo }
+  const forwardInfo={ userInfo: userInfo, setUserInfo: setUserInfo }
   return (
     <div className="app">
       <UserCtx.Provider

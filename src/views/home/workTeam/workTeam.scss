@@ -13,3 +13,22 @@
         }
     }
 }
+.workspace{
+    .ant-modal-body{
+        div{
+            border:1px solid #e8e8e8;
+            padding: 16px 0;
+            margin-bottom: 10px;
+            &:first-child{
+                color: #1890ff;
+                &:hover{
+                    background: rgb(250, 250, 250)
+                }
+            }
+            &:last-child:hover{
+                color: #1890ff;
+                border:1px solid #1890ff;
+            }
+        }
+    }
+}

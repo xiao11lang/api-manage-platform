@@ -1,9 +1,8 @@
 import {fetch} from './fetch'
-export function getTeamInfo(data){
+export function getTeamInfo(){
     return fetch({
         method:'get',
         url:'/getTeamInfo',
-        data
     })
 }
 export function checkExist(data){
@@ -11,5 +10,17 @@ export function checkExist(data){
         method:'post',
         url:'/getWorkTeamExist',
         data
+    })
+}
+export function initTeam(){
+    return fetch({
+        method:'get',
+        url:'/initWorkTeam'
+    })
+}
+export function getTeamList(){
+    return fetch({
+        method:'get',
+        url:'/getTeamList'
     })
 }
