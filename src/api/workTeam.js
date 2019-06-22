@@ -12,9 +12,10 @@ export function initTeam(){
         url:'/initWorkTeam'
     })
 }
-export function getTeamList(){
+export function getTeamList(data){
     return fetch({
-        method:'get',
-        url:'/getTeamList'
+        method:'post',
+        url:'/getTeamList',
+        data
     })
 }

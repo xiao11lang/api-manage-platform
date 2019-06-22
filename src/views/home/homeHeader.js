@@ -1,4 +1,4 @@
-import React, { useContext, useState,useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Layout, Row, Col, Button, Badge, Avatar, Dropdown } from "antd";
 import { Account } from "./accountMenu";
 import { UserCtx } from "../../App";
@@ -7,19 +7,18 @@ import { ListModal } from "./workTeam/listModal";
 import { getTeamList } from "../../api/workTeam";
 const { Header } = Layout;
 export function HomeHeader(props) {
-  const { userInfo} = useContext(UserCtx);
-  const [teamInfo,setTeamInfo]=useState({})
+  const { userInfo } = useContext(UserCtx);
+  const [teamInfo, setTeamInfo] = useState({});
   const [createVisible, setCreateVisible] = useState(false);
   const [listVisible, setListVisible] = useState(false);
   const [teamList, setTeamList] = useState([]);
   useEffect(() => {
-    getTeamList().then(res => {
-      const curTeam=res.list.filter((team)=>{
-        return team.id===userInfo.workTeamId
-      })
-      setTeamList(res.list);
-      setTeamInfo(curTeam[0]?curTeam[0]:{})
-    });
+    if(userInfo.workTeamId){
+      getTeamList({ teamId: userInfo.workTeamId }).then(res => {
+        setTeamList(res.list);
+        setTeamInfo(res.list[0]);
+      });
+    }
   }, [userInfo]);
   const handleClick = ({ key }) => {
     if (key === "0") {
@@ -27,7 +26,7 @@ export function HomeHeader(props) {
     }
   };
   const showList = () => {
-    getTeamList().then(res => {
+    getTeamList({ teamId: userInfo.workTeamId }).then(res => {
       setListVisible(true);
       setTeamList(res.list);
     });
@@ -46,11 +45,7 @@ export function HomeHeader(props) {
             </Button>
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
-            <Button
-              icon="user"
-              type="link"
-              onClick={showList}
-            >
+            <Button icon="user" type="link" onClick={showList}>
               {`工作组${teamInfo.name}`}
             </Button>
           </Col>
