@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { Layout } from "antd";
 import { SideMenu } from "./sideMenu";
 import { HomeHeader } from "./homeHeader";
@@ -52,7 +52,7 @@ export function Home(props) {
     unRead,
     setUnRead
   }; //顶部的props
-  return props.loginState || true ? (
+  return (
     <>
       <Layout style={{ height: "100%" }} className="home">
         <SideMenu collapse={collapse} setKey={setKey} />
@@ -91,7 +91,5 @@ export function Home(props) {
         />
       ) : null}
     </>
-  ) : (
-    <Redirect to="/" />
-  );
+  ) ;
 }

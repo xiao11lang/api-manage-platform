@@ -82,12 +82,18 @@ export function fetch(options) {
           if (err.response && err.response.data && err.response.data.detail) {
             Modal.error({
               title:'错误',
-              content:err.response.data.detail
+              content:err.response.data.detail,
+              onOk:function(){
+                window.location.assign('/')
+              }
             });
           } else {
             Modal.error({
               title:'错误',
-              content:err.message
+              content:err.message,
+              onOk:function(){
+                window.location.assign('/')
+              }
             });
           }
           return Promise.reject(err.response && err.response.data); // 返回接口返回的错误信息

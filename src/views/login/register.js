@@ -40,7 +40,6 @@ export function Register(props) {
       name,pass
     }).then((res)=>{
       localStorage.setItem("api_master_token",res.token)
-      props.setLoginState(true)
       props.history.push('/home/control')
     })
   };

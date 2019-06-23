@@ -5,7 +5,6 @@ import { Main } from "./views/login/main";
 import { Home } from "./views/home/home";
 export const UserCtx = createContext(null);
 function App() {
-  const [loginState, setLoginState] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const forwardInfo={ userInfo: userInfo, setUserInfo: setUserInfo }
   return (
@@ -16,12 +15,12 @@ function App() {
         <Switch>
           <Route
             path="/"
-            render={props => <Main setLoginState={setLoginState} {...props} />}
+            render={props => <Main {...props} />}
             exact
           />
           <Route
             path="/home"
-            render={props => <Home loginState={loginState} {...props} {...forwardInfo}/>}
+            render={props => <Home {...props} {...forwardInfo}/>}
           />
         </Switch>
       </UserCtx.Provider>
