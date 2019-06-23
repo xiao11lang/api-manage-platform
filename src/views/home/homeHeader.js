@@ -23,6 +23,11 @@ export function HomeHeader(props) {
   const handleClick = ({ key }) => {
     if (key === "0") {
       props.setMessageKey("1");
+    }else if(key==='1'){
+      props.setAccountShow(true)
+    }else{
+      localStorage.setItem('api_master_token','')
+      window.location.assign('/')
     }
   };
   const showList = () => {

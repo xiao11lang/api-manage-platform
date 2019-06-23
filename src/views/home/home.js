@@ -11,11 +11,12 @@ import { getMesCount } from "../../api/message";
 import { getInfo } from "../../api/user";
 const { Content } = Layout;
 export const ApiCtx = createContext();
-export const MessageCtx = createContext();
+export const HomeCtx = createContext();
 export function Home(props) {
   const [collapse, setCollapse] = useState(false); //左侧折叠
   const [key, setKey] = useState(2); //左侧选项
   const [messageShow, setMessageShow] = useState(false); //消息模态框
+  const [accountModalShow, setAccountShow] = useState(false); //消息模态框key
   const [mesKey, setMesKey] = useState(0); //消息模态框key
   const [mesCount, setMesCount] = useState({});
   const [unRead, setUnRead] = useState(0); //未读
@@ -49,6 +50,8 @@ export function Home(props) {
     collapse,
     toggle,
     setMessageKey,
+    setMessageShow,
+    setAccountShow,
     unRead,
     setUnRead
   }; //顶部的props
@@ -70,9 +73,9 @@ export function Home(props) {
               <Switch>
                 <Route
                   render={() => (
-                    <MessageCtx.Provider value={setMessageKey}>
+                    <HomeCtx.Provider value={{setMessageKey,accountModalShow,setAccountShow}}>
                       <Control mesCount={mesCount} />
-                    </MessageCtx.Provider>
+                    </HomeCtx.Provider>
                   )}
                   path={`${props.match.url}/control`}
                 />

@@ -1,8 +1,8 @@
 import React,{useContext} from 'react'
 import {Card} from 'antd'
-import { MessageCtx } from '../home/home';
+import { HomeCtx } from '../home/home';
 function CardRow(props){
-    const setMessageKey=useContext(MessageCtx)
+    const {setMessageKey}=useContext(HomeCtx)
     return (
         <div className='message-row' onClick={()=>{setMessageKey(props.mesKey)}}>
             <span>{props.title}</span>

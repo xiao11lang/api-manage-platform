@@ -1,21 +1,22 @@
 import { Button, Icon, Card } from "antd";
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { AccountModal } from "./accountModal";
 import "./control.scss";
 import { UserCtx } from "../../App";
+import { HomeCtx } from "../home/home";
 export function AccountManage() {
-  const [modalVisible, setModalVisible] = useState(false);
   const { userInfo } = useContext(UserCtx);
+  const {accountModalShow,setAccountShow}=useContext(HomeCtx)
   return (
     <>
       <Card className="accountManage">
         <Icon type="user" />
         <span style={{ margin: "0 24px" }}>{userInfo.name}</span>
-        <Button onClick={() => setModalVisible(true)}>账户管理</Button>
+        <Button onClick={() => setAccountShow(true)}>账户管理</Button>
       </Card>
       <AccountModal
-        visible={modalVisible}
-        hide={() => setModalVisible(false)}
+        visible={accountModalShow}
+        hide={() => setAccountShow(false)}
       />
     </>
   );
