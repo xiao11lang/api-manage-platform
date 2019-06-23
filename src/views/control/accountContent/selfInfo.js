@@ -68,7 +68,7 @@ export function SelfInfo() {
     <>
       <InfoRow style={{ margin: "20px 0" }} label="头像">
         <div className='upload-con'>
-          {uploaded?<img alt='avatar' src={previewImage}/>:<img src={`http://localhost/img/${userInfo.avatar}`} alt="avatar" onClick={handlePreview}/>}
+          {uploaded?<img alt='avatar' src={previewImage}/>:<img src={userInfo.avatar} alt="avatar" onClick={handlePreview}/>}
           <Upload
             listType="picture-card"
             fileList={[]}

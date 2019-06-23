@@ -3,11 +3,13 @@ import "./workTeam.scss";
 import { Modal, Card, Button, Input } from "antd";
 import IconFont from "./../../../components/iconfont";
 import { checkExist,initTeam } from "../../../api/workTeam";
+import { useTeamChange } from "../../../hooks/useTeamChange";
 export function CreateModal(props) {
   const [selectKey, setSelectKey] = useState("create");//选中的为新建或加入
   const [btnDisabled, setBtnDisabled] = useState(false);//确认按钮是否可用
   const [show, setShow] = useState(false);//是否展示查询工作组id的组件
   const [teamId,setTeamId]=useState('')//工作组id值
+  const handleTeamChange=useTeamChange()
   const handleCreate = () => {
     setSelectKey("create");
     setShow(false);
@@ -33,6 +35,8 @@ export function CreateModal(props) {
       initTeam().then((res)=>{
         props.setCreateVisible(false)
         props.setTeamInfo(res.info)
+        props.setUnRead(props.unRead+1)
+        handleTeamChange(res.info.id)
       })
     }
   }

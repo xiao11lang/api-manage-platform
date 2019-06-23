@@ -46,7 +46,7 @@ export function HomeHeader(props) {
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
             <Button icon="user" type="link" onClick={showList}>
-              {`工作组${teamInfo.name}`}
+              {`工作组${teamInfo?teamInfo.name:''}`}
             </Button>
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
@@ -65,6 +65,8 @@ export function HomeHeader(props) {
         createVisible={createVisible}
         setCreateVisible={setCreateVisible}
         setTeamInfo={setTeamInfo}
+        unRead={props.unRead}
+        setUnRead={props.setUnRead}
       />
       <ListModal
         listVisible={listVisible}
