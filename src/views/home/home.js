@@ -9,6 +9,7 @@ import "./home.scss";
 import { MessageModal } from "./message/messageModal";
 import { getMesCount } from "../../api/message";
 import { getInfo } from "../../api/user";
+import { TeamManage } from "./workTeam/teamManage";
 const { Content } = Layout;
 export const ApiCtx = createContext();
 export const HomeCtx = createContext();
@@ -80,6 +81,7 @@ export function Home(props) {
                   path={`${props.match.url}/control`}
                 />
                 <Route component={Api} path={`${props.match.url}/api`} />
+                <Route component={TeamManage} path={`${props.match.url}/workTeam`} />
               </Switch>
             </Content>
           </ApiCtx.Provider>

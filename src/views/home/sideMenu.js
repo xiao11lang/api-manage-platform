@@ -64,6 +64,12 @@ export function SideMenu(props) {
             <Icon type="user" />
             <span>成员管理</span>
           </Menu.Item>
+          <Menu.Item key="7">
+            <Link to="/home/workTeam">
+              <Icon type="bank" />
+              <span>工作组管理</span>
+            </Link>
+          </Menu.Item>
         </Menu>
       </Sider>
     </>

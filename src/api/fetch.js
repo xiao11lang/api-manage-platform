@@ -84,7 +84,9 @@ export function fetch(options) {
               title:'错误',
               content:err.response.data.detail,
               onOk:function(){
-                window.location.assign('/')
+                if(err.response.status===401){
+                  window.location.assign('/')
+                }
               }
             });
           } else {
@@ -92,7 +94,9 @@ export function fetch(options) {
               title:'错误',
               content:err.message,
               onOk:function(){
-                window.location.assign('/')
+                if(err.response.status===401){
+                  window.location.assign('/')
+                }
               }
             });
           }
