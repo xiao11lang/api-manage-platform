@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Layout } from "antd";
-import { SideMenu } from "./sideMenu";
+import SideMenu from "./sideMenu";
 import { HomeHeader } from "./homeHeader";
 import { Control } from "../control/control";
 import { Api } from "../api/api";

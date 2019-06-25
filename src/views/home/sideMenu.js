@@ -3,8 +3,22 @@ import { Layout, Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
-
-export function SideMenu(props) {
+function getKey() {
+  const routeMap = {
+    control: "1",
+    apiManage: "2",
+    apiTest: "3",
+    database: "4",
+    testCase: "5",
+    person: "6",
+    workTeam: "7"
+  };
+  const hashArr = window.location.hash.split("/");
+  const curRoutePath = hashArr[hashArr.length - 1];
+  return routeMap[curRoutePath];
+}
+export default function SideMenu(props) {
+  const key=getKey()
   const handleApiClick = ({ key }) => {
     props.setKey(key);
   };
@@ -18,7 +32,7 @@ export function SideMenu(props) {
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={[key]}
           onClick={handleApiClick}
         >
           <Menu.Item key="0" disabled>
@@ -41,12 +55,12 @@ export function SideMenu(props) {
             }
           >
             <Menu.Item key="2">
-              <Link to="/home/api">
+              <Link to="/home/apiManage">
                 <span>API管理</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Link to="/home/api">
+              <Link to="/home/apiTest">
                 <span>API测试</span>
               </Link>
             </Menu.Item>
