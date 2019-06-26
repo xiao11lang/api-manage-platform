@@ -19,3 +19,17 @@ export function getTeamList(data){
         data
     })
 }
+export function changeTeamName(data){
+    return fetch({
+        method:'post',
+        url:'/changeTeamName',
+        data
+    })
+}
+export function changeUserRole(data){
+    return fetch({
+        method:'post',
+        url:'/changeUserRole',
+        data
+    })
+}
