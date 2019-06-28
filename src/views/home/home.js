@@ -21,6 +21,8 @@ export function Home(props) {
   const [mesKey, setMesKey] = useState(0); //消息模态框key
   const [mesCount, setMesCount] = useState({});
   const [unRead, setUnRead] = useState(0); //未读
+  const [teamInfo,setTeamInfo]=useState({})//工作组信息
+  const [teamList,setTeamList]=useState([])//工作组列表
   const toggle = () => {
     setCollapse(!collapse);
   };
@@ -54,12 +56,16 @@ export function Home(props) {
     setMessageShow,
     setAccountShow,
     unRead,
-    setUnRead
+    setUnRead,
+    teamInfo,
+    setTeamInfo,
+    teamList,
+    setTeamList
   }; //顶部的props
   return (
     <>
       <Layout style={{ height: "100%" }} className="home">
-        <SideMenu collapse={collapse} setKey={setKey} />
+        <SideMenu collapse={collapse} setKey={setKey} teamList={teamList}/>
         <Layout>
           <HomeHeader {...accountProps} />
           <ApiCtx.Provider value={key}>
@@ -74,14 +80,23 @@ export function Home(props) {
               <Switch>
                 <Route
                   render={() => (
-                    <HomeCtx.Provider value={{setMessageKey,accountModalShow,setAccountShow}}>
+                    <HomeCtx.Provider
+                      value={{
+                        setMessageKey,
+                        accountModalShow,
+                        setAccountShow
+                      }}
+                    >
                       <Control mesCount={mesCount} />
                     </HomeCtx.Provider>
                   )}
                   path={`${props.match.url}/control`}
                 />
                 <Route component={Api} path={`${props.match.url}/api`} />
-                <Route component={TeamManage} path={`${props.match.url}/workTeam`} />
+                <Route
+                  render={()=><TeamManage setTeamInfo={setTeamInfo} setTeamList={setTeamList} teamInfo={teamInfo}/>}
+                  path={`${props.match.url}/workTeam`}
+                />
               </Switch>
             </Content>
           </ApiCtx.Provider>
@@ -96,5 +111,5 @@ export function Home(props) {
         />
       ) : null}
     </>
-  ) ;
+  );
 }

@@ -8,26 +8,26 @@ import { getTeamList } from "../../api/workTeam";
 const { Header } = Layout;
 export function HomeHeader(props) {
   const { userInfo } = useContext(UserCtx);
-  const [teamInfo, setTeamInfo] = useState({});
+  const { teamInfo, setTeamInfo } = props;
   const [createVisible, setCreateVisible] = useState(false);
   const [listVisible, setListVisible] = useState(false);
-  const [teamList, setTeamList] = useState([]);
+  const { teamList, setTeamList } = props;
   useEffect(() => {
-    if(userInfo.workTeamId){
+    if (userInfo.workTeamId) {
       getTeamList({ teamId: userInfo.workTeamId }).then(res => {
         setTeamList(res.list);
         setTeamInfo(res.list[0]);
       });
     }
-  }, [userInfo]);
+  }, [setTeamInfo, setTeamList, userInfo]);
   const handleClick = ({ key }) => {
     if (key === "0") {
       props.setMessageKey("1");
-    }else if(key==='1'){
-      props.setAccountShow(true)
-    }else{
-      localStorage.setItem('api_master_token','')
-      window.location.assign('/')
+    } else if (key === "1") {
+      props.setAccountShow(true);
+    } else {
+      localStorage.setItem("api_master_token", "");
+      window.location.assign("/");
     }
   };
   const showList = () => {
@@ -51,7 +51,7 @@ export function HomeHeader(props) {
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
             <Button icon="user" type="link" onClick={showList}>
-              {`工作组${teamInfo?teamInfo.name:''}`}
+              {`工作组${teamInfo ? teamInfo.name : ""}`}
             </Button>
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>

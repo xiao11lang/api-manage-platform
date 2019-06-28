@@ -33,3 +33,10 @@ export function changeUserRole(data){
         data
     })
 }
+export function deleteTeam(data){
+    return fetch({
+        method:'post',
+        url:'/deleteTeam',
+        data
+    })
+}

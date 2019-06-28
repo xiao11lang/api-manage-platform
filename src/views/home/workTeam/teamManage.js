@@ -1,24 +1,15 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, {  useContext, useState } from "react";
 import { Button, Input, Card, Switch, Select, Modal } from "antd";
 import {
-  getTeamList,
   changeTeamName,
-  changeUserRole
+  changeUserRole,
+  deleteTeam
 } from "../../../api/workTeam";
 import { UserCtx } from "./../../../App";
 const { Option } = Select;
-export function TeamManage() {
+export function TeamManage(props) {
   const { userInfo } = useContext(UserCtx);
   const [name, setName] = useState("");
-  useEffect(() => {
-    getTeamList({ teamId: userInfo.workTeamId }).then(res => {
-      let curTeam = res.list[0];
-      if (curTeam) {
-        setName(curTeam.name);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const handleChange = e => {
     setName(e.target.value);
   };
@@ -29,6 +20,7 @@ export function TeamManage() {
     }
     changeTeamName({ id: userInfo.workTeamId, name: name }).then(res => {
       Modal.success({ title: res.detail });
+      props.setTeamInfo(Object.assign({},props.teamInfo,{name:name}))
     });
   };
   const changeRole = value => {
@@ -40,6 +32,16 @@ export function TeamManage() {
       });
     }
   };
+  const showDelete=()=>{
+    Modal.warn({
+      title:'确认删除该工作组吗',
+      content:'该操作不可恢复，请谨慎选择',
+      okText:'确认',
+      onOk:function(){
+        deleteTeam({id:props.teamInfo.id})
+      }
+    })
+  }
   return (
     <div className="work-team-manage">
       <Card>
@@ -49,7 +51,7 @@ export function TeamManage() {
             style={{ marginBottom: 10 }}
             value={name}
             onChange={handleChange}
-            defaultValue={name}
+            defaultValue={props.teamInfo.name}
           />
           <Button type="primary" onClick={changeName}>
             保存
@@ -96,7 +98,7 @@ export function TeamManage() {
           一旦删除了空间，空间内所有项目、权限、成员，项目中所有内容等都将会被永久删除。并且您的付费记录也会被永久删除，剩余的使用期限无法转移或者赎回。
         </div>
         <div>这是一个不可恢复的操作，请谨慎对待！</div>
-        <Button type="danger" style={{ marginTop: 10 }}>
+        <Button type="danger" style={{ marginTop: 10 }} onClick={showDelete}>
           删除工作组
         </Button>
       </Card>
