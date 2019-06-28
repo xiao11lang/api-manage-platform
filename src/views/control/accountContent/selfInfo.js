@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button, Input, Icon, Select, Upload, Modal } from "antd";
 import { InfoRow } from "./infoRow";
 import { UserCtx } from "../../../App";
-import { update,uploadAvatar } from "./../../../api/user";
+import { update, uploadAvatar } from "./../../../api/user";
 const Option = Select.Option;
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ function getBase64(file) {
     reader.readAsDataURL(file);
     reader.onload = () => {
       resolve(reader.result);
-    }
+    };
     reader.onerror = error => reject(error);
   });
 }
@@ -18,7 +18,7 @@ export function SelfInfo() {
   const { userInfo, setUserInfo } = useContext(UserCtx);
   const [sex, setSex] = useState("");
   const [name, setName] = useState();
-  const [uploaded,setUploaded]=useState(false)//图片是否上传成功
+  const [uploaded, setUploaded] = useState(false); //图片是否上传成功
   const [previewImage, setPreviewImage] = useState("");
   const [previewVisible, setPreviewVisible] = useState(false);
   const handleNameChange = e => {
@@ -27,15 +27,11 @@ export function SelfInfo() {
   const save = () => {
     const data = {
       id: userInfo.id,
-      sex: sex||userInfo.sex,
+      sex: sex || userInfo.sex,
       name: name || userInfo.name
     };
-    update(data).then(res => {
+    update(data).then(() => {
       setUserInfo(data);
-      Modal.success({
-        content: res.detail,
-        centered: true
-      });
     });
   };
   const handleCancel = () => setPreviewVisible(false);
@@ -45,18 +41,14 @@ export function SelfInfo() {
   };
 
   const handleChange = async ({ file }) => {
-    const fd=new FormData()
-    fd.append('file',file)
-    fd.append('id',userInfo.id)
-    let url = await getBase64(file,setUploaded.bind(null,true));
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("id", userInfo.id);
+    let url = await getBase64(file, setUploaded.bind(null, true));
     setPreviewImage(url);
-    let res=await uploadAvatar(fd)
-    setUploaded(true)
-    setUserInfo(Object.assign({},userInfo,{avatar:res.url}))
-    Modal.success({
-      content:res.detail,
-      centered:true
-    })
+    let res = await uploadAvatar(fd);
+    setUploaded(true);
+    setUserInfo(Object.assign({}, userInfo, { avatar: res.url }));
   };
   const uploadButton = (
     <div>
@@ -67,12 +59,18 @@ export function SelfInfo() {
   return (
     <>
       <InfoRow style={{ margin: "20px 0" }} label="头像">
-        <div className='upload-con'>
-          {uploaded?<img alt='avatar' src={previewImage}/>:<img src={userInfo.avatar} alt="avatar" onClick={handlePreview}/>}
+        <div className="upload-con">
+          {uploaded ? (
+            <img alt="avatar" src={previewImage} />
+          ) : (
+            <img src={userInfo.avatar} alt="avatar" onClick={handlePreview} />
+          )}
           <Upload
             listType="picture-card"
             fileList={[]}
-            beforeUpload={()=>{return false}}
+            beforeUpload={() => {
+              return false;
+            }}
             onChange={handleChange}
           >
             {uploadButton}

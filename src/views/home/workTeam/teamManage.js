@@ -19,17 +19,12 @@ export function TeamManage(props) {
       return;
     }
     changeTeamName({ id: userInfo.workTeamId, name: name }).then(res => {
-      Modal.success({ title: res.detail });
       props.setTeamInfo(Object.assign({}, props.teamInfo, { name: name }));
     });
   };
   const changeRole = value => {
     if (value !== "none") {
-      changeUserRole({ id: userInfo.workTeamId, role: value }).then(res => {
-        Modal.success({
-          title: res.detail
-        });
-      });
+      changeUserRole({ id: userInfo.workTeamId, role: value })
     }
   };
   const showDelete = () => {
@@ -40,10 +35,16 @@ export function TeamManage(props) {
       onOk: function() {
         deleteTeam({ id: props.teamInfo.id }).then(res => {
           props.setTeamList(res.list);
-          props.setTeamInfo(res.list[0]);
-          setUserInfo(
-            Object.assign({}, userInfo, { workTeamId: res.list[0].id })
-          );
+          res.list.length && props.setTeamInfo(res.list[0]);
+          if(res.list.length){
+            props.setTeamInfo(res.list[0]);
+            setUserInfo(
+              Object.assign({}, userInfo, { workTeamId: res.list[0].id })
+            );
+          }else{
+            props.history.push('/home/control')
+          }
+          
         });
       }
     });

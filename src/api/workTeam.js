@@ -23,14 +23,16 @@ export function changeTeamName(data){
     return fetch({
         method:'post',
         url:'/changeTeamName',
-        data
+        data,
+        modalShow:true
     })
 }
 export function changeUserRole(data){
     return fetch({
         method:'post',
         url:'/changeUserRole',
-        data
+        data,
+        modalShow:true
     })
 }
 export function deleteTeam(data){

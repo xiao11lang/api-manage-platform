@@ -23,21 +23,24 @@ export function update(data){
     return fetch({
         method:'post',
         url:'/updateInfo',
-        data
+        data,
+        modalShow:true
     })
 }
 export function changePass(data){
     return fetch({
         method:'post',
         url:'/changePass',
-        data
+        data,
+        modalShow:true
     })
 }
 export function uploadAvatar(data){
     return fetch({
         method:'post',
         url:'/uploadAvatar',
-        data
+        data,
+        modalShow:true
     })
 }
 export function changeWorkTeam(data){

@@ -94,7 +94,7 @@ export function Home(props) {
                 />
                 <Route component={Api} path={`${props.match.url}/api`} />
                 <Route
-                  render={()=><TeamManage setTeamInfo={setTeamInfo} setTeamList={setTeamList} teamInfo={teamInfo} />}
+                  render={(props)=><TeamManage setTeamInfo={setTeamInfo} setTeamList={setTeamList} teamInfo={teamInfo} {...props}/>}
                   path={`${props.match.url}/workTeam`}
                 />
               </Switch>

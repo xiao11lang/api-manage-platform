@@ -1,6 +1,6 @@
 import React, { useState,useContext } from "react";
 import { InfoRow } from "./infoRow";
-import { Input, Button, Tooltip,Modal } from "antd";
+import { Input, Button, Tooltip } from "antd";
 import { usePasswordValidate } from "../../login/validate";
 import { changePass } from "../../../api/user";
 import { UserCtx } from "../../../App";
@@ -42,11 +42,6 @@ export function Password() {
         oldPass:oldPass,
         newPass:newPass,
         id:userInfo.id
-    }).then((res)=>{
-        Modal.success({
-            content:res.detail,
-            centered:true
-        })
     })
   };
   
