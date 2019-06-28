@@ -49,6 +49,9 @@ export function TeamManage(props) {
       }
     });
   };
+  const changeBind=(checked)=>{
+    console.log(checked);
+  }
   return (
     <div className="work-team-manage">
       <Card>
@@ -69,7 +72,7 @@ export function TeamManage(props) {
         <div className="card-title">默认选项</div>
         <Card className="default-option">
           <span>新成员加入组之后自动绑定所有产品</span>
-          <Switch />
+          <Switch onChange={changeBind}/>
         </Card>
         <Card className="default-option">
           <div>

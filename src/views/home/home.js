@@ -10,6 +10,7 @@ import { MessageModal } from "./message/messageModal";
 import { getMesCount } from "../../api/message";
 import { getInfo } from "../../api/user";
 import { TeamManage } from "./workTeam/teamManage";
+import { AccountModal } from './../control/accountModal';
 const { Content } = Layout;
 export const ApiCtx = createContext();
 export const HomeCtx = createContext();
@@ -108,6 +109,12 @@ export function Home(props) {
           mesKey={mesKey}
           setUnRead={setUnRead}
           unRead={unRead}
+        />
+      ) : null}
+      {accountModalShow ? (
+        <AccountModal
+        visible={accountModalShow}
+        hide={() => setAccountShow(false)}
         />
       ) : null}
     </>

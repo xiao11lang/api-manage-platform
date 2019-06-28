@@ -55,12 +55,12 @@ export default function SideMenu(props) {
             }
           >
             <Menu.Item key="2">
-              <Link to="/home/apiManage">
+              <Link to="/home/api/manage">
                 <span>API管理</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Link to="/home/apiTest">
+              <Link to="/home/api/test">
                 <span>API测试</span>
               </Link>
             </Menu.Item>
