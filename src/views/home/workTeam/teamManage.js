@@ -1,4 +1,4 @@
-import React, {  useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Input, Card, Switch, Select, Modal } from "antd";
 import {
   changeTeamName,
@@ -8,7 +8,7 @@ import {
 import { UserCtx } from "./../../../App";
 const { Option } = Select;
 export function TeamManage(props) {
-  const { userInfo } = useContext(UserCtx);
+  const { userInfo, setUserInfo } = useContext(UserCtx);
   const [name, setName] = useState("");
   const handleChange = e => {
     setName(e.target.value);
@@ -20,7 +20,7 @@ export function TeamManage(props) {
     }
     changeTeamName({ id: userInfo.workTeamId, name: name }).then(res => {
       Modal.success({ title: res.detail });
-      props.setTeamInfo(Object.assign({},props.teamInfo,{name:name}))
+      props.setTeamInfo(Object.assign({}, props.teamInfo, { name: name }));
     });
   };
   const changeRole = value => {
@@ -32,16 +32,22 @@ export function TeamManage(props) {
       });
     }
   };
-  const showDelete=()=>{
+  const showDelete = () => {
     Modal.warn({
-      title:'确认删除该工作组吗',
-      content:'该操作不可恢复，请谨慎选择',
-      okText:'确认',
-      onOk:function(){
-        deleteTeam({id:props.teamInfo.id})
+      title: "确认删除该工作组吗",
+      content: "该操作不可恢复，请谨慎选择",
+      okText: "确认",
+      onOk: function() {
+        deleteTeam({ id: props.teamInfo.id }).then(res => {
+          props.setTeamList(res.list);
+          props.setTeamInfo(res.list[0]);
+          setUserInfo(
+            Object.assign({}, userInfo, { workTeamId: res.list[0].id })
+          );
+        });
       }
-    })
-  }
+    });
+  };
   return (
     <div className="work-team-manage">
       <Card>
@@ -51,7 +57,7 @@ export function TeamManage(props) {
             style={{ marginBottom: 10 }}
             value={name}
             onChange={handleChange}
-            defaultValue={props.teamInfo.name}
+            placeholder={props.teamInfo.name}
           />
           <Button type="primary" onClick={changeName}>
             保存
@@ -61,7 +67,7 @@ export function TeamManage(props) {
       <Card>
         <div className="card-title">默认选项</div>
         <Card className="default-option">
-          <span>新成员加入空间之后自动绑定所有产品</span>
+          <span>新成员加入组之后自动绑定所有产品</span>
           <Switch />
         </Card>
         <Card className="default-option">
@@ -83,10 +89,10 @@ export function TeamManage(props) {
       <Card>
         <div className="card-title">转让工作组</div>
         <div>
-          当您不再需要对工作空间进行管理时，您可以将工作空间转让给空间内的另一位成员。
+          当您不再需要对工作组进行管理时，您可以将工作组转让给组内的另一位成员。
         </div>
         <div>
-          转让空间之后，您将失去该空间的管理权限并退出当前的工作空间，这意味着您在被重新加入该工作空间之前无法看到该工作空间。这是一个不可恢复的操作，请谨慎对待！
+          转让组之后，您将失去该组的管理权限并退出当前的工作组，这意味着您在被重新加入该工作组之前无法看到该工作组。这是一个不可恢复的操作，请谨慎对待！
         </div>
         <Button type="primary" style={{ marginTop: 10 }}>
           转让工作组
@@ -95,7 +101,7 @@ export function TeamManage(props) {
       <Card>
         <div className="card-title">删除工作组</div>
         <div>
-          一旦删除了空间，空间内所有项目、权限、成员，项目中所有内容等都将会被永久删除。并且您的付费记录也会被永久删除，剩余的使用期限无法转移或者赎回。
+          一旦删除了组，组内所有项目、权限、成员，项目中所有内容等都将会被永久删除。并且您的付费记录也会被永久删除，剩余的使用期限无法转移或者赎回。
         </div>
         <div>这是一个不可恢复的操作，请谨慎对待！</div>
         <Button type="danger" style={{ marginTop: 10 }} onClick={showDelete}>

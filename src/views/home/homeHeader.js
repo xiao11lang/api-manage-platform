@@ -19,7 +19,8 @@ export function HomeHeader(props) {
         setTeamInfo(res.list[0]);
       });
     }
-  }, [setTeamInfo, setTeamList, userInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo]);
   const handleClick = ({ key }) => {
     if (key === "0") {
       props.setMessageKey("1");
@@ -51,7 +52,7 @@ export function HomeHeader(props) {
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
             <Button icon="user" type="link" onClick={showList}>
-              {`工作组${teamInfo ? teamInfo.name : ""}`}
+              {`工作组${teamInfo && teamInfo.name ? teamInfo.name : ""}`}
             </Button>
           </Col>
           <Col span={10} style={{ textAlign: "center" }}>
