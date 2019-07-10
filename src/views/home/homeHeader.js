@@ -59,7 +59,7 @@ export function HomeHeader(props) {
             <Dropdown overlay={<Account handleClick={handleClick} />}>
               <span>
                 <Badge count={props.unRead}>
-                  <Avatar shape="round" icon="user" />
+                  <Avatar shape="round" src={userInfo.avatar} />
                 </Badge>
                 <Button type="link">{userInfo.name}</Button>
               </span>

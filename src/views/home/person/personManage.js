@@ -1,5 +1,7 @@
 import React,{createRef} from "react";
 import { Tabs, Button, Icon } from "antd";
+import { AllPerson } from './allPerson';
+import { ApplyPerson } from './applyPerson';
 const { TabPane } = Tabs;
 export function PersonManage(props) {
     const input=createRef()
@@ -24,10 +26,10 @@ export function PersonManage(props) {
       </div>
       <Tabs defaultActiveKey="1" >
         <TabPane tab="全部" key="1">
-          Content of Tab Pane 1
+          <AllPerson/>
         </TabPane>
         <TabPane tab="申请" key="2">
-          Content of Tab Pane 2
+          <ApplyPerson/>
         </TabPane>
       </Tabs>
     </>
