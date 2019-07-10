@@ -75,8 +75,10 @@ export default function SideMenu(props) {
             <span>测试用例</span>
           </Menu.Item>
           <Menu.Item key="6">
-            <Icon type="user" />
-            <span>成员管理</span>
+            <Link to="/home/person">
+              <Icon type="user" />
+              <span>成员管理</span>
+            </Link>
           </Menu.Item>
           {props.teamList.length ? (
             <Menu.Item key="7">

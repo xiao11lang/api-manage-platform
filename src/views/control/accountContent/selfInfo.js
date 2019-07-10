@@ -31,7 +31,7 @@ export function SelfInfo() {
       name: name || userInfo.name
     };
     update(data).then(() => {
-      setUserInfo(data);
+      setUserInfo(Object.assign(userInfo,data));
     });
   };
   const handleCancel = () => setPreviewVisible(false);
@@ -99,7 +99,7 @@ export function SelfInfo() {
         <Button onClick={save}>保存</Button>
       </InfoRow>
       <Modal visible={previewVisible} footer={null} onCancel={handleCancel}>
-        <img alt="example" style={{ width: "100%" }} src={previewImage} />
+        <img alt="example" style={{ width: "100%" }} src={previewImage||userInfo.avatar} />
       </Modal>
     </>
   );

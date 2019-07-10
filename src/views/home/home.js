@@ -10,7 +10,8 @@ import { MessageModal } from "./message/messageModal";
 import { getMesCount } from "../../api/message";
 import { getInfo } from "../../api/user";
 import { TeamManage } from "./workTeam/teamManage";
-import { AccountModal } from './../control/accountModal';
+import { AccountModal } from "./../control/accountModal";
+import { PersonManage } from "./person/personManage";
 const { Content } = Layout;
 export const ApiCtx = createContext();
 export const HomeCtx = createContext();
@@ -22,8 +23,8 @@ export function Home(props) {
   const [mesKey, setMesKey] = useState(0); //消息模态框key
   const [mesCount, setMesCount] = useState({});
   const [unRead, setUnRead] = useState(0); //未读
-  const [teamInfo,setTeamInfo]=useState({})//工作组信息
-  const [teamList,setTeamList]=useState([])//工作组列表
+  const [teamInfo, setTeamInfo] = useState({}); //工作组信息
+  const [teamList, setTeamList] = useState([]); //工作组列表
   const toggle = () => {
     setCollapse(!collapse);
   };
@@ -66,7 +67,7 @@ export function Home(props) {
   return (
     <>
       <Layout style={{ height: "100%" }} className="home">
-        <SideMenu collapse={collapse} setKey={setKey} teamList={teamList}/>
+        <SideMenu collapse={collapse} setKey={setKey} teamList={teamList} />
         <Layout>
           <HomeHeader {...accountProps} />
           <ApiCtx.Provider value={key}>
@@ -95,7 +96,18 @@ export function Home(props) {
                 />
                 <Route component={Api} path={`${props.match.url}/api`} />
                 <Route
-                  render={(props)=><TeamManage setTeamInfo={setTeamInfo} setTeamList={setTeamList} teamInfo={teamInfo} {...props}/>}
+                  render={()=><PersonManage teamInfo={teamInfo}/>}
+                  path={`${props.match.url}/person`}
+                />
+                <Route
+                  render={props => (
+                    <TeamManage
+                      setTeamInfo={setTeamInfo}
+                      setTeamList={setTeamList}
+                      teamInfo={teamInfo}
+                      {...props}
+                    />
+                  )}
                   path={`${props.match.url}/workTeam`}
                 />
               </Switch>
@@ -113,8 +125,8 @@ export function Home(props) {
       ) : null}
       {accountModalShow ? (
         <AccountModal
-        visible={accountModalShow}
-        hide={() => setAccountShow(false)}
+          visible={accountModalShow}
+          hide={() => setAccountShow(false)}
         />
       ) : null}
     </>
