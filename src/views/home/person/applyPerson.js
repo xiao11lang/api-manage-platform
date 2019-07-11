@@ -9,7 +9,7 @@ const columnConfig=[{
     dataIndex:'sex'
 },{
     title:'申请时间',
-    dataIndex:'lastModified',
+    dataIndex:'createdAt',
 },{
     title:'操作',
     render:()=>{
@@ -20,13 +20,16 @@ const columnConfig=[{
     },
     align:'left'
 }]
-export function ApplyPerson(){
-    const dataSource=[{
-        name:'xmy',
-        sex:'男',
-        lastModified:'2019-06-04 13:00',
-        key:1
-    }]
+export function ApplyPerson(props){
+    const dataSource=props.applyList.map((item,index)=>{
+        const {name,sex,createdAt}=item
+        return {
+            name:name,
+            sex:sex,
+            createdAt:createdAt,
+            key:index
+        }
+    })
     const coulmns=columnConfig.map((column,index)=>{
         return <Column  key={index} align='center' {...column}></Column>
     })

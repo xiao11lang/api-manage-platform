@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import "./workTeam.scss";
 import { Modal, Card, Button, Input } from "antd";
 import IconFont from "./../../../components/iconfont";
-import { checkExist,initTeam } from "../../../api/workTeam";
+import { checkExist, initTeam } from "../../../api/workTeam";
 import { useTeamChange } from "../../../hooks/useTeamChange";
+import { addApply } from "../../../api/apply";
+
 export function CreateModal(props) {
-  const [selectKey, setSelectKey] = useState("create");//选中的为新建或加入
-  const [btnDisabled, setBtnDisabled] = useState(false);//确认按钮是否可用
-  const [show, setShow] = useState(false);//是否展示查询工作组id的组件
-  const [teamId,setTeamId]=useState('')//工作组id值
-  const handleTeamChange=useTeamChange()
+  const [selectKey, setSelectKey] = useState("create"); //选中的为新建或加入
+  const [btnDisabled, setBtnDisabled] = useState(false); //确认按钮是否可用
+  const [show, setShow] = useState(false); //是否展示查询工作组id的组件
+  const [teamId, setTeamId] = useState(""); //工作组id值
+  const [applyInfo, setApplyInfo] = useState({});
+  const handleTeamChange = useTeamChange();
   const handleCreate = () => {
     setSelectKey("create");
     setShow(false);
@@ -20,26 +23,33 @@ export function CreateModal(props) {
     setShow(true);
     setBtnDisabled(true);
   };
-  const checkTeamExist=()=>{
+  const checkTeamExist = () => {
     checkExist({
-      id:teamId
-    }).then(()=>{
-      setBtnDisabled(false)
-    })
-  }
-  const handleInput=(e)=>{
-    setTeamId(e.target.value)
-  }
-  const submit=()=>{
-    if(selectKey==='create'){
-      initTeam().then((res)=>{
-        props.setCreateVisible(false)
-        props.setTeamInfo(res.info)
-        props.setUnRead(props.unRead+1)
-        handleTeamChange(res.info.id)
-      })
+      id: teamId
+    }).then(res => {
+      setApplyInfo(res);
+      setBtnDisabled(false);
+    });
+  };
+  const handleInput = e => {
+    setTeamId(e.target.value);
+  };
+  const submit = () => {
+    if (selectKey === "create") {
+      initTeam().then(res => {
+        props.setCreateVisible(false);
+        props.setTeamInfo(res.info);
+        props.setUnRead(props.unRead + 1);
+        handleTeamChange(res.info.id);
+      });
+    } else {
+      addApply({
+        fromId: props.fromId,
+        teamId: applyInfo.id,
+        masterId: applyInfo.masterId
+      });
     }
-  }
+  };
   return (
     <>
       <Modal
@@ -100,8 +110,14 @@ export function CreateModal(props) {
         {show ? (
           <Card className="join-team" style={{ marginTop: 10 }}>
             <p className="title">[加入] 一个现有的工作空间</p>
-            <Input placeholder="请输入工作组id" onInput={handleInput}/>
-            <Button type='primary' style={{marginTop:10}} onClick={checkTeamExist}>查询</Button>
+            <Input placeholder="请输入工作组id" onInput={handleInput} />
+            <Button
+              type="primary"
+              style={{ marginTop: 10 }}
+              onClick={checkTeamExist}
+            >
+              查询
+            </Button>
           </Card>
         ) : null}
       </Modal>
