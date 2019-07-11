@@ -1,5 +1,6 @@
 import React from 'react'
 import {Table,Button} from 'antd'
+import dayjs from 'dayjs'
 const {Column} =Table
 const columnConfig=[{
     title:'用户名',
@@ -26,7 +27,7 @@ export function ApplyPerson(props){
         return {
             name:name,
             sex:sex,
-            createdAt:createdAt,
+            createdAt:dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss'),
             key:index
         }
     })
