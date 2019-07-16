@@ -1,4 +1,4 @@
-import React, { createRef, useEffect,useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { Tabs, Button, Icon } from "antd";
 import { AllPerson } from "./allPerson";
 import { ApplyPerson } from "./applyPerson";
@@ -7,16 +7,16 @@ import { getApply } from "../../../api/apply";
 const { TabPane } = Tabs;
 export function PersonManage(props) {
   const input = createRef();
-  const [applyList,setApplyList]=useState([])
+  const [applyList, setApplyList] = useState([]);
   const handleCopy = () => {
     input.current.select();
     document.execCommand("copy");
   };
-  useEffect(()=>{
-    getApply().then((res)=>{
-      setApplyList(res.list)
-    })
-  },[])
+  useEffect(() => {
+    getApply().then(res => {
+      setApplyList(res.list);
+    });
+  }, []);
   return (
     <>
       <div className="person-manage-top">
@@ -46,7 +46,7 @@ export function PersonManage(props) {
           <AllPerson />
         </TabPane>
         <TabPane tab="申请" key="2">
-          <ApplyPerson applyList={applyList}/>
+          <ApplyPerson applyList={applyList} setApplyList={setApplyList} />
         </TabPane>
       </Tabs>
     </>

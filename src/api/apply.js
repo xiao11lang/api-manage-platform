@@ -12,3 +12,10 @@ export function getApply(){
         method:'get',
     })
 }
+export function agreeApply(data){
+    return fetch({
+        url:'agreeApply',
+        method:'post',
+        data
+    })
+}
