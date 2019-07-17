@@ -27,7 +27,7 @@ export function HomeHeader(props) {
     } else if (key === "1") {
       props.setAccountShow(true);
     } else {
-      localStorage.setItem("api_master_token", "");
+      sessionStorage.setItem("api_master_token", "");
       window.location.assign("/");
     }
   };

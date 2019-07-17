@@ -7,7 +7,7 @@ export function fetch(options) {
         baseURL: config.baseUrl,
         timeout: config.timeout,
         headers:{
-          Authorization:`Bearer ${localStorage.getItem('api_master_token')}`
+          Authorization:`Bearer ${sessionStorage.getItem('api_master_token')}`
         }
       });
       instance.interceptors.response.use(
@@ -83,7 +83,7 @@ export function fetch(options) {
               title:'错误',
               content:err.response.data.detail,
               onOk:function(){
-                if(err.response.status===401){
+                if(err.response&&err.response.status===401){
                   window.location.assign('/')
                 }
               }
@@ -93,7 +93,7 @@ export function fetch(options) {
               title:'错误',
               content:err.message,
               onOk:function(){
-                if(err.response.status===401){
+                if(err.response&&err.response.status===401){
                   window.location.assign('/')
                 }
               }

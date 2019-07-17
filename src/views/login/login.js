@@ -30,7 +30,8 @@ export function Login(props) {
       name: name,
       pass: pass
     }).then((res) => {
-      localStorage.setItem('api_master_token',res.token)
+      
+      sessionStorage.setItem('api_master_token',res.token)
       props.history.push("/home/control");
     });
   };

@@ -1,22 +1,15 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef } from "react";
 import { Tabs, Button, Icon } from "antd";
 import { AllPerson } from "./allPerson";
 import { ApplyPerson } from "./applyPerson";
-import { getApply } from "../../../api/apply";
-
 const { TabPane } = Tabs;
 export function PersonManage(props) {
   const input = createRef();
-  const [applyList, setApplyList] = useState([]);
+  
   const handleCopy = () => {
     input.current.select();
     document.execCommand("copy");
   };
-  useEffect(() => {
-    getApply().then(res => {
-      setApplyList(res.list);
-    });
-  }, []);
   return (
     <>
       <div className="person-manage-top">
@@ -43,10 +36,10 @@ export function PersonManage(props) {
       </div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="全部" key="1">
-          <AllPerson />
+          <AllPerson/>
         </TabPane>
         <TabPane tab="申请" key="2">
-          <ApplyPerson applyList={applyList} setApplyList={setApplyList} />
+          <ApplyPerson  />
         </TabPane>
       </Tabs>
     </>
