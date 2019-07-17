@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Select } from "antd";
 import dayjs from "dayjs";
-import { getAuthorities } from "../../../api/authority";
+import { getAuthorities, deleteAuthority } from "../../../api/authority";
 const { Option } = Select;
 
 export function AllPerson() {
@@ -13,6 +13,11 @@ export function AllPerson() {
       setAllList(res.list);
     });
   }, []);
+  const handleDelete = id => {
+    deleteAuthority({ id: id }).then(()=>{
+      setAllList(allList.filter((item)=>item.id!==id))
+    });
+  };
   const columnConfig = [
     {
       title: "用户名",
@@ -42,10 +47,17 @@ export function AllPerson() {
     },
     {
       title: "操作",
-      render: () => {
+      render: item => {
         return (
           <>
-            <Button type="danger">删除</Button>
+            <Button
+              type="danger"
+              onClick={() => {
+                handleDelete(item.id);
+              }}
+            >
+              删除
+            </Button>
           </>
         );
       },

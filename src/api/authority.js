@@ -6,3 +6,10 @@ export function getAuthorities(data){
         data
     })
 }
+export function deleteAuthority(data){
+    return fetch({
+        url:'deleteAuthority',
+        method:'post',
+        data
+    })
+}
