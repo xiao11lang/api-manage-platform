@@ -1,11 +1,11 @@
-import React, { createRef } from "react";
+import React, { createRef, useState } from "react";
 import { Tabs, Button, Icon } from "antd";
 import { AllPerson } from "./allPerson";
 import { ApplyPerson } from "./applyPerson";
 const { TabPane } = Tabs;
 export function PersonManage(props) {
   const input = createRef();
-  
+  const [activeKey, setActiveKey] = useState("1");
   const handleCopy = () => {
     input.current.select();
     document.execCommand("copy");
@@ -34,12 +34,21 @@ export function PersonManage(props) {
           </Button>
         </div>
       </div>
-      <Tabs defaultActiveKey="1">
+      <Tabs
+        defaultActiveKey="1"
+        onChange={key => {
+          setActiveKey(key);
+        }}
+      >
         <TabPane tab="全部" key="1">
-          <AllPerson/>
+          {props.teamInfo.id ? (
+            <AllPerson activeKey={activeKey} teamId={props.teamInfo.id} />
+          ) : null}
         </TabPane>
         <TabPane tab="申请" key="2">
-          <ApplyPerson  />
+          {props.teamInfo.id ? (
+            <ApplyPerson activeKey={activeKey} teamId={props.teamInfo.id} />
+          ) : null}
         </TabPane>
       </Tabs>
     </>

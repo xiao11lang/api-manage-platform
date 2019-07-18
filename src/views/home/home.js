@@ -95,10 +95,12 @@ export function Home(props) {
                   path={`${props.match.url}/control`}
                 />
                 <Route component={Api} path={`${props.match.url}/api`} />
-                <Route
-                  render={()=><PersonManage teamInfo={teamInfo}/>}
-                  path={`${props.match.url}/person`}
-                />
+                {teamList.length ? (
+                  <Route
+                    render={() => <PersonManage teamInfo={teamInfo} />}
+                    path={`${props.match.url}/person`}
+                  />
+                ) : null}
                 <Route
                   render={props => (
                     <TeamManage

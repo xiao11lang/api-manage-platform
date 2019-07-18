@@ -13,3 +13,11 @@ export function deleteAuthority(data){
         data
     })
 }
+export function changeAuthorityRole(data){
+    return fetch({
+        url:'changeAuthorityRole',
+        method:'post',
+        data,
+        modalShow:true
+    })
+}

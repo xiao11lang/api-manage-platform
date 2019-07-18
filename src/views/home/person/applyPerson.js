@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button } from "antd";
 import dayjs from "dayjs";
-import { agreeApply, getApply } from "./../../../api/apply";
+import { agreeApply, getApply, deleteExistApply } from "./../../../api/apply";
 
 export function ApplyPerson(props) {
   const [applyList, setApplyList] = useState([]);
   useEffect(() => {
-    getApply().then(res => {
+    getApply({ teamId: props.teamId }).then(res => {
       setApplyList(res.list);
     });
-  }, []);
+  }, [props.activeKey, props.teamId]);
   const deleteApply = id => {
     setApplyList(
       applyList.filter(item => {
@@ -25,6 +25,13 @@ export function ApplyPerson(props) {
     }).then(() => {
       deleteApply(item.id);
     });
+  };
+  const handleDelete = item => {
+    deleteExistApply({
+      applyId: item.id
+    }).then(() => {
+      deleteApply(item.id);
+    });;
   };
   const columnConfig = [
     {
@@ -51,7 +58,9 @@ export function ApplyPerson(props) {
             >
               同意
             </Button>
-            <Button type="danger">拒绝</Button>
+            <Button type="danger" onClick={() => handleDelete(item)}>
+              拒绝
+            </Button>
           </>
         );
       },

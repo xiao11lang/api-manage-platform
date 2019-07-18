@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Select } from "antd";
 import dayjs from "dayjs";
-import { getAuthorities, deleteAuthority } from "../../../api/authority";
+import {
+  getAuthorities,
+  deleteAuthority,
+  changeAuthorityRole
+} from "../../../api/authority";
 const { Option } = Select;
 
-export function AllPerson() {
+export function AllPerson(props) {
   const [allList, setAllList] = useState([]);
   useEffect(() => {
     getAuthorities({
-      teamId: 25
+      teamId: props.teamId
     }).then(res => {
       setAllList(res.list);
     });
-  }, []);
+  }, [props.activeKey, props.teamId]);
   const handleDelete = id => {
-    deleteAuthority({ id: id }).then(()=>{
-      setAllList(allList.filter((item)=>item.id!==id))
+    deleteAuthority({ id: id }).then(() => {
+      setAllList(allList.filter(item => item.id !== id));
+    });
+  };
+  const handleChange = (value, id) => {
+    changeAuthorityRole({
+      id: id,
+      userRole: value
     });
   };
   const columnConfig = [
@@ -29,10 +39,16 @@ export function AllPerson() {
     },
     {
       title: "权限",
-      dataIndex: "userRole",
+      
       render: item => {
         return (
-          <Select defaultValue={item} style={{ width: 200 }}>
+          <Select
+            defaultValue={item.userRole}
+            style={{ width: 200 }}
+            onChange={v => {
+              handleChange(v, item.id);
+            }}
+          >
             <Option value="none">不设置</Option>
             <Option value="admin">设置为管理员</Option>
             <Option value="read">设置为只读成员</Option>

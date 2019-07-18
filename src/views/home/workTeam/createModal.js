@@ -43,10 +43,19 @@ export function CreateModal(props) {
         handleTeamChange(res.info.id);
       });
     } else {
+      if(props.teamInfo.unique_id===teamId.replace(/\s/g,'')){
+        Modal.error({
+          title:'错误',
+          content:'不可申请加入自己的工作组'
+        })
+        return 
+      }
       addApply({
         fromId: props.fromId,
         teamId: applyInfo.id,
         masterId: applyInfo.masterId
+      }).then(()=>{
+        props.setCreateVisible(false);
       });
     }
   };

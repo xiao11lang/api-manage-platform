@@ -72,13 +72,13 @@ export function HomeHeader(props) {
         setCreateVisible={setCreateVisible}
         setTeamInfo={setTeamInfo}
         unRead={props.unRead}
+        teamInfo={teamInfo}
         setUnRead={props.setUnRead}
         fromId={userInfo.id}
       />
       <ListModal
         listVisible={listVisible}
         setListVisible={setListVisible}
-        teamInfo={teamInfo}
         setCreateVisible={setCreateVisible}
         teamList={teamList}
         setTeamInfo={setTeamInfo}
