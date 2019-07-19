@@ -1,17 +1,38 @@
 import React from "react";
 import { Button, Divider } from "antd";
 import IconFont from "./../../../components/iconfont";
-import { deleteMes } from "../../../api/message";
+import { deleteMes, refuseInvite, agreeInvite } from "../../../api/message";
 export function MessageDetail(props) {
-  const { title, content,createdAt,id } = props.mes;
-  const time=new Date(createdAt).toLocaleString()
-  const handleDelete=()=>{
+  const {
+    title,
+    content,
+    createdAt,
+    id,
+    extra,
+    extraStatus,
+    extraInfo
+  } = props.mes;
+  const time = new Date(createdAt).toLocaleString();
+  const handleDelete = () => {
     deleteMes({
-      id:id
-    }).then(()=>{
-      props.hideDetail()
-    })
-  }
+      id: id
+    }).then(() => {
+      props.hideDetail();
+    });
+  };
+  const handleAgree = () => {
+    agreeInvite({
+      id: id,
+      extraInfo: extraInfo
+    }).then(() => {
+      props.hideDetail();
+    });
+  };
+  const handleRefuse = () => {
+    refuseInvite({ id: id }).then(() => {
+      props.hideDetail();
+    });
+  };
   return (
     <div className="message-detail">
       <div className="detail-top">
@@ -23,7 +44,7 @@ export function MessageDetail(props) {
           <IconFont type="iconshanchu" />
           删除
         </Button>
-      </div> 
+      </div>
       <Divider />
       <div className="detail-title">
         <p>{title}</p>
@@ -31,6 +52,16 @@ export function MessageDetail(props) {
       </div>
       <Divider />
       <div className="detail-content">{content}</div>
+      {extra && !extraStatus ? (
+        <div>
+          <Button style={{ margin: "20px" }} onClick={handleRefuse}>
+            拒绝
+          </Button>
+          <Button type="primary" onClick={handleAgree}>
+            同意
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 }

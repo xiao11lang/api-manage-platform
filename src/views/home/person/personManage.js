@@ -19,7 +19,9 @@ export function PersonManage(props) {
     inviteMessage({
       name: name.replace(/\s/g, ""),
       teamName: props.teamInfo.name,
-      fromName: props.userInfo.name
+      teamId: props.teamInfo.id,
+      fromName: props.userInfo.name,
+      fromId:props.userInfo.id
     }).then(()=>{
       setModalShow(false)
     });
