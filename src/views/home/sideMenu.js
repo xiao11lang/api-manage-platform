@@ -74,13 +74,15 @@ export default function SideMenu(props) {
             <Icon type="profile" />
             <span>测试用例</span>
           </Menu.Item>
-          <Menu.Item key="6">
-            <Link to="/home/person">
-              <Icon type="user" />
-              <span>成员管理</span>
-            </Link>
-          </Menu.Item>
-          {props.teamList.length ? (
+          {props.showExtraRoute ? (
+            <Menu.Item key="6">
+              <Link to="/home/person">
+                <Icon type="user" />
+                <span>成员管理</span>
+              </Link>
+            </Menu.Item>
+          ) : null}
+          {props.teamList.length && props.showExtraRoute ? (
             <Menu.Item key="7">
               <Link to="/home/workTeam">
                 <Icon type="bank" />

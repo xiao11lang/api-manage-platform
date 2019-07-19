@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, useMemo } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Layout } from "antd";
 import SideMenu from "./sideMenu";
@@ -50,6 +50,10 @@ export function Home(props) {
       setMesCount(res.mesCount);
     });
   }, [props.userInfo.id, unRead]);
+  // 仅在工作组的创建者是当前用户时可见的路由组件
+  const showExtraRoute = useMemo(() => {
+    return props.userInfo.id === teamInfo.master;
+  }, [props.userInfo, teamInfo]);
 
   const accountProps = {
     collapse,
@@ -67,7 +71,12 @@ export function Home(props) {
   return (
     <>
       <Layout style={{ height: "100%" }} className="home">
-        <SideMenu collapse={collapse} setKey={setKey} teamList={teamList} />
+        <SideMenu
+          collapse={collapse}
+          setKey={setKey}
+          teamList={teamList}
+          showExtraRoute={showExtraRoute}
+        />
         <Layout>
           <HomeHeader {...accountProps} />
           <ApiCtx.Provider value={key}>
@@ -97,7 +106,7 @@ export function Home(props) {
                 <Route component={Api} path={`${props.match.url}/api`} />
                 {teamList.length ? (
                   <Route
-                    render={() => <PersonManage teamInfo={teamInfo} />}
+                    render={() => <PersonManage teamInfo={teamInfo} showExtraRoute={showExtraRoute}/>}
                     path={`${props.match.url}/person`}
                   />
                 ) : null}
@@ -107,6 +116,7 @@ export function Home(props) {
                       setTeamInfo={setTeamInfo}
                       setTeamList={setTeamList}
                       teamInfo={teamInfo}
+                      showExtraRoute={showExtraRoute}
                       {...props}
                     />
                   )}

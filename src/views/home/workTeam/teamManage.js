@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button, Input, Card, Switch, Select, Modal } from "antd";
+import { Redirect } from "react-router-dom";
 import {
   changeTeamName,
   changeUserRole,
@@ -24,7 +25,7 @@ export function TeamManage(props) {
   };
   const changeRole = value => {
     if (value !== "none") {
-      changeUserRole({ id: userInfo.workTeamId, role: value })
+      changeUserRole({ id: userInfo.workTeamId, role: value });
     }
   };
   const showDelete = () => {
@@ -36,24 +37,24 @@ export function TeamManage(props) {
         deleteTeam({ id: props.teamInfo.id }).then(res => {
           props.setTeamList(res.list);
           res.list.length && props.setTeamInfo(res.list[0]);
-          if(res.list.length){
+          if (res.list.length) {
             props.setTeamInfo(res.list[0]);
             setUserInfo(
               Object.assign({}, userInfo, { workTeamId: res.list[0].id })
             );
-          }else{
-            props.history.push('/home/control')
+          } else {
+            props.history.push("/home/control");
           }
-          
         });
       }
     });
   };
-  const changeBind=(checked)=>{
+  const changeBind = checked => {
     console.log(checked);
-  }
+  };
   return (
-    <div className="work-team-manage">
+    <>
+    {props.showExtraRoute?<div className="work-team-manage">
       <Card>
         <div className="title">
           <div className="card-title">工作组名称</div>
@@ -72,7 +73,7 @@ export function TeamManage(props) {
         <div className="card-title">默认选项</div>
         <Card className="default-option">
           <span>新成员加入组之后自动绑定所有产品</span>
-          <Switch onChange={changeBind}/>
+          <Switch onChange={changeBind} />
         </Card>
         <Card className="default-option">
           <div>
@@ -112,6 +113,7 @@ export function TeamManage(props) {
           删除工作组
         </Button>
       </Card>
-    </div>
-  );
+      
+    </div>:<Redirect to='/home/control'/>}</>
+  )
 }
