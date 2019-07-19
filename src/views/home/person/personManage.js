@@ -1,15 +1,31 @@
 import React, { createRef, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { Tabs, Button, Icon } from "antd";
+import { Tabs, Button, Icon, Modal, Input } from "antd";
 import { AllPerson } from "./allPerson";
 import { ApplyPerson } from "./applyPerson";
+import { inviteMessage } from "../../../api/message";
+
 const { TabPane } = Tabs;
 export function PersonManage(props) {
   const input = createRef();
   const [activeKey, setActiveKey] = useState("1");
+  const [modalShow, setModalShow] = useState(false);
+  const [name, setName] = useState("");
   const handleCopy = () => {
     input.current.select();
     document.execCommand("copy");
+  };
+  const handleInvite = () => {
+    inviteMessage({
+      name: name.replace(/\s/g, ""),
+      teamName: props.teamInfo.name,
+      fromName: props.userInfo.name
+    }).then(()=>{
+      setModalShow(false)
+    });
+  };
+  const handleInput = e => {
+    setName(e.target.value);
   };
   return (
     <>
@@ -31,7 +47,12 @@ export function PersonManage(props) {
               </Button>
             </p>
             <div>
-              <Button type="primary">
+              <Button
+                type="primary"
+                onClick={() => {
+                  setModalShow(true);
+                }}
+              >
                 <Icon type="plus" />
                 邀请
               </Button>
@@ -54,6 +75,23 @@ export function PersonManage(props) {
               ) : null}
             </TabPane>
           </Tabs>
+          <Modal
+            visible={modalShow}
+            okText="确定"
+            cancelText="取消"
+            onCancel={() => setModalShow(false)}
+            closable={false}
+            title="邀请加入我的工作组"
+            onOk={() => {
+              handleInvite();
+            }}
+          >
+            <Input
+              placeholder="请输入对方用户名"
+              value={name}
+              onChange={e => handleInput(e)}
+            />
+          </Modal>
         </>
       ) : (
         <Redirect to="/home/control" />

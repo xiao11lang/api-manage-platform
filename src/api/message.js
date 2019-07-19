@@ -48,3 +48,11 @@ export function deleteAllMes(data){
         data
     })
 }
+export function inviteMessage(data){
+    return fetch({
+        method:'post',
+        url:'/inviteMessage',
+        data,
+        modalShow:true
+    })
+}

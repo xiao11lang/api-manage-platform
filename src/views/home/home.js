@@ -106,7 +106,7 @@ export function Home(props) {
                 <Route component={Api} path={`${props.match.url}/api`} />
                 {teamList.length ? (
                   <Route
-                    render={() => <PersonManage teamInfo={teamInfo} showExtraRoute={showExtraRoute}/>}
+                    render={() => <PersonManage teamInfo={teamInfo} showExtraRoute={showExtraRoute} userInfo={props.userInfo}/>}
                     path={`${props.match.url}/person`}
                   />
                 ) : null}
