@@ -1,59 +1,59 @@
-import React, { useState, createContext, useEffect, useMemo } from "react";
-import { Switch, Route } from "react-router-dom";
-import { Layout } from "antd";
-import SideMenu from "./sideMenu";
-import { HomeHeader } from "./homeHeader";
-import { Control } from "../control/control";
-import { Api } from "../api/api";
-import "./home.scss";
-import { MessageModal } from "./message/messageModal";
-import { getMesCount } from "../../api/message";
-import { getInfo } from "../../api/user";
-import { TeamManage } from "./workTeam/teamManage";
-import { AccountModal } from "./../control/accountModal";
-import { PersonManage } from "./person/personManage";
-const { Content } = Layout;
-export const ApiCtx = createContext();
-export const HomeCtx = createContext();
+import React, { useState, createContext, useEffect, useMemo } from 'react'
+import { Switch, Route } from 'react-router-dom'
+import { Layout } from 'antd'
+import SideMenu from './sideMenu'
+import { HomeHeader } from './homeHeader'
+import { Control } from '../control/control'
+import { Api } from '../api/api'
+import './home.scss'
+import { MessageModal } from './message/messageModal'
+import { getMesCount } from '../../api/message'
+import { getInfo } from '../../api/user'
+import { TeamManage } from './workTeam/teamManage'
+import { AccountModal } from './../control/accountModal'
+import { PersonManage } from './person/personManage'
+const { Content } = Layout
+export const ApiCtx = createContext()
+export const HomeCtx = createContext()
 export function Home(props) {
-  const [collapse, setCollapse] = useState(false); //左侧折叠
-  const [key, setKey] = useState(2); //左侧选项
-  const [messageShow, setMessageShow] = useState(false); //消息模态框
-  const [accountModalShow, setAccountShow] = useState(false); //消息模态框key
-  const [mesKey, setMesKey] = useState(0); //消息模态框key
-  const [mesCount, setMesCount] = useState({});
-  const [unRead, setUnRead] = useState(0); //未读
-  const [teamInfo, setTeamInfo] = useState({}); //工作组信息
-  const [teamList, setTeamList] = useState([]); //工作组列表
+  const [collapse, setCollapse] = useState(false) //左侧折叠
+  const [key, setKey] = useState(2) //左侧选项
+  const [messageShow, setMessageShow] = useState(false) //消息模态框
+  const [accountModalShow, setAccountShow] = useState(false) //消息模态框key
+  const [mesKey, setMesKey] = useState(0) //消息模态框key
+  const [mesCount, setMesCount] = useState({})
+  const [unRead, setUnRead] = useState(0) //未读
+  const [teamInfo, setTeamInfo] = useState({}) //工作组信息
+  const [teamList, setTeamList] = useState([]) //工作组列表
   const toggle = () => {
-    setCollapse(!collapse);
-  };
+    setCollapse(!collapse)
+  }
   const hideMessage = () => {
-    setMessageShow(false);
-  };
+    setMessageShow(false)
+  }
   const setMessageKey = key => {
-    setMessageShow(true);
-    setMesKey(key);
-  };
+    setMessageShow(true)
+    setMesKey(key)
+  }
   useEffect(() => {
     getInfo().then(res => {
-      props.setUserInfo(res.info);
-    });
+      props.setUserInfo(res.info)
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    getMesCount({ id: props.userInfo.id }).then(res => {
-      let count = Object.values(res.mesCount).reduce((pre, cur) => {
-        return pre + cur;
-      }, 0);
-      setUnRead(count);
-      setMesCount(res.mesCount);
-    });
-  }, [props.userInfo.id, unRead]);
+  }, [])
+  // useEffect(() => {
+  //   getMesCount({ id: props.userInfo.id }).then(res => {
+  //     let count = Object.values(res.mesCount).reduce((pre, cur) => {
+  //       return pre + cur
+  //     }, 0)
+  //     setUnRead(count)
+  //     setMesCount(res.mesCount)
+  //   })
+  // }, [props.userInfo.id, unRead])
   // 仅在工作组的创建者是当前用户时可见的路由组件
   const showExtraRoute = useMemo(() => {
-    return props.userInfo.id === teamInfo.master;
-  }, [props.userInfo, teamInfo]);
+    return props.userInfo.id === teamInfo.master
+  }, [props.userInfo, teamInfo])
 
   const accountProps = {
     collapse,
@@ -67,10 +67,10 @@ export function Home(props) {
     setTeamInfo,
     teamList,
     setTeamList
-  }; //顶部的props
+  } //顶部的props
   return (
     <>
-      <Layout style={{ height: "100%" }} className="home">
+      <Layout style={{ height: '100%' }} className="home">
         <SideMenu
           collapse={collapse}
           setKey={setKey}
@@ -82,9 +82,9 @@ export function Home(props) {
           <ApiCtx.Provider value={key}>
             <Content
               style={{
-                margin: "24px 16px",
+                margin: '24px 16px',
                 padding: 24,
-                background: "#fff",
+                background: '#fff',
                 minHeight: 280
               }}
             >
@@ -95,7 +95,10 @@ export function Home(props) {
                       value={{
                         setMessageKey,
                         accountModalShow,
-                        setAccountShow
+                        setAccountShow,
+                        setUnRead,
+                        setMesCount,
+                        userInfo: props.userInfo
                       }}
                     >
                       <Control mesCount={mesCount} />
@@ -106,7 +109,13 @@ export function Home(props) {
                 <Route component={Api} path={`${props.match.url}/api`} />
                 {teamList.length ? (
                   <Route
-                    render={() => <PersonManage teamInfo={teamInfo} showExtraRoute={showExtraRoute} userInfo={props.userInfo}/>}
+                    render={() => (
+                      <PersonManage
+                        teamInfo={teamInfo}
+                        showExtraRoute={showExtraRoute}
+                        userInfo={props.userInfo}
+                      />
+                    )}
                     path={`${props.match.url}/person`}
                   />
                 ) : null}
@@ -142,5 +151,5 @@ export function Home(props) {
         />
       ) : null}
     </>
-  );
+  )
 }
