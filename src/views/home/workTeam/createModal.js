@@ -39,7 +39,6 @@ export function CreateModal(props) {
       initTeam().then(res => {
         props.setCreateVisible(false);
         props.setTeamInfo(res.info);
-        props.setUnRead(props.unRead + 1);
         handleTeamChange(res.info.id);
       });
     } else {

@@ -1,48 +1,43 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card } from 'antd'
 import { HomeCtx } from '../home/home'
 import { getMessage } from '../../api/message'
-function CardRow(props) {
+const titleMap={
+  official:'官方通知',
+  project:'项目通知',
+  person:'人员通知'
+}
+export function InfoCard(props) {
+  const { dispatch, setMessageKey } = useContext(HomeCtx)
+  const [mesCount, setMesCount] = useState({})
   useEffect(() => {
-    // getMesCount({ id: userInfo.id }).then(res => {
-    //   let count = Object.values(res.mesCount).reduce((pre, cur) => {
-    //     return pre + cur
-    //   }, 0)
-    //   setUnRead(count)
-    //   setMesCount(res.mesCount)
-    // })
     getMessage().then(res => {
-      let count = 0
+      dispatch({
+        type: 'INIT',
+        list: res.list
+      })
       const { official, project, person } = res.list
-      count = official.unRead + project.unRead + person.unRead
-      setUnRead(count)
       setMesCount({
         official: official.unRead,
         project: project.unRead,
         person: person.unRead
       })
-      setMesList(res.list)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const { setMessageKey, setUnRead, setMesCount,setMesList } = useContext(
-    HomeCtx
-  )
-  return (
-    <div
-      className="message-row"
-      onClick={() => {
-        setMessageKey(props.mesKey)
-      }}
-    >
-      <span>{props.title}</span>
-      <span>{props.count}</span>
-    </div>
-  )
-}
-export function InfoCard(props) {
-  const list = props.mesList.map((value, index) => {
-    return <CardRow {...value} key={index} mesKey={String(index + 1)} />
+  const list=Object.entries(mesCount).map((mes,index)=>{
+    return (
+      <div
+          className="message-row"
+          onClick={() => {
+            setMessageKey((index+1).toString())
+          }}
+          key={index}
+        >
+          <span>{titleMap[mes[0]]}</span>
+          <span>{mes[1]}</span>
+        </div>
+    )
   })
   return (
     <>

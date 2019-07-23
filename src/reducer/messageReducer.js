@@ -1,6 +1,8 @@
 export function messages(state, action) {
   switch (action.type) {
-    case 'SET_ALL_READ':
+    case 'INIT':
+      return action.list
+    case 'READ_ALL':
       return Object.assign({}, state, {
         [action.mesType]: {
           unRead: 0,
@@ -32,9 +34,9 @@ export function messages(state, action) {
         }
       })
     case 'DELETE_ONE':
-      let curMes = state[action.mesType].list[action.index]
+      let hasRead = action.hasRead
       let unRead = 0
-      if (curMes.hasRead === 0) {
+      if (hasRead === 0) {
         unRead = state[action.mesType].unRead - 1
       } else {
         unRead = state[action.mesType].unRead

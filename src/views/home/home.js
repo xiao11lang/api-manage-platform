@@ -22,12 +22,10 @@ export function Home(props) {
   const [messageShow, setMessageShow] = useState(false) //消息模态框
   const [accountModalShow, setAccountShow] = useState(false) //消息模态框key
   const [mesKey, setMesKey] = useState(0) //消息模态框key
-  const [mesCount, setMesCount] = useState({}) //不同类型的未读数目
-  const [unRead, setUnRead] = useState(0) //未读
-  const [mesList, setMesList] = useState([])
+  // const [unRead, setUnRead] = useState(0) //未读
   const [teamInfo, setTeamInfo] = useState({}) //工作组信息
   const [teamList, setTeamList] = useState([]) //工作组列表
-  const [mesState,dispatch]=useReducer(messages)
+  const [mesState,dispatch]=useReducer(messages,{})
   const toggle = () => {
     setCollapse(!collapse)
   }
@@ -49,18 +47,25 @@ export function Home(props) {
     return props.userInfo.id === teamInfo.master
   }, [props.userInfo, teamInfo])
 
+  const unRead=useMemo(()=>{
+    let count=0
+    Object.values(mesState).forEach((mes)=>{
+      count+=mes.unRead
+    })
+    return count
+  },[mesState])
   const accountProps = {
     collapse,
     toggle,
     setMessageKey,
     setMessageShow,
     setAccountShow,
-    unRead,
-    setUnRead,
     teamInfo,
     setTeamInfo,
     teamList,
-    setTeamList
+    setTeamList,
+    mesState,
+    unRead
   } //顶部的props
   return (
     <>
@@ -88,15 +93,12 @@ export function Home(props) {
                     <HomeCtx.Provider
                       value={{
                         setMessageKey,
-                        accountModalShow,
                         setAccountShow,
-                        setUnRead,
-                        setMesCount,
-                        setMesList,
+                        dispatch,
                         userInfo: props.userInfo
                       }}
                     >
-                      <Control mesCount={mesCount} />
+                      <Control />
                     </HomeCtx.Provider>
                   )}
                   path={`${props.match.url}/control`}
@@ -135,10 +137,7 @@ export function Home(props) {
         <MessageModal
           hide={hideMessage}
           mesKey={mesKey}
-          setUnRead={setUnRead}
-          unRead={unRead}
-          mesList={mesList}
-          setMesList={setMesList}
+          dispatch={dispatch}
           mesState={mesState}
         />
       ) : null}

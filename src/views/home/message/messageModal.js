@@ -9,13 +9,18 @@ const { Sider, Content } = Layout;
 const MenuAction = (props) => {
   const readAll=()=>{
     setAllMesRead({type:props.type}).then((res)=>{
-      props.setUnRead(props.unRead-res.affectedCount)
-      props.setAllRead(props.type)
+      props.dispatch({
+        type:'READ_ALL',
+        mesType:props.type
+      })
     })
   }
   const deleteAll=()=>{
     deleteAllMes({type:props.type}).then((res)=>{
-      props.setAllDelete(props.type)
+      props.dispatch({
+        type:'DELETE_ALL',
+        mesType:props.type
+      })
     })
   }
   return (
@@ -35,9 +40,6 @@ export function MessageModal(props) {
   const [key, setKey] = useState(props.mesKey);
   const [detailShow, setDetailShow] = useState(false);
   const [mesDetail,setMesDetail]=useState({})
-  const [allRead,setAllRead]=useState('')
-  const [allDelete,setAllDelete]=useState('')
-  const [deleteIndex,setDeleteIndex]=useState('')
   const typeArr = ["official", "project", "person"];
   const handleClick = ({ key }) => {
     setDetailShow(false);
@@ -68,15 +70,15 @@ export function MessageModal(props) {
             >
               <Menu.Item key="1" style={itemStyle}>
                 <span>官方通知</span>
-                <MenuAction type='official' setUnRead={props.setUnRead} unRead={props.unRead} setAllRead={setAllRead} setAllDelete={setAllDelete}/>
+                <MenuAction type='official' dispatch={props.dispatch} />
               </Menu.Item>
               <Menu.Item key="2" style={itemStyle}>
                 <span>项目通知</span>
-                <MenuAction type='project' setUnRead={props.setUnRead} unRead={props.unRead} setAllRead={setAllRead} setAllDelete={setAllDelete}/>
+                <MenuAction type='project' dispatch={props.dispatch}/>
               </Menu.Item>
               <Menu.Item key="3" style={itemStyle}>
                 <span>人员通知</span>
-                <MenuAction type='person' setUnRead={props.setUnRead} unRead={props.unRead} setAllRead={setAllRead} setAllDelete={setAllDelete}/>
+                <MenuAction type='person' dispatch={props.dispatch}/>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -85,20 +87,14 @@ export function MessageModal(props) {
               <MessageDetail
                 mes={mesDetail}
                 hideDetail={() => setDetailShow(false)}
-                setIndex={setDeleteIndex}
               />
             ) : (
               <MessageList
                 showDetail={() => setDetailShow(true)}
                 setMesDetail={setMesDetail}
-                setUnRead={props.setUnRead}
-                unRead={props.unRead}
                 type={typeArr[key-1]}
-                allRead={allRead}
-                allDelete={allDelete}
-                deleteIndex={deleteIndex}
-                mesList={props.mesList}
-                setMesList={props.setMesList}
+                mesState={props.mesState}
+                dispatch={props.dispatch}
               />
             )}
           </Content>
