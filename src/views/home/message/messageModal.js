@@ -87,6 +87,7 @@ export function MessageModal(props) {
               <MessageDetail
                 mes={mesDetail}
                 hideDetail={() => setDetailShow(false)}
+                dispatch={props.dispatch}
               />
             ) : (
               <MessageList

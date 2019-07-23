@@ -9,6 +9,7 @@ export function MessageDetail(props) {
     createdAt,
     id,
     extra,
+    type,
     extraStatus,
     extraInfo
   } = props.mes;
@@ -18,6 +19,12 @@ export function MessageDetail(props) {
       id: id
     }).then(() => {
       props.hideDetail();
+      props.dispatch({
+        type: 'DELETE_ONE',
+        id: id,
+        mesType: type,
+        hasRead: 1
+      })
     });
   };
   const handleAgree = () => {
