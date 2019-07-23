@@ -95,7 +95,7 @@ export function Home(props) {
                         setMessageKey,
                         setAccountShow,
                         dispatch,
-                        userInfo: props.userInfo
+                        mesState
                       }}
                     >
                       <Control />
