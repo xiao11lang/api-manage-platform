@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useMemo } from 'react'
+import React, { useState, createContext, useEffect, useMemo,useReducer } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import SideMenu from './sideMenu'
@@ -7,11 +7,12 @@ import { Control } from '../control/control'
 import { Api } from '../api/api'
 import './home.scss'
 import { MessageModal } from './message/messageModal'
-import { getMesCount } from '../../api/message'
 import { getInfo } from '../../api/user'
 import { TeamManage } from './workTeam/teamManage'
 import { AccountModal } from './../control/accountModal'
 import { PersonManage } from './person/personManage'
+import { messages } from '../../reducer/messageReducer';
+
 const { Content } = Layout
 export const ApiCtx = createContext()
 export const HomeCtx = createContext()
@@ -21,10 +22,12 @@ export function Home(props) {
   const [messageShow, setMessageShow] = useState(false) //消息模态框
   const [accountModalShow, setAccountShow] = useState(false) //消息模态框key
   const [mesKey, setMesKey] = useState(0) //消息模态框key
-  const [mesCount, setMesCount] = useState({})
+  const [mesCount, setMesCount] = useState({}) //不同类型的未读数目
   const [unRead, setUnRead] = useState(0) //未读
+  const [mesList, setMesList] = useState([])
   const [teamInfo, setTeamInfo] = useState({}) //工作组信息
   const [teamList, setTeamList] = useState([]) //工作组列表
+  const [mesState,dispatch]=useReducer(messages)
   const toggle = () => {
     setCollapse(!collapse)
   }
@@ -41,15 +44,6 @@ export function Home(props) {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  // useEffect(() => {
-  //   getMesCount({ id: props.userInfo.id }).then(res => {
-  //     let count = Object.values(res.mesCount).reduce((pre, cur) => {
-  //       return pre + cur
-  //     }, 0)
-  //     setUnRead(count)
-  //     setMesCount(res.mesCount)
-  //   })
-  // }, [props.userInfo.id, unRead])
   // 仅在工作组的创建者是当前用户时可见的路由组件
   const showExtraRoute = useMemo(() => {
     return props.userInfo.id === teamInfo.master
@@ -98,6 +92,7 @@ export function Home(props) {
                         setAccountShow,
                         setUnRead,
                         setMesCount,
+                        setMesList,
                         userInfo: props.userInfo
                       }}
                     >
@@ -142,6 +137,9 @@ export function Home(props) {
           mesKey={mesKey}
           setUnRead={setUnRead}
           unRead={unRead}
+          mesList={mesList}
+          setMesList={setMesList}
+          mesState={mesState}
         />
       ) : null}
       {accountModalShow ? (

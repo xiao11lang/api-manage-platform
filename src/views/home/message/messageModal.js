@@ -97,6 +97,8 @@ export function MessageModal(props) {
                 allRead={allRead}
                 allDelete={allDelete}
                 deleteIndex={deleteIndex}
+                mesList={props.mesList}
+                setMesList={props.setMesList}
               />
             )}
           </Content>

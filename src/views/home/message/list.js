@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { List } from "antd";
 import IconFont from "./../../../components/iconfont";
 import {
@@ -7,7 +7,7 @@ import {
   getMessageList
 } from "./../../../api/message";
 export function MessageList(props) {
-  const [list, setList] = useState([]);
+  const list=props.mesList[props.type].list
   const handleClick = item => {
     props.showDetail();
     props.setMesDetail(Object.assign({}, list[item.index]));
@@ -26,47 +26,37 @@ export function MessageList(props) {
       let curList = list.filter(mes => {
         return mes.id !== item.id;
       });
-      setList(curList);
+      props.setMesList(curList);
     });
   };
-  useEffect(() => {
-    getMessageList({
-      type: props.type
-    }).then(res => {
-      setList(res.list);
-    });
-  }, [props.type]);
-  useEffect(() => {
-    if (props.allRead) {
-      const curList = list.map(mes => {
-        return Object.assign({}, mes, { hasRead: 1 });
-      });
-      setList(curList);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.allRead]);
-  useEffect(() => {
-    if (props.allDelete) {
-      let count = 0;
-      list.forEach(mes => {
-        if (!mes.hasRead) {
-          count = count + 1;
-        }
-      }, 0);
-      props.setUnRead(props.unRead - count);
-      setList([]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.allDelete]);
-  useEffect(() => {
-    if (props.deleteIndex !== "") {
-      let curList = list.filter((mes, index) => {
-        return index !== props.deleteIndex;
-      });
-      setList(curList);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.deleteIndex]);
+  // useEffect(() => {
+  //   if (props.allRead) {
+  //     const curList = list.map(mes => {
+  //       return Object.assign({}, mes, { hasRead: 1 });
+  //     });
+  //     props.setMesList(curList);
+  //   }
+  // }, [props.allRead]);
+  // useEffect(() => {
+  //   if (props.allDelete) {
+  //     let count = 0;
+  //     list.forEach(mes => {
+  //       if (!mes.hasRead) {
+  //         count = count + 1;
+  //       }
+  //     }, 0);
+  //     props.setUnRead(props.unRead - count);
+  //     props.setMesList([]);
+  //   }
+  // }, [props.allDelete]);
+  // useEffect(() => {
+  //   if (props.deleteIndex !== "") {
+  //     let curList = list.filter((mes, index) => {
+  //       return index !== props.deleteIndex;
+  //     });
+  //     props.setMesList(curList);
+  //   }
+  // }, [props.deleteIndex]);
   return (
     <>
       <List
