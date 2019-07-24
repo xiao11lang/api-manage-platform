@@ -1,27 +1,31 @@
-import React from "react";
-import { Layout, Menu, Icon } from "antd";
-import { Link } from "react-router-dom";
-const { Sider } = Layout;
-const SubMenu = Menu.SubMenu;
+import React, { useMemo } from 'react'
+import { Layout, Menu, Icon } from 'antd'
+import { Link } from 'react-router-dom'
+const { Sider } = Layout
+const SubMenu = Menu.SubMenu
 function getKey() {
   const routeMap = {
-    control: "1",
-    apiManage: "2",
-    apiTest: "3",
-    database: "4",
-    testCase: "5",
-    person: "6",
-    workTeam: "7"
-  };
-  const hashArr = window.location.hash.split("/");
-  const curRoutePath = hashArr[hashArr.length - 1];
-  return routeMap[curRoutePath];
+    control: '1',
+    manage: '2',
+    test: '3',
+    database: '4',
+    testCase: '5',
+    person: '6',
+    workTeam: '7'
+  }
+  const hashArr = window.location.hash.split('/')
+  const curRoutePath = hashArr[hashArr.length - 1]
+  return routeMap[curRoutePath]
 }
 export default function SideMenu(props) {
-  const key = getKey();
+  const key = getKey()
   const handleApiClick = ({ key }) => {
-    props.setKey(key);
-  };
+    props.setKey(key)
+  }
+  const openKey = useMemo(() => {
+    return key === '2' || key === '3' ? 'sub1' : ''
+  }, [key])
+  console.log(key, openKey)
   return (
     <>
       <Sider
@@ -32,7 +36,8 @@ export default function SideMenu(props) {
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={[key]}
+          selectedKeys={[key]}
+          openKeys={[openKey]}
           onClick={handleApiClick}
         >
           <Menu.Item key="0" disabled>
@@ -48,9 +53,11 @@ export default function SideMenu(props) {
           <SubMenu
             key="sub1"
             title={
-              <span>
-                <Icon type="api" />
-                <span>API管理与测试</span>
+              <span className='side-sub-menu'>
+                <Link to="/home/api/manage">
+                  <Icon type="api" />
+                  <span>API管理与测试</span>
+                </Link>
               </span>
             }
           >
@@ -93,5 +100,5 @@ export default function SideMenu(props) {
         </Menu>
       </Sider>
     </>
-  );
+  )
 }

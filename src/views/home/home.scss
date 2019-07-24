@@ -17,3 +17,9 @@
         }
     }
 }
+.side-sub-menu a{
+    color: rgba(0,0,0,.65);
+    &:hover{
+        color: #1890ff
+    }
+}
