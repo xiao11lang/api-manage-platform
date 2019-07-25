@@ -40,7 +40,7 @@ export function PersonManage(props) {
               <input
                 className="link"
                 readOnly
-                defaultValue={props.teamInfo.unique_id}
+                value={props.teamInfo.unique_id}
                 ref={input}
                 style={{ margin: "0 10px", width: 350, border: "none" }}
               />

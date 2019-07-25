@@ -25,7 +25,6 @@ export default function SideMenu(props) {
   const openKey = useMemo(() => {
     return key === '2' || key === '3' ? 'sub1' : ''
   }, [key])
-  console.log(key, openKey)
   return (
     <>
       <Sider

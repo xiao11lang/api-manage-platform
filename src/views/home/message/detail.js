@@ -1,7 +1,8 @@
-import React from "react";
-import { Button, Divider } from "antd";
-import IconFont from "./../../../components/iconfont";
-import { deleteMes, refuseInvite, agreeInvite } from "../../../api/message";
+import React, { useContext } from 'react'
+import { Button, Divider } from 'antd'
+import IconFont from './../../../components/iconfont'
+import { deleteMes, refuseInvite, agreeInvite } from '../../../api/message'
+import { UserCtx } from './../../../App'
 export function MessageDetail(props) {
   const {
     title,
@@ -12,34 +13,36 @@ export function MessageDetail(props) {
     type,
     extraStatus,
     extraInfo
-  } = props.mes;
-  const time = new Date(createdAt).toLocaleString();
+  } = props.mes
+  const time = new Date(createdAt).toLocaleString()
+  const userInfo = useContext(UserCtx).userInfo
   const handleDelete = () => {
     deleteMes({
       id: id
     }).then(() => {
-      props.hideDetail();
+      props.hideDetail()
       props.dispatch({
         type: 'DELETE_ONE',
         id: id,
         mesType: type,
         hasRead: 1
       })
-    });
-  };
+    })
+  }
   const handleAgree = () => {
     agreeInvite({
       id: id,
-      extraInfo: extraInfo
+      extraInfo: extraInfo,
+      name: userInfo.name
     }).then(() => {
-      props.hideDetail();
-    });
-  };
+      props.hideDetail()
+    })
+  }
   const handleRefuse = () => {
     refuseInvite({ id: id }).then(() => {
-      props.hideDetail();
-    });
-  };
+      props.hideDetail()
+    })
+  }
   return (
     <div className="message-detail">
       <div className="detail-top">
@@ -61,7 +64,7 @@ export function MessageDetail(props) {
       <div className="detail-content">{content}</div>
       {extra && !extraStatus ? (
         <div>
-          <Button style={{ margin: "20px" }} onClick={handleRefuse}>
+          <Button style={{ margin: '20px' }} onClick={handleRefuse}>
             拒绝
           </Button>
           <Button type="primary" onClick={handleAgree}>
@@ -70,5 +73,5 @@ export function MessageDetail(props) {
         </div>
       ) : null}
     </div>
-  );
+  )
 }
