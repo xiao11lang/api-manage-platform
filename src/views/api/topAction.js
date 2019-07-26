@@ -13,8 +13,8 @@ export function TopAction(props) {
   const [modalShow,setModalShow]=useState(false)
   const key = useContext(ApiCtx)
   const title=useMemo(()=>{
-    return props.currentKey==='2'?'新建项目':'新建自动化测试'
-  },[props.currentKey])
+    return key!=='3'?'新建项目':'新建自动化测试'
+  },[key])
   const showModal=()=>{
     setModalShow(true)
   }
@@ -23,7 +23,7 @@ export function TopAction(props) {
   }
   return (
     <>
-      <p>{key==='2'?'API研发管理':'API自动化测试'}</p>
+      <p>{key!=='3'?'API研发管理':'API自动化测试'}</p>
       <div className="api-top">
         {!actionShow ? (
           <div className="left-top">

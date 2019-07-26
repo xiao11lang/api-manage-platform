@@ -3,11 +3,12 @@ import { Input, Select, Button } from 'antd'
 import { addProject } from '../../../api/apiProject'
 import { useInputChange } from '../../../hooks/useInputChange'
 import { TeamCtx } from './../../home/home';
+import { useSelectChange } from '../../../hooks/useSelectValue';
 const { Option } = Select
 export function ManageModal(props) {
   const name = useInputChange('')
   const version = useInputChange('')
-  const type = useInputChange('web')
+  const type = useSelectChange('web')
   const teamInfo=useContext(TeamCtx)
   const handleAdd = () => {
     addProject({
