@@ -15,7 +15,8 @@ import { messages } from '../../reducer/messageReducer';
 
 const { Content } = Layout
 export const ApiCtx = createContext()
-export const HomeCtx = createContext()
+export const MesCtx = createContext()
+export const TeamCtx = createContext()
 export function Home(props) {
   const [collapse, setCollapse] = useState(false) //左侧折叠
   const [key, setKey] = useState(2) //左侧选项
@@ -90,7 +91,7 @@ export function Home(props) {
               <Switch>
                 <Route
                   render={() => (
-                    <HomeCtx.Provider
+                    <MesCtx.Provider
                       value={{
                         setMessageKey,
                         setAccountShow,
@@ -99,11 +100,13 @@ export function Home(props) {
                       }}
                     >
                       <Control />
-                    </HomeCtx.Provider>
+                    </MesCtx.Provider>
                   )}
                   path={`${props.match.url}/control`}
                 />
-                <Route component={Api} path={`${props.match.url}/api`} />
+                <TeamCtx.Provider value={teamInfo}>
+                  <Route component={Api} path={`${props.match.url}/api`} />
+                </TeamCtx.Provider>
                 {teamList.length ? (
                   <Route
                     render={() => (

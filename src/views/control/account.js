@@ -2,10 +2,10 @@ import { Button, Icon, Card } from "antd";
 import React, { useContext } from "react";
 import "./control.scss";
 import { UserCtx } from "../../App";
-import { HomeCtx } from "../home/home";
+import { MesCtx } from "../home/home";
 export function AccountManage() {
   const { userInfo } = useContext(UserCtx);
-  const { setAccountShow } = useContext(HomeCtx);
+  const { setAccountShow } = useContext(MesCtx);
   return (
     <>
       <Card className="accountManage">

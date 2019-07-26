@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { Card } from 'antd'
-import { HomeCtx } from '../home/home'
+import { MesCtx } from '../home/home'
 import { getMessage } from '../../api/message'
 const titleMap = {
   official: '官方通知',
@@ -8,7 +8,7 @@ const titleMap = {
   person: '人员通知'
 }
 export function InfoCard(props) {
-  const { dispatch, setMessageKey, mesState } = useContext(HomeCtx)
+  const { dispatch, setMessageKey, mesState } = useContext(MesCtx)
   useEffect(() => {
     getMessage().then(res => {
       dispatch({
