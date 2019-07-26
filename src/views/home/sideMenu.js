@@ -23,8 +23,8 @@ export default function SideMenu(props) {
     props.setKey(key)
   }
   const openKey = useMemo(() => {
-    return key === '2' || key === '3' ? 'sub1' : ''
-  }, [key])
+    return (key === '2' || key === '3')&&!props.collapse ? 'sub1' : ''
+  }, [key,props.collapse])
   return (
     <>
       <Sider
