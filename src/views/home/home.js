@@ -104,9 +104,11 @@ export function Home(props) {
                   )}
                   path={`${props.match.url}/control`}
                 />
-                <TeamCtx.Provider value={teamInfo}>
-                  <Route component={Api} path={`${props.match.url}/api`} />
-                </TeamCtx.Provider>
+                <Route render={(props)=>(
+                  <TeamCtx.Provider value={teamInfo}>
+                    <Api {...props}/>
+                  </TeamCtx.Provider>
+                )} path={`${props.match.url}/api`} />
                 {teamList.length ? (
                   <Route
                     render={() => (
