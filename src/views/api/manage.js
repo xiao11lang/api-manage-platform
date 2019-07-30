@@ -1,44 +1,48 @@
-import React, { useEffect, useContext, useReducer, useState } from 'react'
-import { Table, Button, Input, Select } from 'antd'
-import { getProjects, deleteProject, modifyProject } from '../../api/apiProject'
-import { TeamCtx } from './../home/home'
-import { apiManageReducer } from './../../reducer/apiManageReducer'
+import React, { useState } from 'react'
+import { Table, Button, Input, Select, Modal } from 'antd'
+import { deleteProject, modifyProject } from '../../api/apiProject'
+import dayjs from 'dayjs'
 const { Column } = Table
 const { Option } = Select
-export function Manage() {
-  const teamInfo = useContext(TeamCtx)
-  const [list, dispatch] = useReducer(apiManageReducer)
+export function Manage(props) {
+  const { list, dispatch } = props
   const [curItem, setCurItem] = useState({})
-  useEffect(() => {
-    if (teamInfo.id) {
-      getProjects({
-        teamId: teamInfo.id
-      }).then(res => {
-        const list = res.list.map(item => {
-          return Object.assign({}, item, { key: item.id })
-        })
-        dispatch({ type: 'INIT', list: list })
-      })
-    }
-  }, [teamInfo.id])
   const handleDelete = item => {
     deleteProject({ projectId: item.id }).then(() => {
       dispatch({ type: 'DELETE', id: item.id })
     })
   }
   const handleModify = (e, item, field) => {
-    if(typeof e==='object'){
+    if (typeof e === 'object') {
       setCurItem({
         value: Object.assign({}, item, { [field]: e.target.value })
       })
-    }else{
+    } else {
       setCurItem({
         value: Object.assign({}, item, { [field]: e })
       })
     }
   }
   const handleSave = item => {
-    modifyProject({ projectId: item.id, value: curItem.value })
+    if (!curItem.value) {
+      return
+    }
+    const { name, version } = curItem.value
+    if (!name || !version) {
+      Modal.error({
+        title: '项目名或版本号不可为空'
+      })
+      return
+    }
+    modifyProject({ projectId: item.id, value: curItem.value }).then(() => {
+      dispatch({
+        type: 'MODIFY',
+        id: item.id,
+        item: {
+          updatedAt: dayjs().format('YYYY-MM-DD HH:mm'),
+        }
+      })
+    })
   }
   const columnConfig = [
     {

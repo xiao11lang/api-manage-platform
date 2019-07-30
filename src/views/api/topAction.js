@@ -63,7 +63,7 @@ export function TopAction(props) {
         </Group>
       </div>
       <Modal visible={modalShow} footer={null} title={title} closable={false}>
-          {key==='2'?<ManageModal hideModal={hideModal} key={key}/>:<TestModal hideModal={hideModal} key={key}/>}
+          {key!=='3'?<ManageModal hideModal={hideModal} key={key} dispatch={props.dispatch}/>:<TestModal hideModal={hideModal} key={key}/>}
       </Modal>
     </>
   )

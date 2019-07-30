@@ -1,23 +1,32 @@
-import React,{useContext} from 'react'
+import React, { useContext, useReducer } from 'react'
 import { Input, Select, Button } from 'antd'
 import { addProject } from '../../../api/apiProject'
 import { useInputChange } from '../../../hooks/useInputChange'
-import { TeamCtx } from './../../home/home';
-import { useSelectChange } from '../../../hooks/useSelectValue';
+import { TeamCtx } from './../../home/home'
+import { useSelectChange } from '../../../hooks/useSelectValue'
+import dayjs from 'dayjs'
 const { Option } = Select
 export function ManageModal(props) {
   const name = useInputChange('')
   const version = useInputChange('')
   const type = useSelectChange('web')
-  const teamInfo=useContext(TeamCtx)
+  const teamInfo = useContext(TeamCtx)
   const handleAdd = () => {
     addProject({
       name: name.value,
       version: version.value,
       type: type.value,
-      teamId:teamInfo.id
-    }).then(()=>{
-        props.hideModal()
+      teamId: teamInfo.id
+    }).then(res => {
+      props.hideModal()
+      props.dispatch({
+        type: 'ADD',
+        item: {
+          ...res.item,
+          key: res.item.id,
+          updatedAt: dayjs(res.item.updatedAt).format('YYYY-MM-DD HH:mm')
+        }
+      })
     })
   }
   return (

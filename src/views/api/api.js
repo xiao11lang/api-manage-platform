@@ -1,15 +1,34 @@
-import React from 'react'
+import React,{useEffect,useReducer,useContext} from 'react'
 import { Manage } from './manage'
 import { Test } from './test'
 import { TopAction } from './topAction'
 import { Switch, Route } from 'react-router-dom'
+import { getProjects } from '../../api/apiProject'
 import './api.scss'
+import { ApiCtx, TeamCtx } from './../home/home';
+import { apiManageReducer } from './../../reducer/apiManageReducer';
+import dayjs from 'dayjs';
 export function Api(props) {
+  const key = useContext(ApiCtx)
+  const teamInfo = useContext(TeamCtx)
+  const [list, dispatch] = useReducer(apiManageReducer)
+  useEffect(() => {
+    if (key&&teamInfo.id) {
+      getProjects({
+        teamId: teamInfo.id
+      }).then(res => {
+        const list = res.list.map(item => {
+          return Object.assign({}, item, { key: item.id,updatedAt:dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm') })
+        })
+        dispatch({ type: 'INIT', list: list })
+      })
+    }
+  }, [key,teamInfo])
   return (
     <>
-      <TopAction />
+      <TopAction dispatch={dispatch}/>
       <Switch>
-        <Route path={`${props.match.url}/manage`} component={Manage} />
+        <Route path={`${props.match.url}/manage`} render={()=><Manage list={list} dispatch={dispatch}/>} />
         <Route path={`${props.match.url}/test`} component={Test} />
       </Switch>
     </>
