@@ -1,47 +1,91 @@
-import React, { useEffect, useContext,useState } from 'react'
-import { Table, Button, Input } from 'antd'
-import { useInputChange } from '../../hooks/useInputChange'
-import { getProjects } from '../../api/apiProject'
+import React, { useEffect, useContext, useReducer, useState } from 'react'
+import { Table, Button, Input, Select } from 'antd'
+import { getProjects, deleteProject, modifyProject } from '../../api/apiProject'
 import { TeamCtx } from './../home/home'
+import { apiManageReducer } from './../../reducer/apiManageReducer'
 const { Column } = Table
-
+const { Option } = Select
 export function Manage() {
   const teamInfo = useContext(TeamCtx)
-  const [list, setList] = useState([])
+  const [list, dispatch] = useReducer(apiManageReducer)
+  const [curItem, setCurItem] = useState({})
   useEffect(() => {
     if (teamInfo.id) {
       getProjects({
         teamId: teamInfo.id
-      }).then((res)=>{
-          const list=res.list.map((item)=>{
-              return Object.assign({},item,{key:item.id})
-          })
-          setList(list)
+      }).then(res => {
+        const list = res.list.map(item => {
+          return Object.assign({}, item, { key: item.id })
+        })
+        dispatch({ type: 'INIT', list: list })
       })
     }
   }, [teamInfo.id])
-  const name = useInputChange('')
-  const version = useInputChange('')
+  const handleDelete = item => {
+    deleteProject({ projectId: item.id }).then(() => {
+      dispatch({ type: 'DELETE', id: item.id })
+    })
+  }
+  const handleModify = (e, item, field) => {
+    if(typeof e==='object'){
+      setCurItem({
+        value: Object.assign({}, item, { [field]: e.target.value })
+      })
+    }else{
+      setCurItem({
+        value: Object.assign({}, item, { [field]: e })
+      })
+    }
+  }
+  const handleSave = item => {
+    modifyProject({ projectId: item.id, value: curItem.value })
+  }
   const columnConfig = [
     {
       title: '名称',
       dataIndex: 'name',
-      render: v => {
-        return <Input {...name} placeholder={v} />
+      render: (v, item) => {
+        return (
+          <Input
+            placeholder={v}
+            onChange={e => {
+              handleModify(e, item, 'name')
+            }}
+          />
+        )
       }
     },
     {
       title: '版本号',
       dataIndex: 'version',
-      render: v => {
-        return <Input value={v} {...version} placeholder={v} />
+      render: (v, item) => {
+        return (
+          <Input
+            placeholder={v}
+            onChange={e => {
+              handleModify(e, item, 'version')
+            }}
+          />
+        )
       }
     },
     {
       title: '类型',
       dataIndex: 'project_type',
-      render: v => {
-        return <Input value={v} />
+      render: (v, item) => {
+        return (
+          <Select
+            style={{ width: 100 }}
+            defaultValue={v}
+            onChange={e => {
+              handleModify(e, item, 'project_type')
+            }}
+          >
+            <Option value="web">WEB</Option>
+            <Option value="app">App</Option>
+            <Option value="pc">PC</Option>
+          </Select>
+        )
       }
     },
     {
@@ -50,13 +94,24 @@ export function Manage() {
     },
     {
       title: '操作',
-      render: () => {
+      render: item => {
         return (
           <>
-            <Button type="primary" style={{ marginRight: 10 }}>
+            <Button
+              type="primary"
+              style={{ marginRight: 10 }}
+              onClick={() => handleSave(item)}
+            >
               保存
             </Button>
-            <Button type="danger">删除</Button>
+            <Button
+              type="danger"
+              onClick={() => {
+                handleDelete(item)
+              }}
+            >
+              删除
+            </Button>
           </>
         )
       },
