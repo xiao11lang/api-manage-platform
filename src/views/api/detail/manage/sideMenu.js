@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
-import IconFont from './../../../../components/iconfont';
+import IconFont from './../../../../components/iconfont'
 const { Sider } = Layout
 function getKey() {
   const routeMap = {
@@ -14,7 +14,7 @@ function getKey() {
     projectManage: '7'
   }
   const hashArr = window.location.hash.split('/')
-  const curRoutePath = hashArr[hashArr.length - 1]
+  const curRoutePath = hashArr[hashArr.length - 1].split('?')[0]
   return routeMap[curRoutePath]
 }
 export default function SideMenu(props) {

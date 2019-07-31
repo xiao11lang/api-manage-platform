@@ -14,6 +14,13 @@ export function getProjects(data){
         data:data
     })
 }
+export function getProject(data){
+    return fetch({
+        url:'getProject',
+        method:'post',
+        data:data
+    })
+}
 export function deleteProject(data){
     return fetch({
         url:'deleteProject',

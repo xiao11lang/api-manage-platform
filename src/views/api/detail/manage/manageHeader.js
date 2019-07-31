@@ -1,8 +1,11 @@
 import React from 'react'
-export default function ManageHeader() {
+import { Link } from 'react-router-dom'
+export default function ManageHeader(props) {
   return (
     <>
-      <div>我是头</div>
+      <div className='manage-header'>
+        <Link to='/home/api/manage'>接口管理</Link>
+      </div>
     </>
   )
 }

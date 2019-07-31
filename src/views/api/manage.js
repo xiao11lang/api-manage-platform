@@ -13,13 +13,14 @@ export function Manage(props) {
     })
   }
   const handleModify = (e, item, field) => {
+    let copy={...curItem.value}
     if (typeof e === 'object') {
       setCurItem({
-        value: Object.assign({}, item, { [field]: e.target.value })
+        value: Object.assign({}, copy, { [field]: e.target.value })
       })
     } else {
       setCurItem({
-        value: Object.assign({}, item, { [field]: e })
+        value: Object.assign({}, copy, { [field]: e })
       })
     }
   }
@@ -27,25 +28,31 @@ export function Manage(props) {
     if (!curItem.value) {
       return
     }
-    const { name, version } = curItem.value
+    const { name, version, project_type } = curItem.value
     if (!name || !version) {
       Modal.error({
         title: '项目名或版本号不可为空'
       })
       return
     }
-    modifyProject({ projectId: item.id, value: curItem.value }).then(() => {
+    modifyProject({
+      projectId: item.id,
+      value: { name, version, project_type }
+    }).then(() => {
       dispatch({
         type: 'MODIFY',
         id: item.id,
         item: {
           updatedAt: dayjs().format('YYYY-MM-DD HH:mm'),
+          name,
+          version,
+          project_type
         }
       })
     })
   }
-  const goToDetail=()=>{
-    props.history.push('/api/manage/projectSurvey')
+  const goToDetail = id => {
+    props.history.push(`/api/manage/projectSurvey?id=${id}`)
   }
   const columnConfig = [
     {
@@ -114,7 +121,7 @@ export function Manage(props) {
             <Button
               type="primary"
               style={{ marginRight: 10 }}
-              onClick={goToDetail}
+              onClick={() => goToDetail(item.id)}
             >
               查看
             </Button>
