@@ -44,6 +44,9 @@ export function Manage(props) {
       })
     })
   }
+  const goToDetail=()=>{
+    props.history.push('/api/manage/projectSurvey')
+  }
   const columnConfig = [
     {
       title: '名称',
@@ -107,6 +110,13 @@ export function Manage(props) {
               onClick={() => handleSave(item)}
             >
               保存
+            </Button>
+            <Button
+              type="primary"
+              style={{ marginRight: 10 }}
+              onClick={goToDetail}
+            >
+              查看
             </Button>
             <Button
               type="danger"

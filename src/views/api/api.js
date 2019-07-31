@@ -28,7 +28,7 @@ export function Api(props) {
     <>
       <TopAction dispatch={dispatch}/>
       <Switch>
-        <Route path={`${props.match.url}/manage`} render={()=><Manage list={list} dispatch={dispatch}/>} />
+        <Route path={`${props.match.url}/manage`} render={({history})=><Manage list={list} dispatch={dispatch} history={history}/>} />
         <Route path={`${props.match.url}/test`} component={Test} />
       </Switch>
     </>
