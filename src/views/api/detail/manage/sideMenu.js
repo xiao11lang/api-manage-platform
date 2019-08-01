@@ -35,44 +35,44 @@ export default function SideMenu(props) {
             </span>
           </Menu.Item>
           <Menu.Item key="1">
-            <Link to={`${url}/projectSurvey`}>
+            <Link to={`${url}/projectSurvey${props.search}`}>
               <IconFont type="iconxiangmugaikuang" />
               <span>项目概况</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to={`${url}/apiDocument`}>
+            <Link to={`${url}/apiDocument${props.search}`}>
               <IconFont type="iconAPIwendang" />
               <span>API文档</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Link to={`${url}/apiTest`}>
+            <Link to={`${url}/apiTest${props.search}`}>
               <IconFont type="iconshandian" />
               <span>API测试</span>
             </Link>
           </Menu.Item>
 
           <Menu.Item key="4">
-            <span to={`${url}/statusDocument`}>
+            <span to={`${url}/statusDocument${props.search}`}>
               <IconFont type="iconwendang2" />
               <span>状态码文档</span>
             </span>
           </Menu.Item>
           <Menu.Item key="5">
-            <Link to={`${url}/projectDoucment`}>
+            <Link to={`${url}/projectDoucment${props.search}`}>
               <IconFont type="iconwendang1" />
               <span>项目文档</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="6">
-            <Link to={`${url}/testEnviroment`}>
+            <Link to={`${url}/testEnviroment${props.search}`}>
               <IconFont type="iconceshihuanjing" />
               <span>测试环境</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="7">
-            <Link to={`${url}/projectManage`}>
+            <Link to={`${url}/projectManage${props.search}`}>
               <IconFont type="iconwenzhanghuoke-" />
               <span>项目管理</span>
             </Link>

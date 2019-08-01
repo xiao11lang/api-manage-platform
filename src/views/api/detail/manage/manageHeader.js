@@ -5,6 +5,7 @@ export default function ManageHeader(props) {
     <>
       <div className='manage-header'>
         <Link to='/home/api/manage'>接口管理</Link>
+        <span>>{props.name}>项目概况</span>
       </div>
     </>
   )

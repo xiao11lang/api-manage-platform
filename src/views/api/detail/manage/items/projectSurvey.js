@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import format from '../../../../../until/format'
+import { getProject } from '../../../../../api/apiProject'
 const itemMap = {
   name: '项目名称',
   interface_number: '接口数目',
@@ -11,6 +12,7 @@ const itemMap = {
 }
 export default function ProjectSurvey(props) {
   const { name } = props.info
+  const id = props.location.search.split('=')[1]
   const list = []
   Object.keys(itemMap).forEach(item => {
     list.push({
@@ -26,6 +28,15 @@ export default function ProjectSurvey(props) {
       </div>
     )
   })
+  useEffect(() => {
+    getProject({
+      id: id
+    })
+      .then(res => {
+        props.setProjectInfo(res.list[0])
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
   return (
     <div className="project-survey">
       <div className="survey-left">
