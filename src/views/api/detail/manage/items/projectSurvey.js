@@ -12,7 +12,7 @@ const itemMap = {
 }
 export default function ProjectSurvey(props) {
   const { name } = props.info
-  const id = props.location.search.split('=')[1]
+  const id = props.search.split('=')[1]
   const list = []
   Object.keys(itemMap).forEach(item => {
     list.push({

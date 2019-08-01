@@ -9,6 +9,7 @@ const { Content } = Layout
 export function ManageDetail(props) {
   const url = props.match.url
   const [projectInfo, setProjectInfo] = useState({})
+  const [curMenu,setCurMenu]=useState('')
   const search=props.location.search
   useEffect(()=>{
       const str=search.slice(1)
@@ -20,9 +21,9 @@ export function ManageDetail(props) {
   },[search])
   return (
     <Layout>
-      <SideMenu url={url} history={props.history} search={search}/>
+      <SideMenu url={url} history={props.history} search={search} setCurMenu={setCurMenu}/>
       <Layout>
-        <ManageHeader name={projectInfo.name} />
+        <ManageHeader name={projectInfo.name} curMenu={curMenu}/>
         <Content
           style={{
             margin: '24px 16px',
@@ -31,7 +32,7 @@ export function ManageDetail(props) {
           <Switch>
             <Route
               path={`${url}/projectSurvey`}
-              render={({location}) => <ProjectSurvey info={projectInfo} setProjectInfo={setProjectInfo} location={location}/>}
+              render={({location}) => <ProjectSurvey info={projectInfo} setProjectInfo={setProjectInfo} search={search}/>}
             />
           </Switch>
         </Content>
