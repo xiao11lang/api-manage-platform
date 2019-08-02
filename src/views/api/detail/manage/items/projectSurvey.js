@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import format from '../../../../../until/format'
 import { getProject } from '../../../../../api/apiProject'
 const itemMap = {
@@ -13,6 +13,7 @@ const itemMap = {
 export default function ProjectSurvey(props) {
   const { name } = props.info
   const id = props.search.split('=')[1]
+  const [activity, setActivity] = useState([])
   const list = []
   Object.keys(itemMap).forEach(item => {
     list.push({
@@ -28,13 +29,16 @@ export default function ProjectSurvey(props) {
       </div>
     )
   })
+  const activityList = activity.map(ac => {
+    return <div key={ac.id}>{ac.description}</div>
+  })
   useEffect(() => {
     getProject({
       id: id
+    }).then(res => {
+      props.setProjectInfo(res.list[0])
+      setActivity(res.activities.slice(0,10))
     })
-      .then(res => {
-        props.setProjectInfo(res.list[0])
-      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
   return (
@@ -42,6 +46,10 @@ export default function ProjectSurvey(props) {
       <div className="survey-left">
         <div className="survey-title">{name}</div>
         <div className="surcey-item-con">{itemList}</div>
+      </div>
+      <div className="survey-right">
+        <div className='activity-title'>项目动态（最近10条）</div>
+        {activityList}
       </div>
     </div>
   )

@@ -36,3 +36,10 @@ export function modifyProject(data){
         modalShow:true
     })
 }
+export function getActivities(data){
+    return fetch({
+        url:'getActivities',
+        method:'post',
+        data:data
+    })
+}

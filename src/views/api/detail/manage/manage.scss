@@ -1,3 +1,9 @@
+.manage-detail{
+  height: 100%;
+  .manage-main{
+    height: 100%;
+  }
+}
 .manage-header {
   height: 52px;
   line-height: 52px;
@@ -10,7 +16,7 @@
   }
 }
 .project-survey {
-  height: 500px;
+  display: flex;
   .survey-left {
     height: 100%;
     padding: 20px;
@@ -41,10 +47,16 @@
       }
     }
   }
+  .survey-right{
+    padding-left: 10px;
+    .activity-title{
+      color: #1890ff
+    }
+  }
 }
 .api-document{
-    height: 500px;
     display: flex;
+    height: 100%;
     .api-group-con{
         min-width: 240px;
         background: white;
@@ -54,9 +66,19 @@
           padding-left: 10px;
           border-bottom: 1px solid rgba(0, 0, 0, .1)
         }
+        .group-body{
+          &::-webkit-scrollbar{
+            width: 0
+          }
+          overflow: scroll;
+          height: 100%;
+        }
         .group-item{
           height: 40px;
-          padding-left: 10px;
+          padding: 0 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           line-height: 40px;
           border-bottom: 1px solid rgba(0, 0, 0, .1);
           &:hover{

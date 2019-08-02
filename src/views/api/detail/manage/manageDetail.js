@@ -21,7 +21,7 @@ export function ManageDetail(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search])
   return (
-    <Layout>
+    <Layout className='manage-detail'>
       <SideMenu
         url={url}
         history={props.history}
@@ -34,6 +34,7 @@ export function ManageDetail(props) {
           style={{
             margin: '24px 16px'
           }}
+          className='manage-main'
         >
           <Switch>
             <Route

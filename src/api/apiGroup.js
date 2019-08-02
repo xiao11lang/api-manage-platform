@@ -14,3 +14,10 @@ export function getGroups(data){
         data:data
     })
 }
+export function modifyGroup(data){
+    return fetch({
+        url:'modifyGroup',
+        method:'post',
+        data:data
+    })
+}
