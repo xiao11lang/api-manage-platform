@@ -2,7 +2,7 @@ import React from 'react'
 import { Table,Button } from 'antd'
 import ApiTag from './apiTag'
 const { Column } = Table
-export default function ApiList() {
+export default function ApiList(props) {
   const columnConfig = [
     {
       title: 'APIs',
@@ -41,7 +41,7 @@ export default function ApiList() {
   return (
     <div className="api-list-con">
         <div className="list-top">
-            <Button icon="plus" type="primary">
+            <Button icon="plus" type="primary" onClick={props.show}>
               新建API
             </Button>
           </div>
