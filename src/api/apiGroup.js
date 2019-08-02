@@ -21,3 +21,10 @@ export function modifyGroup(data){
         data:data
     })
 }
+export function deleteGroup(data){
+    return fetch({
+        url:'deleteGroup',
+        method:'post',
+        data:data
+    })
+}

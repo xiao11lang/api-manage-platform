@@ -30,14 +30,14 @@ export default function ProjectSurvey(props) {
     )
   })
   const activityList = activity.map(ac => {
-    return <div key={ac.id}>{ac.description}</div>
+    return <div key={ac.id}>{ac.description}<span>操作时间：{format(ac.updatedAt)}</span></div>
   })
   useEffect(() => {
     getProject({
       id: id
     }).then(res => {
       props.setProjectInfo(res.list[0])
-      setActivity(res.activities.slice(0,10))
+      setActivity(res.activities.reverse().slice(0,10))
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])

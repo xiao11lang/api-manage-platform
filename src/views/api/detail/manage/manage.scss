@@ -1,6 +1,6 @@
-.manage-detail{
+.manage-detail {
   height: 100%;
-  .manage-main{
+  .manage-main {
     height: 100%;
   }
 }
@@ -47,43 +47,57 @@
       }
     }
   }
-  .survey-right{
+  .survey-right {
     padding-left: 10px;
-    .activity-title{
-      color: #1890ff
+    .activity-title {
+      color: #1890ff;
     }
   }
 }
-.api-document{
-    display: flex;
-    height: 100%;
-    .api-group-con{
-        min-width: 240px;
-        background: white;
-        .group-top{
-          height: 50px;
-          line-height: 50px;
-          padding-left: 10px;
-          border-bottom: 1px solid rgba(0, 0, 0, .1)
-        }
-        .group-body{
-          &::-webkit-scrollbar{
-            width: 0
-          }
-          overflow: scroll;
-          height: 100%;
-        }
-        .group-item{
-          height: 40px;
-          padding: 0 10px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          line-height: 40px;
-          border-bottom: 1px solid rgba(0, 0, 0, .1);
-          &:hover{
-            background: rgba(0, 0, 0, .1)
-          }
-        }
+.api-document {
+  display: flex;
+  height: 100%;
+  .api-group-con {
+    min-width: 240px;
+    background: white;
+    .group-top {
+      height: 50px;
+      line-height: 50px;
+      padding-left: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
+    .group-body {
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+      overflow: scroll;
+      height: 100%;
+    }
+    .group-item {
+      height: 40px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 40px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+      &.all{
+        height: 54px
+      }
+    }
+  }
+  .api-list-con {
+    background: white;
+    flex-grow: 1;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    .list-top {
+      height: 50px;
+      line-height: 50px;
+      padding-left: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
 }

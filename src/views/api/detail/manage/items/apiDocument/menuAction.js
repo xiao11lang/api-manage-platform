@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Dropdown, Menu, Modal, Input } from 'antd'
 import IconFont from './../../../../../../components/iconfont'
-import { modifyGroup } from '../../../../../../api/apiGroup'
+import { modifyGroup, deleteGroup } from '../../../../../../api/apiGroup'
 import { useInputChange } from '../../../../../../hooks/useInputChange'
 export function MenuAction(props) {
   const [modalShow, setModalShow] = useState(false)
@@ -16,6 +16,17 @@ export function MenuAction(props) {
         type: 'MODIFY',
         id: props.id,
         name: name.value
+      })
+    })
+  }
+  const handleDelete = () => {
+    deleteGroup({
+      id: props.id,
+      projectId: props.projectId
+    }).then(() => {
+      props.dispatch({
+        type: 'DELETE',
+        id: props.id
       })
     })
   }
@@ -34,7 +45,7 @@ export function MenuAction(props) {
               </div>
             </Menu.Item>
             <Menu.Item>
-              <div>删除</div>
+              <div onClick={handleDelete}>删除</div>
             </Menu.Item>
           </Menu>
         }
