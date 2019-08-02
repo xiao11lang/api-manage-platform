@@ -8,17 +8,20 @@ export default function ApiDocument(props) {
   const [list, dispatch] = useReducer(apiGroupReducer, [])
   const [show,setShow]=useState(true)
   const showCreate=()=>{
+    setShow(true)
+  }
+  const hideCreate=()=>{
     setShow(false)
   }
   return (
     <>
       <div className="api-document">
-        {show ? (
+        {!show ? (
           <>
             <ApiGroup id={id} dispatch={dispatch} list={list} />
             <ApiList show={showCreate}/>
           </>
-        ) : <ApiCreate/>}
+        ) : <ApiCreate hide={hideCreate} id={id}/>}
       </div>
     </>
   )

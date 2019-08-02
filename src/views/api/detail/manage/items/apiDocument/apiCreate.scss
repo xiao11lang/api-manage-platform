@@ -2,11 +2,34 @@
     width: 100%;
     .api-create-top{
         height: 60px;
-        line-height: 60px;
+        display: flex;
+        align-items: center;
         background: white;
-        padding: 10px
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+        div{
+            cursor: pointer;
+        }
     }
     .ant-tabs-nav-wrap{
         background: white
+    }
+    .api-create-meta{
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        .meta-item{
+            display: flex;
+            height: 40px;
+            align-items: center;
+            label{
+                width: 50px;
+            }
+        }
+    }
+    .api-create-request{
+        margin-top: 10px;
+        background: white;
+        border-radius: 5px;
     }
 }
