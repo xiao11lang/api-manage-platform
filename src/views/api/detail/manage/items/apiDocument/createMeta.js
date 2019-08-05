@@ -59,7 +59,7 @@ export default function CreateMeta(props) {
             handleModify(e, 'status')
           }}
         >
-          <Option value="enaled">启用</Option>
+          <Option value="enabled">启用</Option>
           <Option value="maintain">维护</Option>
           <Option value="deprecated">弃用</Option>
           <Option value="undetermined">待定</Option>
