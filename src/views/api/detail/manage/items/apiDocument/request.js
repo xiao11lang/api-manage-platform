@@ -15,36 +15,57 @@ import {
 import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
 const { TabPane } = Tabs
 const { Option } = Select
-function RequestHeader() {
+function RequestHeader(props) {
   const dataH = ['accept', 'language']
   const [headerList, dispatch] = useReducer(requestHeaderReducer, [
-    { index: 0, key: '0' }
+    { index: 0, key: '0', last: true }
   ])
-  const handleSelect = item => {
-    if (item.index === headerList.length - 1) {
+  const handleSelect = (item, v) => {
+    if (item.last) {
       dispatch({
         type: 'ADD',
-        item: { index: headerList.length }
+        item: { index: headerList.length, symbol: Math.random(), last: true,key:Math.random() }
       })
     } else {
       dispatch({
         type: 'MODIFY',
-        item: { index: item.index }
+        item: { ...item, label: v },
+        index: item.index,
+        symbol: item.symbol
+      })
+      props.setRequest({
+        header: headerList
       })
     }
+  }
+  const handleChange = (e, item, field) => {
+    dispatch({
+      type: 'MODIFY',
+      item: { ...item, [field]: typeof e === 'object' ? e.target.value : e },
+      index: item.index
+    })
+    props.setRequest({
+      header: headerList
+    })
+  }
+  const handleDelete = item => {
+    dispatch({
+      type: 'DELETE',
+      symbol: item.symbol
+    })
   }
   const columnConfig = [
     {
       title: '标签',
-      key: 'ele',
+      key: 'label',
       render: item => {
         return (
           <AutoComplete
             placeholder="accept"
             dataSource={dataH}
             filterOption={true}
-            onSelect={() => handleSelect(item)}
-            onSearch={() => handleSelect(item)}
+            onSelect={v => handleSelect(item, v)}
+            onSearch={v => handleSelect(item, v)}
             allowClear
           />
         )
@@ -53,17 +74,23 @@ function RequestHeader() {
     {
       title: '必填',
       key: 'required',
-      render: () => <Switch />
+      render: item => (
+        <Switch onChange={e => handleChange(e, item, 'required')} />
+      )
     },
     {
       title: '内容',
       key: 'content',
-      render: () => <Input />
+      render: item => <Input onChange={e => handleChange(e, item, 'content')} />
     },
     {
       title: '操作',
       key: 'opeartion',
-      render: () => <Button type="danger">删除</Button>
+      render: item => (
+        <Button type="danger" onClick={() => handleDelete(item)}>
+          删除
+        </Button>
+      )
     }
   ]
 
@@ -72,6 +99,7 @@ function RequestHeader() {
       className="request-header"
       dataSource={headerList}
       columns={columnConfig}
+      pagination={false}
     />
   )
 }
@@ -160,6 +188,7 @@ function RequestParam() {
           dataSource={[
             { key: 0, children: [{ key: 1, children: [{ key: 2 }] }] }
           ]}
+          pagination={false}
         />
       ) : (
         <AceEditor
@@ -235,13 +264,13 @@ function UrlParam() {
       }
     }
   ]
-  return <Table columns={columnConfig} dataSource={[{}]} />
+  return <Table columns={columnConfig} dataSource={[{}]} pagination={false} />
 }
-export default function Request() {
+export default function Request(props) {
   return (
     <Tabs className="api-create-request" defaultActiveKey="1">
       <TabPane tab="请求头部" key="1">
-        <RequestHeader />
+        <RequestHeader setRequest={props.setRequest} />
       </TabPane>
       <TabPane tab="请求参数" key="2">
         <RequestParam />
