@@ -6,7 +6,7 @@ import ApiCreate from './apiDocument/apiCreate';
 export default function ApiDocument(props) {
   const id = props.search.split('=')[1]
   const [list, dispatch] = useReducer(apiGroupReducer, [])
-  const [show,setShow]=useState(true)
+  const [show,setShow]=useState(false)
   const showCreate=()=>{
     setShow(true)
   }

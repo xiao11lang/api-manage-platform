@@ -4,7 +4,7 @@ import { addProject } from '../../../api/apiProject'
 import { useInputChange } from '../../../hooks/useInputChange'
 import { TeamCtx } from './../../home/home'
 import { useSelectChange } from '../../../hooks/useSelectValue'
-import dayjs from 'dayjs'
+import format from '../../../until/format';
 const { Option } = Select
 export function ManageModal(props) {
   const name = useInputChange('')
@@ -24,7 +24,7 @@ export function ManageModal(props) {
         item: {
           ...res.item,
           key: res.item.id,
-          updatedAt: dayjs(res.item.updatedAt).format('YYYY-MM-DD HH:mm')
+          updatedAt: format(res.item.updatedAt)
         }
       })
     })

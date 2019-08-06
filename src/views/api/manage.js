@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Table, Button, Input, Select, Modal } from 'antd'
+import { Table, Button, Input, Select } from 'antd'
 import { deleteProject, modifyProject } from '../../api/apiProject'
-import dayjs from 'dayjs'
+import format from '../../until/format';
 const { Column } = Table
 const { Option } = Select
 export function Manage(props) {
@@ -13,7 +13,7 @@ export function Manage(props) {
     })
   }
   const handleModify = (e, item, field) => {
-    let copy={...curItem.value}
+    let copy = { ...curItem.value }
     if (typeof e === 'object') {
       setCurItem({
         value: Object.assign({}, copy, { [field]: e.target.value })
@@ -29,23 +29,21 @@ export function Manage(props) {
       return
     }
     const { name, version, project_type } = curItem.value
-    if (!name || !version) {
-      Modal.error({
-        title: '项目名或版本号不可为空'
-      })
-      return
-    }
     modifyProject({
       projectId: item.id,
-      value: { name, version, project_type }
+      value: {
+        name: name || item.name,
+        version: version || item.version,
+        project_type
+      }
     }).then(() => {
       dispatch({
         type: 'MODIFY',
         id: item.id,
         item: {
-          updatedAt: dayjs().format('YYYY-MM-DD HH:mm'),
-          name,
-          version,
+          updatedAt: format(),
+          name: name || item.name,
+          version: version || item.version,
           project_type
         }
       })
@@ -61,7 +59,7 @@ export function Manage(props) {
       render: (v, item) => {
         return (
           <Input
-            placeholder={v}
+            defaultValue={v}
             onChange={e => {
               handleModify(e, item, 'name')
             }}
@@ -75,7 +73,7 @@ export function Manage(props) {
       render: (v, item) => {
         return (
           <Input
-            placeholder={v}
+            defaultValue={v}
             onChange={e => {
               handleModify(e, item, 'version')
             }}

@@ -7,7 +7,7 @@ import { getProjects } from '../../api/apiProject'
 import './api.scss'
 import { ApiCtx, TeamCtx } from './../home/home';
 import { apiManageReducer } from './../../reducer/apiManageReducer';
-import dayjs from 'dayjs';
+import format from '../../until/format';
 export function Api(props) {
   const key = useContext(ApiCtx)
   const teamInfo = useContext(TeamCtx)
@@ -18,7 +18,7 @@ export function Api(props) {
         teamId: teamInfo.id
       }).then(res => {
         const list = res.list.map(item => {
-          return Object.assign({}, item, { key: item.id,updatedAt:dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm') })
+          return Object.assign({}, item, { key: item.id,updatedAt:format(item.updatedAt) })
         })
         dispatch({ type: 'INIT', list: list })
       })
