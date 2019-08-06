@@ -31,5 +31,17 @@
         margin-top: 10px;
         background: white;
         border-radius: 5px;
+        .request-param{
+            .param-switch{
+                margin: 0 0 16px 16px
+            }
+            .ant-table-row td:first-child{
+                display: flex;
+                align-items: center
+            }
+            .ace-github .ace_print-margin{
+                width: 0
+            }
+        }
     }
 }
