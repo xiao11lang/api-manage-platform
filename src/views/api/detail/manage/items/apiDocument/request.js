@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useState, useContext } from 'react'
 import AceEditor from 'react-ace'
 import 'brace/mode/javascript'
 import 'brace/theme/github'
@@ -12,29 +12,25 @@ import {
   Radio,
   Select
 } from 'antd'
-import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
+import { ApiCreateCtx } from './apiCreate'
 const { TabPane } = Tabs
 const { Option } = Select
-function RequestHeader(props) {
+function RequestHeader() {
   const dataH = ['accept', 'language']
-  const [headerList, dispatch] = useReducer(requestHeaderReducer, [
-    { index: 0, key: '0', last: true }
-  ])
+  const { headerList, dispatch } = useContext(ApiCreateCtx)
   const handleSelect = (item, v) => {
+    dispatch({
+      type: 'MODIFY',
+      item: { ...item, label: v },
+      key: item.key
+    })
     if (item.last) {
       dispatch({
         type: 'ADD',
-        item: { index: headerList.length, symbol: Math.random(), last: true,key:Math.random() }
-      })
-    } else {
-      dispatch({
-        type: 'MODIFY',
-        item: { ...item, label: v },
-        index: item.index,
-        symbol: item.symbol
-      })
-      props.setRequest({
-        header: headerList
+        item: {
+          last: true,
+          key: Math.random()
+        }
       })
     }
   }
@@ -42,16 +38,13 @@ function RequestHeader(props) {
     dispatch({
       type: 'MODIFY',
       item: { ...item, [field]: typeof e === 'object' ? e.target.value : e },
-      index: item.index
-    })
-    props.setRequest({
-      header: headerList
+      key: item.key
     })
   }
   const handleDelete = item => {
     dispatch({
       type: 'DELETE',
-      symbol: item.symbol
+      key: item.key
     })
   }
   const columnConfig = [
@@ -86,11 +79,12 @@ function RequestHeader(props) {
     {
       title: '操作',
       key: 'opeartion',
-      render: item => (
-        <Button type="danger" onClick={() => handleDelete(item)}>
-          删除
-        </Button>
-      )
+      render: item =>
+        item.last ? null : (
+          <Button type="danger" onClick={() => handleDelete(item)}>
+            删除
+          </Button>
+        )
     }
   ]
 

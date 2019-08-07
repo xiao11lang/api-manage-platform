@@ -1,26 +1,30 @@
-import React, { useState } from 'react'
-import { Tabs, Button, Icon,Modal } from 'antd'
+import React, { useState, createContext, useReducer } from 'react'
+import { Tabs, Button, Icon, Modal } from 'antd'
 import ReactMde from 'react-mde'
 import 'react-mde/lib/styles/css/react-mde-all.css'
 import './apiCreate.scss'
-import CreateMeta from './createMeta';
-import Request from './request';
-import { addApiInstance } from '../../../../../../api/apiInstance';
+import CreateMeta from './createMeta'
+import Request from './request'
+import { addApiInstance } from '../../../../../../api/apiInstance'
+import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
 const { TabPane } = Tabs
+export const ApiCreateCtx = createContext({})
 export default function ApiCreate(props) {
   const [value, setValue] = React.useState('')
   const [meta, setMeta] = useState({})
-  const [request,setRequest]=useState({})
   const [selectedTab, setSelectedTab] = React.useState('write')
-  const save=()=>{
-    console.log(request)
-    if(meta.url&&meta.name){
+  const [headerList, dispatch] = useReducer(requestHeaderReducer, [
+    { key: Math.random(), last: true }
+  ])
+  const save = () => {
+    console.log(headerList)
+    if (meta.url && meta.name) {
       addApiInstance({
-        meta:meta
+        meta: meta
       })
-    }else{
+    } else {
       Modal.error({
-        title:'URI或名称不可为空'
+        title: 'URI或名称不可为空'
       })
     }
   }
@@ -37,8 +41,12 @@ export default function ApiCreate(props) {
       </div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="API文档" key="1">
-          <CreateMeta id={props.id} setMeta={setMeta} meta={meta}/>
-          <Request request={request}  setRequest={setRequest}/>
+          <ApiCreateCtx.Provider value={{ headerList, dispatch }}>
+            <>
+              <CreateMeta id={props.id} setMeta={setMeta} meta={meta} />
+              <Request   />
+            </>
+          </ApiCreateCtx.Provider>
         </TabPane>
         <TabPane tab="详细说明" key="2">
           <ReactMde
