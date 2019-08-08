@@ -99,15 +99,50 @@ function RequestHeader() {
 }
 function RequestParam() {
   const [paramType, setParamType] = useState('form-data')
+  const [param, setParam] = useState([
+    { key: Math.random(), isRoot: true, isLast: true }
+  ])
   const handleRadioChange = v => {
     setParamType(v.target.value)
   }
+  const handleAdd = item => {
+    item.children
+      ? item.children.push({
+          key: Math.random(),
+          parent: item,
+          isRoot: false,
+          isLast: true
+        })
+      : (item.children = [
+          { key: Math.random(), parent: item, isRoot: false, isLast: true }
+        ])
+    setParam([...param])
+  } //添加子字段
+  const addRoot = item => {
+    if (!item.isLast) return //非最后一个字段不添加新字段
+    if (item.isRoot) {
+      param.push({
+        key: Math.random(),
+        isRoot: true,
+        isLast: true
+      })
+    } else {
+      item.parent.children.push({
+        key: Math.random(),
+        isRoot: false,
+        parent: item.parent,
+        isLast: true
+      })
+    }
+    item.isLast = false
+    setParam([...param])
+  } //添加兄弟字段
   const columnConfig = [
     {
       title: '参数名',
       key: 'name',
-      render: () => {
-        return <Input />
+      render: item => {
+        return <Input onFocus={() => addRoot(item)} />
       }
     },
     {
@@ -151,10 +186,14 @@ function RequestParam() {
     {
       title: '操作',
       key: 'operation',
-      render: () => {
+      render: item => {
         return (
           <>
-            <Button type="primary" style={{ marginRight: 10 }}>
+            <Button
+              type="primary"
+              style={{ marginRight: 10 }}
+              onClick={() => handleAdd(item)}
+            >
               添加
             </Button>
             <Button type="danger">删除</Button>
@@ -177,13 +216,7 @@ function RequestParam() {
         </Radio.Group>
       </div>
       {paramType !== 'raw' ? (
-        <Table
-          columns={columnConfig}
-          dataSource={[
-            { key: 0, children: [{ key: 1, children: [{ key: 2 }] }] }
-          ]}
-          pagination={false}
-        />
+        <Table columns={columnConfig} dataSource={param} pagination={false} />
       ) : (
         <AceEditor
           mode="javascript"

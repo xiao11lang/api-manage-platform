@@ -15,6 +15,6 @@ export function apiManageReducer(state, action) {
           : item
       })
     default:
-      throw new Error('')
+      throw new Error('ApiManageReducer Error')
   }
 }
