@@ -5,6 +5,8 @@ import 'react-mde/lib/styles/css/react-mde-all.css'
 import './apiCreate.scss'
 import CreateMeta from './createMeta'
 import Request from './request'
+import Response from './response'
+import Example from './example'
 import { addApiInstance } from '../../../../../../api/apiInstance'
 import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
 const { TabPane } = Tabs
@@ -17,7 +19,6 @@ export default function ApiCreate(props) {
     { key: Math.random(), last: true }
   ])
   const save = () => {
-    console.log(headerList)
     if (meta.url && meta.name) {
       addApiInstance({
         meta: meta
@@ -44,7 +45,9 @@ export default function ApiCreate(props) {
           <ApiCreateCtx.Provider value={{ headerList, dispatch }}>
             <>
               <CreateMeta id={props.id} setMeta={setMeta} meta={meta} />
-              <Request   />
+              <Request />
+              <Response/>
+              <Example/>
             </>
           </ApiCreateCtx.Provider>
         </TabPane>

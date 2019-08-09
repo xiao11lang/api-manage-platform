@@ -13,6 +13,7 @@ import {
   Select
 } from 'antd'
 import { ApiCreateCtx } from './apiCreate'
+import { useSelectChange } from './../../../../../../hooks/useSelectValue'
 const { TabPane } = Tabs
 const { Option } = Select
 function RequestHeader() {
@@ -99,11 +100,14 @@ function RequestHeader() {
 }
 function RequestParam() {
   const [paramType, setParamType] = useState('form-data')
+
+  const jsonRoot = useSelectChange('object')
   const [param, setParam] = useState([
     { key: Math.random(), isRoot: true, isLast: true }
   ])
   const handleRadioChange = v => {
     setParamType(v.target.value)
+    setParam([{ key: Math.random(), isRoot: true, isLast: true }])
   }
   const handleAdd = item => {
     item.children
@@ -118,8 +122,11 @@ function RequestParam() {
         ])
     setParam([...param])
   } //添加子字段
-  const addRoot = item => {
-    if (!item.isLast) return //非最后一个字段不添加新字段
+  const addRoot = (item, e) => {
+    if (!item.isLast) {
+      item.name = e.target.value
+      return //非最后一个字段不添加新字段
+    }
     if (item.isRoot) {
       param.push({
         key: Math.random(),
@@ -137,20 +144,29 @@ function RequestParam() {
     item.isLast = false
     setParam([...param])
   } //添加兄弟字段
+  const handleFieldChange = (item, e, field) => {
+    item[field] = typeof e === 'object' ? e.target.value : e
+  }
   const columnConfig = [
     {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onFocus={() => addRoot(item)} />
+        return <Input onChange={e => addRoot(item, e)} />
       }
     },
     {
       title: '类型',
       key: 'type',
-      render: () => {
+      render: item => {
         return (
-          <Select defaultValue="int" style={{ width: 100 }}>
+          <Select
+            defaultValue="int"
+            style={{ width: 100 }}
+            onChange={e => {
+              handleFieldChange(item, e, '')
+            }}
+          >
             <Option value="number">number</Option>
             <Option value="string">string</Option>
             <Option value="object">object</Option>
@@ -165,15 +181,27 @@ function RequestParam() {
     {
       title: '必填',
       key: 'required',
-      render: () => {
-        return <Switch />
+      render: item => {
+        return (
+          <Switch
+            onChange={e => {
+              handleFieldChange(item, e, '')
+            }}
+          />
+        )
       }
     },
     {
       title: '说明',
       key: 'des',
-      render: () => {
-        return <Input />
+      render: item => {
+        return (
+          <Input
+            onChange={e => {
+              handleFieldChange(item, e, '')
+            }}
+          />
+        )
       }
     },
     {
@@ -215,6 +243,15 @@ function RequestParam() {
           <Radio value="raw">Raw</Radio>
         </Radio.Group>
       </div>
+      {paramType === 'json' ? (
+        <div className='param-json-root'>
+          <label>json根类型</label>
+          <Select {...jsonRoot}>
+          <Option value="object">object</Option>
+          <Option value="array">array</Option>
+        </Select>
+        </div>
+      ) : null}
       {paramType !== 'raw' ? (
         <Table columns={columnConfig} dataSource={param} pagination={false} />
       ) : (
@@ -230,20 +267,35 @@ function RequestParam() {
   )
 }
 function UrlParam() {
+  const [urlParam,setUrlParam]=useState([{
+    key:Math.random(),
+    isLast:true
+  }])
+  const handleFieldChange = (item, e, field) => {
+    if(item.isLast&&field==='name'){
+      item.isLast=false
+      urlParam.push({
+        key:Math.random(),
+        isLast:true
+      })
+    }
+    item[field] = typeof e === 'object' ? e.target.value : e
+    setUrlParam([...urlParam])
+  }
   const columnConfig = [
     {
       title: '参数名',
       key: 'name',
-      render: () => {
-        return <Input />
+      render: (item) => {
+        return <Input onChange={(e)=>handleFieldChange(item,e,'name')}/>
       }
     },
     {
       title: '类型',
       key: 'type',
-      render: () => {
+      render: (item) => {
         return (
-          <Select defaultValue="int" style={{ width: 100 }}>
+          <Select defaultValue="int" style={{ width: 100 }} onChange={(e)=>handleFieldChange(item,e,'type')}>
             <Option value="number">number</Option>
             <Option value="string">string</Option>
             <Option value="object">object</Option>
@@ -258,40 +310,37 @@ function UrlParam() {
     {
       title: '必填',
       key: 'required',
-      render: () => {
-        return <Switch />
+      render: (item) => {
+        return <Switch onChange={(e)=>handleFieldChange(item,e,'required')}/>
       }
     },
     {
       title: '说明',
       key: 'des',
-      render: () => {
-        return <Input />
+      render: (item) => {
+        return <Input onChange={(e)=>handleFieldChange(item,e,'des')}/>
       }
     },
     {
       title: '示例',
       key: 'example',
-      render: () => {
-        return <Input />
+      render: (item) => {
+        return <Input onChange={(e)=>handleFieldChange(item,e,'example')}/>
       }
     },
     {
       title: '操作',
       key: 'operation',
-      render: () => {
+      render: (item) => {
         return (
           <>
-            <Button type="primary" style={{ marginRight: 10 }}>
-              添加
-            </Button>
-            <Button type="danger">删除</Button>
+            {item.isLast?null:<Button type="danger">删除</Button>}
           </>
         )
       }
     }
   ]
-  return <Table columns={columnConfig} dataSource={[{}]} pagination={false} />
+  return <Table columns={columnConfig} dataSource={urlParam} pagination={false} />
 }
 export default function Request(props) {
   return (
