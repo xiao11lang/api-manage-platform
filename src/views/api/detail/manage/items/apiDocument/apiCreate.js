@@ -1,6 +1,7 @@
 import React, { useState, createContext, useReducer } from 'react'
 import { Tabs, Button, Icon, Modal } from 'antd'
 import ReactMde from 'react-mde'
+import * as Showdown from "showdown";
 import 'react-mde/lib/styles/css/react-mde-all.css'
 import './apiCreate.scss'
 import CreateMeta from './createMeta'
@@ -10,6 +11,12 @@ import Example from './example'
 import { addApiInstance } from '../../../../../../api/apiInstance'
 import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
 const { TabPane } = Tabs
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true
+});
 export const ApiCreateCtx = createContext({})
 export default function ApiCreate(props) {
   const [value, setValue] = React.useState('')
@@ -58,7 +65,7 @@ export default function ApiCreate(props) {
             selectedTab={selectedTab}
             onTabChange={setSelectedTab}
             l18n={{ write: '编辑', preview: '预览' }}
-            generateMarkdownPreview={markdown => Promise.reject()}
+            generateMarkdownPreview={markdown => Promise.resolve(converter.makeHtml(markdown))}
           />
         </TabPane>
       </Tabs>
