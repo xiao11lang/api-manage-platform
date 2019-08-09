@@ -99,15 +99,17 @@ function RequestHeader() {
   )
 }
 function RequestParam() {
-  const [paramType, setParamType] = useState('form-data')
-
+  const { reqParam, setReqParam } = useContext(ApiCreateCtx)
   const jsonRoot = useSelectChange('object')
-  const [param, setParam] = useState([
-    { key: Math.random(), isRoot: true, isLast: true }
-  ])
-  const handleRadioChange = v => {
-    setParamType(v.target.value)
-    setParam([{ key: Math.random(), isRoot: true, isLast: true }])
+  const handleRadioChange = e => {
+    const type = e.target.value
+    reqParam.paramType = type
+    if (type === 'raw') {
+      reqParam.detail = null
+    } else {
+      reqParam.detail = [{ key: Math.random(), isRoot: true, isLast: true }]
+    }
+    setReqParam({ ...reqParam })
   }
   const handleAdd = item => {
     item.children
@@ -120,7 +122,10 @@ function RequestParam() {
       : (item.children = [
           { key: Math.random(), parent: item, isRoot: false, isLast: true }
         ])
-    setParam([...param])
+    setReqParam({
+      ...reqParam,
+      detail: [...reqParam.detail]
+    })
   } //添加子字段
   const addRoot = (item, e) => {
     if (!item.isLast) {
@@ -128,7 +133,7 @@ function RequestParam() {
       return //非最后一个字段不添加新字段
     }
     if (item.isRoot) {
-      param.push({
+      reqParam.detail.push({
         key: Math.random(),
         isRoot: true,
         isLast: true
@@ -142,10 +147,31 @@ function RequestParam() {
       })
     }
     item.isLast = false
-    setParam([...param])
+    setReqParam({
+      ...reqParam,
+      detail: [...reqParam.detail]
+    })
   } //添加兄弟字段
   const handleFieldChange = (item, e, field) => {
     item[field] = typeof e === 'object' ? e.target.value : e
+  }
+  const handleDelete=(item)=>{
+    if(item.isRoot){
+      reqParam.detail=reqParam.detail.filter((ite)=>{
+        return ite.key!==item.key
+      })
+    }else{
+      item.parent.children=item.parent.children.filter((ite)=>{
+        return ite.key!==item.key
+      })
+      if(!item.parent.children.length){
+        delete item.parent.children
+        // 无子字段时清除children，antd表格在数据元素含children时会出现+号，即使children数组为空
+      }
+    }
+    setReqParam({
+      ...reqParam
+    })
   }
   const columnConfig = [
     {
@@ -164,7 +190,7 @@ function RequestParam() {
             defaultValue="int"
             style={{ width: 100 }}
             onChange={e => {
-              handleFieldChange(item, e, '')
+              handleFieldChange(item, e, 'type')
             }}
           >
             <Option value="number">number</Option>
@@ -185,7 +211,7 @@ function RequestParam() {
         return (
           <Switch
             onChange={e => {
-              handleFieldChange(item, e, '')
+              handleFieldChange(item, e, 'required')
             }}
           />
         )
@@ -198,7 +224,7 @@ function RequestParam() {
         return (
           <Input
             onChange={e => {
-              handleFieldChange(item, e, '')
+              handleFieldChange(item, e, 'des')
             }}
           />
         )
@@ -207,8 +233,14 @@ function RequestParam() {
     {
       title: '示例',
       key: 'example',
-      render: () => {
-        return <Input />
+      render: item => {
+        return (
+          <Input
+            onChange={e => {
+              handleFieldChange(item, e, 'example')
+            }}
+          />
+        )
       }
     },
     {
@@ -217,14 +249,16 @@ function RequestParam() {
       render: item => {
         return (
           <>
-            <Button
-              type="primary"
-              style={{ marginRight: 10 }}
-              onClick={() => handleAdd(item)}
-            >
-              添加
-            </Button>
-            <Button type="danger">删除</Button>
+            {reqParam.paramType === 'json' ? (
+              <Button
+                type="primary"
+                style={{ marginRight: 10 }}
+                onClick={() => handleAdd(item)}
+              >
+                添加
+              </Button>
+            ) : null}
+            {item.isLast&&item.isRoot?null:<Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>}
           </>
         )
       }
@@ -235,7 +269,7 @@ function RequestParam() {
       <div className="param-switch">
         <Radio.Group
           defaultValue="form-data"
-          value={paramType}
+          value={reqParam.paramType}
           onChange={handleRadioChange}
         >
           <Radio value="form-data">Form-data</Radio>
@@ -243,17 +277,21 @@ function RequestParam() {
           <Radio value="raw">Raw</Radio>
         </Radio.Group>
       </div>
-      {paramType === 'json' ? (
-        <div className='param-json-root'>
+      {reqParam.paramType === 'json' ? (
+        <div className="param-json-root">
           <label>json根类型</label>
           <Select {...jsonRoot}>
-          <Option value="object">object</Option>
-          <Option value="array">array</Option>
-        </Select>
+            <Option value="object">object</Option>
+            <Option value="array">array</Option>
+          </Select>
         </div>
       ) : null}
-      {paramType !== 'raw' ? (
-        <Table columns={columnConfig} dataSource={param} pagination={false} />
+      {reqParam.paramType !== 'raw' ? (
+        <Table
+          columns={columnConfig}
+          dataSource={reqParam.detail}
+          pagination={false}
+        />
       ) : (
         <AceEditor
           mode="javascript"
@@ -267,35 +305,43 @@ function RequestParam() {
   )
 }
 function UrlParam() {
-  const [urlParam,setUrlParam]=useState([{
-    key:Math.random(),
-    isLast:true
-  }])
+  const {reqUrl,setReqUrl}=useContext(ApiCreateCtx)
   const handleFieldChange = (item, e, field) => {
-    if(item.isLast&&field==='name'){
-      item.isLast=false
-      urlParam.push({
-        key:Math.random(),
-        isLast:true
+    if (item.isLast && field === 'name') {
+      item.isLast = false
+      reqUrl.push({
+        key: Math.random(),
+        isLast: true
       })
+
     }
     item[field] = typeof e === 'object' ? e.target.value : e
-    setUrlParam([...urlParam])
+    setReqUrl([...reqUrl])
+  }
+  const handleDelete=(item)=>{
+    const newReqUrl=reqUrl.filter((ite)=>{
+      return ite.key!==item.key
+    })
+    setReqUrl([...newReqUrl])
   }
   const columnConfig = [
     {
       title: '参数名',
       key: 'name',
-      render: (item) => {
-        return <Input onChange={(e)=>handleFieldChange(item,e,'name')}/>
+      render: item => {
+        return <Input onChange={e => handleFieldChange(item, e, 'name')} />
       }
     },
     {
       title: '类型',
       key: 'type',
-      render: (item) => {
+      render: item => {
         return (
-          <Select defaultValue="int" style={{ width: 100 }} onChange={(e)=>handleFieldChange(item,e,'type')}>
+          <Select
+            defaultValue="int"
+            style={{ width: 100 }}
+            onChange={e => handleFieldChange(item, e, 'type')}
+          >
             <Option value="number">number</Option>
             <Option value="string">string</Option>
             <Option value="object">object</Option>
@@ -310,43 +356,41 @@ function UrlParam() {
     {
       title: '必填',
       key: 'required',
-      render: (item) => {
-        return <Switch onChange={(e)=>handleFieldChange(item,e,'required')}/>
+      render: item => {
+        return <Switch onChange={e => handleFieldChange(item, e, 'required')} />
       }
     },
     {
       title: '说明',
       key: 'des',
-      render: (item) => {
-        return <Input onChange={(e)=>handleFieldChange(item,e,'des')}/>
+      render: item => {
+        return <Input onChange={e => handleFieldChange(item, e, 'des')} />
       }
     },
     {
       title: '示例',
       key: 'example',
-      render: (item) => {
-        return <Input onChange={(e)=>handleFieldChange(item,e,'example')}/>
+      render: item => {
+        return <Input onChange={e => handleFieldChange(item, e, 'example')} />
       }
     },
     {
       title: '操作',
       key: 'operation',
-      render: (item) => {
-        return (
-          <>
-            {item.isLast?null:<Button type="danger">删除</Button>}
-          </>
-        )
+      render: item => {
+        return <>{item.isLast ? null : <Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>}</>
       }
     }
   ]
-  return <Table columns={columnConfig} dataSource={urlParam} pagination={false} />
+  return (
+    <Table columns={columnConfig} dataSource={reqUrl} pagination={false} />
+  )
 }
-export default function Request(props) {
+export default function Request() {
   return (
     <Tabs className="api-create-request" defaultActiveKey="1">
       <TabPane tab="请求头部" key="1">
-        <RequestHeader setRequest={props.setRequest} />
+        <RequestHeader />
       </TabPane>
       <TabPane tab="请求参数" key="2">
         <RequestParam />

@@ -25,11 +25,23 @@ export default function ApiCreate(props) {
   const [headerList, dispatch] = useReducer(requestHeaderReducer, [
     { key: Math.random(), last: true }
   ])
+  const [reqParam, setReqParam] = useState({
+    paramType:'form-data',
+    jsonRootType:'object',
+    detail:[{ key: Math.random(), isRoot: true, isLast: true }]
+  })
+  const [reqUrl,setReqUrl] =useState([
+    {
+      key: Math.random(),
+      isLast: true
+    }
+  ])
   const save = () => {
     if (meta.url && meta.name) {
-      addApiInstance({
-        meta: meta
-      })
+      // addApiInstance({
+      //   meta: meta
+      // })
+      console.log(reqParam);
     } else {
       Modal.error({
         title: 'URI或名称不可为空'
@@ -49,7 +61,7 @@ export default function ApiCreate(props) {
       </div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="API文档" key="1">
-          <ApiCreateCtx.Provider value={{ headerList, dispatch }}>
+          <ApiCreateCtx.Provider value={{ headerList, dispatch,reqParam,setReqParam,reqUrl,setReqUrl }}>
             <>
               <CreateMeta id={props.id} setMeta={setMeta} meta={meta} />
               <Request />
