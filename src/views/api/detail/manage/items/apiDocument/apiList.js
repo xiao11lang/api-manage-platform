@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Table, Button } from 'antd'
 import ApiTag, { MethodTag } from './apiTag'
-import { getApiInstances } from '../../../../../../api/apiInstance'
 import format from './../../../../../../until/format'
 const { Column } = Table
 export default function ApiList(props) {
-  const [dataList, setDataList] = useState([])
-  useEffect(() => {
-    getApiInstances({
-      projectId: props.id
-    }).then(res => {
-      setDataList(res.list)
-    })
-  }, [props.id])
   const columnConfig = [
     {
       title: 'APIs',
       dataIndex: 'name',
+      key:'name',
       render: (v, item) => {
         return (
           <>
@@ -29,6 +21,7 @@ export default function ApiList(props) {
     {
       title: 'URL',
       dataIndex: 'url',
+      key:'url',
       render: (v, item) => {
         return (
           <div className="api-url">
@@ -40,11 +33,13 @@ export default function ApiList(props) {
     },
     {
       title: '最近更新者',
-      dataIndex: 'updator'
+      dataIndex: 'updator',
+      key:'updator'
     },
     {
       title: '更新时间',
       dataIndex: 'updatedAt',
+      key:'updatedAt',
       render: v => <>{format(v)}</>
     },
     {
@@ -74,7 +69,7 @@ export default function ApiList(props) {
           新建API
         </Button>
       </div>
-      <Table dataSource={dataList}>{coulmns}</Table>
+      <Table dataSource={props.dataList}>{coulmns}</Table>
     </div>
   )
 }

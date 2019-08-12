@@ -32,7 +32,7 @@ export default function ApiGroup(props) {
   }, [])
   const items = props.list.map(item => {
     return (
-      <div key={item.id} className="group-item">
+      <div key={item.id} className="group-item" onClick={()=>props.setGroupId(item.id)}>
         {item.name}
         <MenuAction id={item.id} dispatch={props.dispatch} projectId={props.id}/>
       </div>
@@ -47,7 +47,7 @@ export default function ApiGroup(props) {
           </Button>
         </div>
         <div className="group-body">
-          <div className="group-item all">所有分组</div>
+          <div className="group-item all" onClick={()=>props.setGroupId('')}>所有分组</div>
           {items}
         </div>
       </div>
