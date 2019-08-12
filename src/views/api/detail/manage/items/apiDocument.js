@@ -19,7 +19,7 @@ export default function ApiDocument(props) {
         {!show ? (
           <>
             <ApiGroup id={id} dispatch={dispatch} list={list} />
-            <ApiList show={showCreate}/>
+            <ApiList show={showCreate} id={id}/>
           </>
         ) : <ApiCreate hide={hideCreate} id={id}/>}
       </div>

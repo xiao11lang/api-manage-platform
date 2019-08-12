@@ -18,9 +18,6 @@ const { TabPane } = Tabs
 const { Option } = Select
 function ResponseHeader() {
   const dataH = ['accept', 'language']
-  //   const [resHeader, setResHeader] = useState([
-  //     { key: Math.random(), isLast: true }
-  //   ])
   const { resHeader, setResHeader } = useContext(ApiCreateCtx)
   const handleFieldChange = (item, e, field) => {
     if (item.isLast && field === 'tag') {
@@ -32,6 +29,12 @@ function ResponseHeader() {
     }
     item[field] = typeof e === 'object' ? e.target.value : e
     setResHeader([...resHeader])
+  }
+  const handleDelete=(item)=>{
+    const newHeader=resHeader.filter((ite)=>{
+      return item.key!==ite.key
+    })
+    setResHeader([...newHeader])
   }
   const coulmnConfig = [
     {
@@ -56,8 +59,8 @@ function ResponseHeader() {
     },
     {
       title: '操作',
-      render: () => {
-        return <Button type="danger">删除</Button>
+      render: (item) => {
+        return !item.isLast?<Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>:null
       },
       key: 'operation'
     }
@@ -209,7 +212,7 @@ function ResponseParam() {
             >
               添加
             </Button>
-            <Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>
+            {!item.isLast?<Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>:null}
           </>
         )
       }

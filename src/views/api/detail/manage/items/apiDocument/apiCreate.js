@@ -1,4 +1,4 @@
-import React, { useState, createContext, useReducer } from 'react'
+import React, { useState, createContext, useReducer, useContext } from 'react'
 import { Tabs, Button, Icon, Modal } from 'antd'
 import ReactMde from 'react-mde'
 import * as Showdown from 'showdown'
@@ -10,6 +10,7 @@ import Response from './response'
 import Example from './example'
 import { addApiInstance } from '../../../../../../api/apiInstance'
 import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
+import { UserCtx } from './../../../../../../App'
 const { TabPane } = Tabs
 const converter = new Showdown.Converter({
   tables: true,
@@ -19,7 +20,7 @@ const converter = new Showdown.Converter({
 })
 export const ApiCreateCtx = createContext({})
 export default function ApiCreate(props) {
-  const [value, setValue] = React.useState('')
+  const { userInfo } = useContext(UserCtx)
   const [meta, setMeta] = useState({})
   const [selectedTab, setSelectedTab] = React.useState('write')
   const [headerList, dispatch] = useReducer(requestHeaderReducer, [
@@ -44,12 +45,39 @@ export default function ApiCreate(props) {
     jsonRootType: 'object',
     detail: [{ key: Math.random(), isRoot: true, isLast: true }]
   })
+  const [detailDes, setDetailDes] = useState('')
+  const successExample = {
+    code: 200,
+    type: 'text/plain',
+    content: ''
+  }
+  const failExample = {
+    code: 404,
+    type: 'text/html',
+    content: ''
+  }
   const save = () => {
     if (meta.url && meta.name) {
-      // addApiInstance({
-      //   meta: meta
-      // })
-      console.log(reqParam)
+      const data = {
+        projectId: props.id,
+        meta: meta,
+        request: {
+          header: headerList,
+          param: reqParam,
+          url: reqUrl
+        },
+        response: {
+          header: resHeader,
+          param: resParam
+        },
+        example: {
+          success: successExample,
+          fail: failExample
+        },
+        description: detailDes,
+        updator: userInfo.name
+      }
+      addApiInstance(data)
     } else {
       Modal.error({
         title: 'URI或名称不可为空'
@@ -87,14 +115,14 @@ export default function ApiCreate(props) {
               <CreateMeta id={props.id} setMeta={setMeta} meta={meta} />
               <Request />
               <Response />
-              <Example />
+              <Example success={successExample} fail={failExample} />
             </>
           </ApiCreateCtx.Provider>
         </TabPane>
         <TabPane tab="详细说明" key="2">
           <ReactMde
-            value={value}
-            onChange={setValue}
+            value={detailDes}
+            onChange={setDetailDes}
             selectedTab={selectedTab}
             onTabChange={setSelectedTab}
             l18n={{ write: '编辑', preview: '预览' }}

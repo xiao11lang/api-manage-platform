@@ -4,17 +4,31 @@ import AceEditor from 'react-ace'
 import 'brace/mode/javascript'
 import 'brace/theme/github'
 const { TabPane } = Tabs
-function ExampleItem() {
-  const dataC = ['text/plain', 'text/javascript','application/json','application/x-www-form-urlencoded','multipart/form-data']
+function ExampleItem(props) {
+  const dataC = [
+    'text/plain',
+    'text/javascript',
+    'application/json',
+    'application/x-www-form-urlencoded',
+    'multipart/form-data'
+  ]
+  const handleChange = (e, field) => {
+    props.info[field] = typeof e === 'object' ? e.target.value : e
+  }
   return (
     <div className="example-item">
       <div className="status-code">
         <div>HTTP Status Code</div>
-        <Input style={{ width: 200 }} />
+        <Input style={{ width: 200 }} onChange={e => handleChange(e, 'code')} defaultValue={props.info.code}/>
       </div>
       <div className="content-type">
         <div>Content-Type</div>
-        <AutoComplete style={{ width: 200 }} dataSource={dataC} />
+        <AutoComplete
+          style={{ width: 200 }}
+          dataSource={dataC}
+          onChange={e => handleChange(e, 'type')}
+          defaultValue={props.info.type}
+        />
       </div>
       <div className="content-detail">
         <div>示例内容 (0 / 65000)</div>
@@ -24,19 +38,22 @@ function ExampleItem() {
           name="UNIQUE_ID_OF_DIV"
           style={{ height: 200, width: '100%' }}
           editorProps={{ $blockScrolling: true }}
+          onChange={e => handleChange(e, 'content')}
+          defaultValue={props.info.content}
         />
       </div>
     </div>
   )
 }
-export default function Example() {
+export default function Example(props) {
+  const { success, fail } = props
   return (
     <Tabs className="api-create-example" defaultActiveKey="1">
       <TabPane tab="成功示例" key="1">
-        <ExampleItem />
+        <ExampleItem info={success} />
       </TabPane>
       <TabPane tab="失败示例" key="2">
-        <ExampleItem />
+        <ExampleItem info={fail} />
       </TabPane>
     </Tabs>
   )

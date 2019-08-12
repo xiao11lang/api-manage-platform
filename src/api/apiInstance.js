@@ -6,3 +6,10 @@ export function addApiInstance(data){
         data:data
     })
 }
+export function getApiInstances(data){
+    return fetch({
+        url:'getApiInstances',
+        method:'post',
+        data:data
+    })
+}

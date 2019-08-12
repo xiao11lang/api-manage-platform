@@ -18,3 +18,25 @@ export default function ApiTag(props) {
   }, [status])
   return <Tag color={info.color}>{info.des}</Tag>
 }
+export function MethodTag(props) {
+  const method = props.method || ''
+  const color = useMemo(() => {
+    switch (method) {
+      case 'head':
+        return 'green'
+      case 'get':
+        return 'blue'
+      case 'post':
+        return 'gold'
+      case 'put':
+        return 'purple'
+      case 'options':
+        return 'geekblue'
+      case 'delete':
+        return 'red'
+      default:
+        return 'green'
+    }
+  }, [method])
+  return <Tag color={color}>{method.toUpperCase()}</Tag>
+}
