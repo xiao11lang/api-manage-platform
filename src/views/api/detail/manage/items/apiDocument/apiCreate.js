@@ -1,7 +1,7 @@
 import React, { useState, createContext, useReducer } from 'react'
 import { Tabs, Button, Icon, Modal } from 'antd'
 import ReactMde from 'react-mde'
-import * as Showdown from "showdown";
+import * as Showdown from 'showdown'
 import 'react-mde/lib/styles/css/react-mde-all.css'
 import './apiCreate.scss'
 import CreateMeta from './createMeta'
@@ -16,7 +16,7 @@ const converter = new Showdown.Converter({
   simplifiedAutoLink: true,
   strikethrough: true,
   tasklists: true
-});
+})
 export const ApiCreateCtx = createContext({})
 export default function ApiCreate(props) {
   const [value, setValue] = React.useState('')
@@ -26,22 +26,30 @@ export default function ApiCreate(props) {
     { key: Math.random(), last: true }
   ])
   const [reqParam, setReqParam] = useState({
-    paramType:'form-data',
-    jsonRootType:'object',
-    detail:[{ key: Math.random(), isRoot: true, isLast: true }]
+    paramType: 'form-data',
+    jsonRootType: 'object',
+    detail: [{ key: Math.random(), isRoot: true, isLast: true }]
   })
-  const [reqUrl,setReqUrl] =useState([
+  const [reqUrl, setReqUrl] = useState([
     {
       key: Math.random(),
       isLast: true
     }
   ])
+  const [resHeader, setResHeader] = useState([
+    { key: Math.random(), isLast: true }
+  ])
+  const [resParam, setResParam] = useState({
+    paramType: 'json',
+    jsonRootType: 'object',
+    detail: [{ key: Math.random(), isRoot: true, isLast: true }]
+  })
   const save = () => {
     if (meta.url && meta.name) {
       // addApiInstance({
       //   meta: meta
       // })
-      console.log(reqParam);
+      console.log(reqParam)
     } else {
       Modal.error({
         title: 'URI或名称不可为空'
@@ -61,12 +69,25 @@ export default function ApiCreate(props) {
       </div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="API文档" key="1">
-          <ApiCreateCtx.Provider value={{ headerList, dispatch,reqParam,setReqParam,reqUrl,setReqUrl }}>
+          <ApiCreateCtx.Provider
+            value={{
+              headerList,
+              dispatch,
+              reqParam,
+              setReqParam,
+              reqUrl,
+              setReqUrl,
+              resHeader,
+              setResHeader,
+              resParam,
+              setResParam
+            }}
+          >
             <>
               <CreateMeta id={props.id} setMeta={setMeta} meta={meta} />
               <Request />
-              <Response/>
-              <Example/>
+              <Response />
+              <Example />
             </>
           </ApiCreateCtx.Provider>
         </TabPane>
@@ -77,7 +98,9 @@ export default function ApiCreate(props) {
             selectedTab={selectedTab}
             onTabChange={setSelectedTab}
             l18n={{ write: '编辑', preview: '预览' }}
-            generateMarkdownPreview={markdown => Promise.resolve(converter.makeHtml(markdown))}
+            generateMarkdownPreview={markdown =>
+              Promise.resolve(converter.makeHtml(markdown))
+            }
           />
         </TabPane>
       </Tabs>
