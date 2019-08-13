@@ -14,6 +14,7 @@ import {
 } from 'antd'
 import { ApiCreateCtx } from './apiCreate'
 import { useSelectChange } from './../../../../../../hooks/useSelectValue'
+import getParent from '../../../../../../until/getParent';
 const { TabPane } = Tabs
 const { Option } = Select
 function RequestHeader() {
@@ -115,13 +116,10 @@ function RequestParam() {
     item.children
       ? item.children.push({
           key: Math.random(),
-          parent: item,
           isRoot: false,
           isLast: true
         })
-      : (item.children = [
-          { key: Math.random(), parent: item, isRoot: false, isLast: true }
-        ])
+      : (item.children = [{ key: Math.random(), isRoot: false, isLast: true }])
     setReqParam({
       ...reqParam,
       detail: [...reqParam.detail]
@@ -139,10 +137,10 @@ function RequestParam() {
         isLast: true
       })
     } else {
-      item.parent.children.push({
+      let parent = getParent(reqParam.detail, item)
+      parent.children.push({
         key: Math.random(),
         isRoot: false,
-        parent: item.parent,
         isLast: true
       })
     }
@@ -155,16 +153,16 @@ function RequestParam() {
   const handleFieldChange = (item, e, field) => {
     item[field] = typeof e === 'object' ? e.target.value : e
   }
-  const handleDelete=(item)=>{
-    if(item.isRoot){
-      reqParam.detail=reqParam.detail.filter((ite)=>{
-        return ite.key!==item.key
+  const handleDelete = item => {
+    if (item.isRoot) {
+      reqParam.detail = reqParam.detail.filter(ite => {
+        return ite.key !== item.key
       })
-    }else{
-      item.parent.children=item.parent.children.filter((ite)=>{
-        return ite.key!==item.key
+    } else {
+      item.parent.children = item.parent.children.filter(ite => {
+        return ite.key !== item.key
       })
-      if(!item.parent.children.length){
+      if (!item.parent.children.length) {
         delete item.parent.children
         // 无子字段时清除children，antd表格在数据元素含children时会出现+号，即使children数组为空
       }
@@ -258,7 +256,11 @@ function RequestParam() {
                 添加
               </Button>
             ) : null}
-            {item.isLast&&item.isRoot?null:<Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>}
+            {item.isLast && item.isRoot ? null : (
+              <Button type="danger" onClick={() => handleDelete(item)}>
+                删除
+              </Button>
+            )}
           </>
         )
       }
@@ -305,7 +307,7 @@ function RequestParam() {
   )
 }
 function UrlParam() {
-  const {reqUrl,setReqUrl}=useContext(ApiCreateCtx)
+  const { reqUrl, setReqUrl } = useContext(ApiCreateCtx)
   const handleFieldChange = (item, e, field) => {
     if (item.isLast && field === 'name') {
       item.isLast = false
@@ -313,14 +315,13 @@ function UrlParam() {
         key: Math.random(),
         isLast: true
       })
-
     }
     item[field] = typeof e === 'object' ? e.target.value : e
     setReqUrl([...reqUrl])
   }
-  const handleDelete=(item)=>{
-    const newReqUrl=reqUrl.filter((ite)=>{
-      return ite.key!==item.key
+  const handleDelete = item => {
+    const newReqUrl = reqUrl.filter(ite => {
+      return ite.key !== item.key
     })
     setReqUrl([...newReqUrl])
   }
@@ -378,13 +379,19 @@ function UrlParam() {
       title: '操作',
       key: 'operation',
       render: item => {
-        return <>{item.isLast ? null : <Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>}</>
+        return (
+          <>
+            {item.isLast ? null : (
+              <Button type="danger" onClick={() => handleDelete(item)}>
+                删除
+              </Button>
+            )}
+          </>
+        )
       }
     }
   ]
-  return (
-    <Table columns={columnConfig} dataSource={reqUrl} pagination={false} />
-  )
+  return <Table columns={columnConfig} dataSource={reqUrl} pagination={false} />
 }
 export default function Request() {
   return (

@@ -14,6 +14,7 @@ import { ApiCreateCtx } from './apiCreate'
 import AceEditor from 'react-ace'
 import 'brace/mode/javascript'
 import 'brace/theme/github'
+import getParent from './../../../../../../until/getParent'
 const { TabPane } = Tabs
 const { Option } = Select
 function ResponseHeader() {
@@ -30,9 +31,9 @@ function ResponseHeader() {
     item[field] = typeof e === 'object' ? e.target.value : e
     setResHeader([...resHeader])
   }
-  const handleDelete=(item)=>{
-    const newHeader=resHeader.filter((ite)=>{
-      return item.key!==ite.key
+  const handleDelete = item => {
+    const newHeader = resHeader.filter(ite => {
+      return item.key !== ite.key
     })
     setResHeader([...newHeader])
   }
@@ -59,8 +60,12 @@ function ResponseHeader() {
     },
     {
       title: '操作',
-      render: (item) => {
-        return !item.isLast?<Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>:null
+      render: item => {
+        return !item.isLast ? (
+          <Button type="danger" onClick={() => handleDelete(item)}>
+            删除
+          </Button>
+        ) : null
       },
       key: 'operation'
     }
@@ -71,26 +76,23 @@ function ResponseParam() {
   const jsonRoot = useSelectChange('object')
   const { resParam, setResParam } = useContext(ApiCreateCtx)
   const handleRadioChange = v => {
-    if(v.target.value==='json'){
-      resParam.detail=[{ key: Math.random(), isRoot: true, isLast: true }]
-    }else{
-      resParam.detail=null
+    if (v.target.value === 'json') {
+      resParam.detail = [{ key: Math.random(), isRoot: true, isLast: true }]
+    } else {
+      resParam.detail = null
     }
-    resParam.paramType=v.target.value
-    setResParam({...resParam})
+    resParam.paramType = v.target.value
+    setResParam({ ...resParam })
   }
   const handleAdd = item => {
     item.children
       ? item.children.push({
           key: Math.random(),
-          parent: item,
           isRoot: false,
           isLast: true
         })
-      : (item.children = [
-          { key: Math.random(), parent: item, isRoot: false, isLast: true }
-        ])
-        setResParam({...resParam})
+      : (item.children = [{ key: Math.random(), isRoot: false, isLast: true }])
+    setResParam({ ...resParam })
   } //添加子字段
   const addRoot = (item, e) => {
     if (!item.isLast) {
@@ -104,29 +106,29 @@ function ResponseParam() {
         isLast: true
       })
     } else {
-      item.parent.children.push({
+      let parent = getParent(resParam.detail, item)
+      parent.children.push({
         key: Math.random(),
         isRoot: false,
-        parent: item.parent,
         isLast: true
       })
     }
     item.isLast = false
-    setResParam({...resParam})
+    setResParam({ ...resParam })
   } //添加兄弟字段
   const handleFieldChange = (item, e, field) => {
     item[field] = typeof e === 'object' ? e.target.value : e
   }
-  const handleDelete=(item)=>{
-    if(item.isRoot){
-      resParam.detail=resParam.detail.filter((ite)=>{
-        return ite.key!==item.key
+  const handleDelete = item => {
+    if (item.isRoot) {
+      resParam.detail = resParam.detail.filter(ite => {
+        return ite.key !== item.key
       })
-    }else{
-      item.parent.children=item.parent.children.filter((ite)=>{
-        return ite.key!==item.key
+    } else {
+      item.parent.children = item.parent.children.filter(ite => {
+        return ite.key !== item.key
       })
-      if(!item.parent.children.length){
+      if (!item.parent.children.length) {
         delete item.parent.children
         // 无子字段时清除children，antd表格在数据元素含children时会出现+号，即使children数组为空
       }
@@ -212,7 +214,11 @@ function ResponseParam() {
             >
               添加
             </Button>
-            {!item.isLast?<Button type="danger" onClick={()=>handleDelete(item)}>删除</Button>:null}
+            {!item.isLast ? (
+              <Button type="danger" onClick={() => handleDelete(item)}>
+                删除
+              </Button>
+            ) : null}
           </>
         )
       }
@@ -240,7 +246,11 @@ function ResponseParam() {
         </div>
       ) : null}
       {resParam.paramType !== 'raw' ? (
-        <Table columns={columnConfig} dataSource={resParam.detail} pagination={false} />
+        <Table
+          columns={columnConfig}
+          dataSource={resParam.detail}
+          pagination={false}
+        />
       ) : (
         <AceEditor
           mode="javascript"
