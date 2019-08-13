@@ -4,12 +4,13 @@ import ApiList from './apiDocument/apiList'
 import ApiGroup from './apiDocument/apiGroup'
 import ApiCreate from './apiDocument/apiCreate'
 import { getApiInstances } from '../../../../../api/apiInstance'
+import ApiIntro from './apiDocument/apiIntro';
 export default function ApiDocument(props) {
   const id = props.search.split('=')[1]
   const [list, dispatch] = useReducer(apiGroupReducer, [])
-  const [show, setShow] = useState(false)
   const [dataList, setDataList] = useState([])
   const [groupId, setGroupId] = useState('')
+  const [curShowDes, setCurShowDes] = useState('entry')
   useEffect(() => {
     getApiInstances({
       projectId: id
@@ -20,12 +21,6 @@ export default function ApiDocument(props) {
       setDataList(res.list)
     })
   }, [id])
-  const showCreate = () => {
-    setShow(true)
-  }
-  const hideCreate = () => {
-    setShow(false)
-  }
   const apiList = useMemo(() => {
     if(!groupId){
       return dataList
@@ -34,10 +29,10 @@ export default function ApiDocument(props) {
       return item.group_id === groupId
     })
   }, [dataList, groupId])
-  return (
-    <>
-      <div className="api-document">
-        {!show ? (
+  const curItem=useMemo(()=>{
+    switch(curShowDes){
+      case 'entry':
+        return (
           <>
             <ApiGroup
               id={id}
@@ -45,11 +40,33 @@ export default function ApiDocument(props) {
               list={list}
               setGroupId={setGroupId}
             />
-            <ApiList show={showCreate} id={id} dataList={apiList} />
+            <ApiList showCreate={()=>{setCurShowDes('create')}} id={id} dataList={apiList} showIntro={()=>{setCurShowDes('introduction')}}/>
           </>
-        ) : (
-          <ApiCreate hide={hideCreate} id={id} />
-        )}
+        )
+        case 'create':
+          return <ApiCreate hide={()=>{setCurShowDes('entry')}} id={id} />
+          case 'introduction':
+            return <ApiIntro hide={()=>{setCurShowDes('entry')}}/>
+            default: 
+            return (
+              <>
+                <ApiGroup
+                  id={id}
+                  dispatch={dispatch}
+                  list={list}
+                  setGroupId={setGroupId}
+                />
+                <ApiList showCreate={()=>{setCurShowDes('create')}} id={id} dataList={apiList} showIntro={()=>{setCurShowDes('introduction')}} />
+              </>
+            )
+    }
+  },[apiList, curShowDes, id, list])
+  return (
+    <>
+      <div className="api-document">
+        {
+          curItem
+        }
       </div>
     </>
   )

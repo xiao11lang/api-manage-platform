@@ -40,3 +40,27 @@ export function MethodTag(props) {
   }, [method])
   return <Tag color={color}>{method.toUpperCase()}</Tag>
 }
+export function ProtocolTag(props) {
+  const protocol = props.protocol || ''
+  const info = useMemo(() => {
+    switch (protocol) {
+      case 'Http://':
+        return {
+          protocol: 'HTTP',
+          color: '#607d8b'
+        }
+      case 'Https://':
+        return {
+          protocol: 'HTTPS',
+          color: '#82939f'
+        }
+
+      default:
+        return {
+          protocol: 'HTTPS',
+          color: '#82939f'
+        }
+    }
+  }, [protocol])
+  return <Tag color={info.color}>{info.protocol.toUpperCase()}</Tag>
+}

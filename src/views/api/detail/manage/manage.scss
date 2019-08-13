@@ -84,8 +84,8 @@
       &:hover {
         background: rgba(0, 0, 0, 0.1);
       }
-      &.all{
-        height: 54px
+      &.all {
+        height: 54px;
       }
     }
   }
@@ -98,6 +98,61 @@
       line-height: 50px;
       padding-left: 10px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+  .api-intro {
+    width: 100%;
+    .api-intro-top {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 10px;
+      border-radius: 5px 5px 0 0;
+      cursor: pointer;
+    }
+    .api-intro-main {
+      background: white;
+      padding: 30px 40px;
+      margin-top: 16px;
+      .api-intro-meta {
+        .meta-middle{
+          color: rgb(51, 51, 51);
+          margin: 16px 0;
+          font-size: 22px;
+          font-weight: 700;
+          div:last-child{
+            font-size: 16px
+          }
+        }
+        .meta-bottom{
+          span{
+            margin-right: 30px;
+            color: #999
+          }
+        }
+      }
+      .api-intro-response{
+        margin-top: 16px
+      }
+      .api-intro-example{
+        margin-top: 16px;
+        .ant-tabs-nav-wrap{
+          background: #fafafa
+        }
+      }
+      .api-intro-extra{
+        margin-top: 16px;
+      }
+    }
+    .front-title{
+      border-left: 3px solid #1890ff;
+      padding-left: 3px;
+      margin-bottom: 16px;
+      .front{
+        margin-right: 7px;
+        font-weight: 500
+      }
     }
   }
 }

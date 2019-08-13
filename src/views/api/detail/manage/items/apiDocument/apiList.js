@@ -50,7 +50,7 @@ export default function ApiList(props) {
             <Button type="primary" style={{ marginRight: 10 }}>
               编辑
             </Button>
-            <Button type="primary" style={{ marginRight: 10 }}>
+            <Button type="primary" style={{ marginRight: 10 }} onClick={props.showIntro}>
               查看
             </Button>
             <Button type="danger">删除</Button>
@@ -65,7 +65,7 @@ export default function ApiList(props) {
   return (
     <div className="api-list-con">
       <div className="list-top">
-        <Button icon="plus" type="primary" onClick={props.show}>
+        <Button icon="plus" type="primary" onClick={props.showCreate}>
           新建API
         </Button>
       </div>
