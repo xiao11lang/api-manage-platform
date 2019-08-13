@@ -22,7 +22,7 @@ function RequestHeader() {
   const handleSelect = (item, v) => {
     dispatch({
       type: 'MODIFY',
-      item: { ...item, label: v },
+      item: { ...item, tag: v },
       key: item.key
     })
     if (item.last) {
@@ -51,7 +51,7 @@ function RequestHeader() {
   const columnConfig = [
     {
       title: '标签',
-      key: 'label',
+      key: 'tag',
       render: item => {
         return (
           <AutoComplete

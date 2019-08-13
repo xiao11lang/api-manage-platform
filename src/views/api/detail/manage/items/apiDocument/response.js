@@ -167,7 +167,7 @@ function ResponseParam() {
       }
     },
     {
-      title: '必填',
+      title: '必含',
       key: 'required',
       render: item => {
         return (

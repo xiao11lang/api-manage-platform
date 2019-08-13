@@ -62,15 +62,27 @@ export default function ApiCreate(props) {
         projectId: props.id,
         meta: meta,
         request: {
-          header: headerList,
-          param: reqParam,
-          url: reqUrl
+          header: headerList.slice(0, headerList.length - 1),
+          param:
+            reqParam.paramType !== 'raw'
+              ? {
+                  ...reqParam,
+                  detail: reqParam.detail.slice(0, reqParam.detail.length - 1)
+                }
+              : reqParam,
+          url: reqUrl.slice(0, reqUrl.length - 1)
         },
         response: {
-          header: resHeader,
-          param: resParam
+          header: resHeader.slice(0, resHeader.length - 1),
+          param:
+            resParam.paramType !== 'raw'
+              ? {
+                  ...resParam,
+                  detail: resParam.detail.slice(0, resParam.detail.length - 1)
+                }
+              : resParam
         },
-        example: {
+        result: {
           success: successExample,
           fail: failExample
         },

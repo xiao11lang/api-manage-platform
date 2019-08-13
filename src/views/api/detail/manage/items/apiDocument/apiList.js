@@ -44,13 +44,13 @@ export default function ApiList(props) {
     },
     {
       title: '操作',
-      render: () => {
+      render: (item) => {
         return (
           <>
             <Button type="primary" style={{ marginRight: 10 }}>
               编辑
             </Button>
-            <Button type="primary" style={{ marginRight: 10 }} onClick={props.showIntro}>
+            <Button type="primary" style={{ marginRight: 10 }} onClick={()=>props.showIntro(item.id)}>
               查看
             </Button>
             <Button type="danger">删除</Button>

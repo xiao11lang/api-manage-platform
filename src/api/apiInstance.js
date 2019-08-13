@@ -13,3 +13,10 @@ export function getApiInstances(data){
         data:data
     })
 }
+export function getApiInfo(data){
+    return fetch({
+        url:'getApiInfo',
+        method:'post',
+        data:data
+    })
+}
