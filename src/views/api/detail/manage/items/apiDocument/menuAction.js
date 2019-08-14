@@ -28,6 +28,7 @@ export function MenuAction(props) {
         type: 'DELETE',
         id: props.id
       })
+      props.handleDelete(props.id)
     })
   }
   return (

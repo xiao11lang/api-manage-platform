@@ -1,9 +1,15 @@
-import React, { useReducer, useState, useEffect, useMemo } from 'react'
+import React, {
+  useReducer,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback
+} from 'react'
 import { apiGroupReducer } from '../../../../../reducer/apiGroupReducer'
 import ApiList from './apiDocument/apiList'
 import ApiGroup from './apiDocument/apiGroup'
 import ApiCreate from './apiDocument/apiCreate'
-import { getApiInstances } from '../../../../../api/apiInstance'
+import { getApiInstances, deleteApi } from '../../../../../api/apiInstance'
 import ApiIntro from './apiDocument/apiIntro'
 export default function ApiDocument(props) {
   const id = props.search.split('=')[1]
@@ -34,6 +40,27 @@ export default function ApiDocument(props) {
     setCurShowDes('introduction')
     setApiId(id)
   }
+  const handleDelete = useCallback(
+    async id => {
+      await deleteApi({ id: id })
+      setDataList(
+        dataList.filter(item => {
+          return item.id !== id
+        })
+      )
+    },
+    [dataList]
+  )
+  const handleDeleteGroup = useCallback(
+    async id => {
+      setDataList(
+        dataList.filter(item => {
+          return item.group_id !== id
+        })
+      )
+    },
+    [dataList]
+  )
   const curItem = useMemo(() => {
     switch (curShowDes) {
       case 'entry':
@@ -44,6 +71,7 @@ export default function ApiDocument(props) {
               dispatch={dispatch}
               list={list}
               setGroupId={setGroupId}
+              handleDeleteGroup={handleDeleteGroup}
             />
             <ApiList
               showCreate={() => {
@@ -52,6 +80,7 @@ export default function ApiDocument(props) {
               id={id}
               dataList={apiList}
               showIntro={showIntro}
+              handleDelete={handleDelete}
             />
           </>
         )
@@ -91,11 +120,12 @@ export default function ApiDocument(props) {
               showIntro={() => {
                 setCurShowDes('introduction')
               }}
+              handleDelete={handleDelete}
             />
           </>
         )
     }
-  }, [apiId, apiList, curShowDes, id, list])
+  }, [apiId, apiList, curShowDes, handleDelete, handleDeleteGroup, id, list])
   return (
     <>
       <div className="api-document">{curItem}</div>

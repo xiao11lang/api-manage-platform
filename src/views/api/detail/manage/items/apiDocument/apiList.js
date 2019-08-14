@@ -53,7 +53,7 @@ export default function ApiList(props) {
             <Button type="primary" style={{ marginRight: 10 }} onClick={()=>props.showIntro(item.id)}>
               查看
             </Button>
-            <Button type="danger">删除</Button>
+            <Button type="danger" onClick={()=>props.handleDelete(item.id)}>删除</Button>
           </>
         )
       }

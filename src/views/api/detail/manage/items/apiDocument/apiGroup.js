@@ -34,7 +34,7 @@ export default function ApiGroup(props) {
     return (
       <div key={item.id} className="group-item" onClick={()=>props.setGroupId(item.id)}>
         {item.name}
-        <MenuAction id={item.id} dispatch={props.dispatch} projectId={props.id}/>
+        <MenuAction id={item.id} dispatch={props.dispatch} projectId={props.id} handleDelete={props.handleDeleteGroup}/>
       </div>
     )
   })

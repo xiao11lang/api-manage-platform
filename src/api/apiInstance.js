@@ -3,7 +3,8 @@ export function addApiInstance(data){
     return fetch({
         url:'addApiInstance',
         method:'post',
-        data:data
+        data:data,
+        modalShow: true
     })
 }
 export function getApiInstances(data){
@@ -16,6 +17,13 @@ export function getApiInstances(data){
 export function getApiInfo(data){
     return fetch({
         url:'getApiInfo',
+        method:'post',
+        data:data
+    })
+}
+export function deleteApi(data){
+    return fetch({
+        url:'deleteApi',
         method:'post',
         data:data
     })
