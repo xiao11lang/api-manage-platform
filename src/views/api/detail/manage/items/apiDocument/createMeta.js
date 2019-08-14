@@ -81,6 +81,7 @@ export default function CreateMeta(props) {
           onChange={e => {
             handleModify(e, 'name')
           }}
+          value={meta.name}
         />
       </div>
     </div>

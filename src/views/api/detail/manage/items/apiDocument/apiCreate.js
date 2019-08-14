@@ -1,4 +1,10 @@
-import React, { useState, createContext, useReducer, useContext } from 'react'
+import React, {
+  useState,
+  createContext,
+  useReducer,
+  useContext,
+  useEffect
+} from 'react'
 import { Tabs, Button, Icon, Modal } from 'antd'
 import ReactMde from 'react-mde'
 import * as Showdown from 'showdown'
@@ -8,7 +14,7 @@ import CreateMeta from './createMeta'
 import Request from './request'
 import Response from './response'
 import Example from './example'
-import { addApiInstance } from '../../../../../../api/apiInstance'
+import { addApiInstance, getApiInfo } from '../../../../../../api/apiInstance'
 import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
 import { UserCtx } from './../../../../../../App'
 const { TabPane } = Tabs
@@ -84,6 +90,15 @@ export default function ApiCreate(props) {
       })
     }
   }
+  useEffect(() => {
+    if (props.mode === 'new') return
+    getApiInfo({
+      id: props.apiId
+    }).then(res => {
+      const { name, method, protocol } = res.info
+      setMeta({ name, method, protocol })
+    })
+  }, [props.apiId, props.mode])
   return (
     <div className="api-create">
       <div className="api-create-top">

@@ -18,7 +18,11 @@ export default function ApiDocument(props) {
   const [groupId, setGroupId] = useState('')
   const [curShowDes, setCurShowDes] = useState('entry')
   const [apiId, setApiId] = useState('')
+  const [mode,setMode]=useState('new')
   useEffect(() => {
+    if(curShowDes!=='entry'){
+      return 
+    }
     getApiInstances({
       projectId: id
     }).then(res => {
@@ -27,7 +31,7 @@ export default function ApiDocument(props) {
       })
       setDataList(res.list)
     })
-  }, [id])
+  }, [id,curShowDes])
   const apiList = useMemo(() => {
     if (!groupId) {
       return dataList
@@ -61,6 +65,15 @@ export default function ApiDocument(props) {
     },
     [dataList]
   )
+  const handleEdit=(id)=>{
+    setCurShowDes('create')
+    setMode('edit')
+    setApiId(id)
+  }
+  const showCreate=()=>{
+    setCurShowDes('create')
+    setMode('new')
+  }
   const curItem = useMemo(() => {
     switch (curShowDes) {
       case 'entry':
@@ -81,6 +94,7 @@ export default function ApiDocument(props) {
               dataList={apiList}
               showIntro={showIntro}
               handleDelete={handleDelete}
+              edit={handleEdit}
             />
           </>
         )
@@ -91,6 +105,8 @@ export default function ApiDocument(props) {
               setCurShowDes('entry')
             }}
             id={id}
+            mode={mode}
+            apiId={apiId}
           />
         )
       case 'introduction':
@@ -112,20 +128,20 @@ export default function ApiDocument(props) {
               setGroupId={setGroupId}
             />
             <ApiList
-              showCreate={() => {
-                setCurShowDes('create')
-              }}
+              showCreate={showCreate}
               id={id}
               dataList={apiList}
               showIntro={() => {
                 setCurShowDes('introduction')
               }}
               handleDelete={handleDelete}
+              edit={handleEdit}
             />
           </>
         )
     }
-  }, [apiId, apiList, curShowDes, handleDelete, handleDeleteGroup, id, list])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiId, apiList, curShowDes, id, list, mode])
   return (
     <>
       <div className="api-document">{curItem}</div>

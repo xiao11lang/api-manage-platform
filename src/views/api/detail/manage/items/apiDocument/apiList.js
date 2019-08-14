@@ -47,7 +47,7 @@ export default function ApiList(props) {
       render: (item) => {
         return (
           <>
-            <Button type="primary" style={{ marginRight: 10 }}>
+            <Button type="primary" style={{ marginRight: 10 }} onClick={()=>props.edit(item.id)}>
               编辑
             </Button>
             <Button type="primary" style={{ marginRight: 10 }} onClick={()=>props.showIntro(item.id)}>
