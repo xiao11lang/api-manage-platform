@@ -8,7 +8,7 @@ import CreateMeta from './createMeta'
 import Request from './request'
 import Response from './response'
 import Example from './example'
-import { addApiInstance, getApiInfo } from '../../../../../../api/apiInstance'
+import { addApiInstance, getApiInfo,updateApi } from '../../../../../../api/apiInstance'
 import { UserCtx } from './../../../../../../App'
 const { TabPane } = Tabs
 const converter = new Showdown.Converter({
@@ -76,7 +76,14 @@ export default function ApiCreate(props) {
         description: detailDes,
         updator: userInfo.name
       }
-      addApiInstance(data)
+      if(props.mode==='new'){
+        addApiInstance(data)
+      }else{
+        updateApi({
+          id: props.apiId,
+          data: data
+        })
+      }
     } else {
       Modal.error({
         title: 'URI或名称不可为空'

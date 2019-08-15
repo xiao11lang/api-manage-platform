@@ -28,3 +28,11 @@ export function deleteApi(data){
         data:data
     })
 }
+export function updateApi(data){
+    return fetch({
+        url:'updateApi',
+        method:'post',
+        data:data,
+        modalShow: true
+    })
+}
