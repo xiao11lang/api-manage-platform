@@ -1,13 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Tabs,
   Table,
-  AutoComplete,
   Switch,
   Input,
   Button,
   Radio,
-  Select
+  Select,
+  Dropdown,
+  Icon
 } from 'antd'
 import { useSelectChange } from '../../../../../../hooks/useSelectValue'
 import { ApiCreateCtx } from './apiCreate'
@@ -15,7 +16,7 @@ import AceEditor from 'react-ace'
 import 'brace/mode/javascript'
 import 'brace/theme/github'
 import getParent from './../../../../../../until/getParent'
-import { httpHeader } from '../../../../../../until/constant';
+import HttpHeader from './../../../../../../components/httpHeader'
 const { TabPane } = Tabs
 const { Option } = Select
 function ResponseHeader() {
@@ -42,11 +43,27 @@ function ResponseHeader() {
       title: '标签',
       render: item => {
         return (
-          <AutoComplete
-            onSelect={e => handleFieldChange(item, e, 'tag')}
-            onSearch={e => handleFieldChange(item, e, 'tag')}
-            dataSource={httpHeader}
-            defaultValue={item.tag}
+          // <AutoComplete
+          //   onSelect={e => handleFieldChange(item, e, 'tag')}
+          //   onSearch={e => handleFieldChange(item, e, 'tag')}
+          //   dataSource={httpHeader}
+          //   defaultValue={item.tag}
+          // />
+          <Input
+            suffix={
+              <Dropdown
+                overlay={
+                  <HttpHeader
+                    onClick={key => handleFieldChange(item, key, 'tag')}
+                  />
+                }
+              >
+                <Icon type="down" />
+              </Dropdown>
+            }
+            style={{ width: 200 }}
+            value={item.tag}
+            onChange={e => handleFieldChange(item, e, 'tag')}
           />
         )
       },
@@ -55,7 +72,12 @@ function ResponseHeader() {
     {
       title: '内容',
       render: item => {
-        return <Input onChange={e => handleFieldChange(item, e, 'content')} defaultValue={item.content}/>
+        return (
+          <Input
+            onChange={e => handleFieldChange(item, e, 'content')}
+            defaultValue={item.content}
+          />
+        )
       },
       key: 'content'
     },
@@ -143,7 +165,7 @@ function ResponseParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => addRoot(item, e)} value={item.tag}/>
+        return <Input onChange={e => addRoot(item, e)} value={item.tag} />
       }
     },
     {

@@ -10,12 +10,14 @@ import {
   Input,
   Button,
   Radio,
-  Select
+  Select,
+  Icon,
+  Dropdown
 } from 'antd'
 import { ApiCreateCtx } from './apiCreate'
 import { useSelectChange } from './../../../../../../hooks/useSelectValue'
 import getParent from '../../../../../../until/getParent';
-import { httpHeader } from '../../../../../../until/constant';
+import HttpHeader from './../../../../../../components/httpHeader';
 const { TabPane } = Tabs
 const { Option } = Select
 function RequestHeader() {
@@ -55,14 +57,15 @@ function RequestHeader() {
       key: 'tag',
       render: item => {
         return (
-          <AutoComplete
-            placeholder="accept"
-            dataSource={httpHeader}
-            filterOption={true}
-            onSelect={v => handleSelect(item, v)}
-            onSearch={v => handleSelect(item, v)}
-            allowClear
-          />
+          // <AutoComplete
+          //   placeholder="accept"
+          //   dataSource={httpHeader}
+          //   filterOption={true}
+          //   onSelect={v => handleSelect(item, v)}
+          //   onSearch={v => handleSelect(item, v)}
+          //   allowClear
+          // />
+          <Input suffix={<Dropdown overlay={<HttpHeader onClick={(key)=>console.log(key)}/>}><Icon type='down'></Icon></Dropdown>} style={{width:200}} value={item.name}/>
         )
       }
     },
