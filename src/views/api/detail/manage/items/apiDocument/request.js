@@ -15,10 +15,10 @@ import {
 import { ApiCreateCtx } from './apiCreate'
 import { useSelectChange } from './../../../../../../hooks/useSelectValue'
 import getParent from '../../../../../../until/getParent';
+import { httpHeader } from '../../../../../../until/constant';
 const { TabPane } = Tabs
 const { Option } = Select
 function RequestHeader() {
-  const dataH = ['accept', 'language']
   const { headerList, dispatch } = useContext(ApiCreateCtx)
   const handleSelect = (item, v) => {
     dispatch({
@@ -57,7 +57,7 @@ function RequestHeader() {
         return (
           <AutoComplete
             placeholder="accept"
-            dataSource={dataH}
+            dataSource={httpHeader}
             filterOption={true}
             onSelect={v => handleSelect(item, v)}
             onSearch={v => handleSelect(item, v)}
@@ -176,7 +176,7 @@ function RequestParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => addRoot(item, e)} />
+        return <Input onChange={e => addRoot(item, e)} defaultValue={item.name}/>
       }
     },
     {
@@ -190,6 +190,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'type')
             }}
+            value={item.type}
           >
             <Option value="number">number</Option>
             <Option value="string">string</Option>
@@ -211,6 +212,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'required')
             }}
+            checked={item.required}
           />
         )
       }
@@ -224,6 +226,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'des')
             }}
+            value={item.des}
           />
         )
       }
@@ -237,6 +240,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'example')
             }}
+            value={item.example}
           />
         )
       }

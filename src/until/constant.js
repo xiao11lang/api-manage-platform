@@ -1,0 +1,20 @@
+export const httpHeader = [
+  'Accept',
+  'Accept-Language',
+  'Accept-Encoding',
+  'Accept-Charset',
+  'Authorization',
+  'Cache-Control',
+  'Cookie',
+  'Content-Length',
+  'Content-Type',
+  'Date',
+  'Expect',
+  'If-Match',
+  'If-Modified-Since',
+  'If-None-Match',
+  'Origin',
+  'Pragma',
+  'User-Agent',
+  'Via'
+]

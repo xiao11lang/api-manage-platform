@@ -15,10 +15,10 @@ import AceEditor from 'react-ace'
 import 'brace/mode/javascript'
 import 'brace/theme/github'
 import getParent from './../../../../../../until/getParent'
+import { httpHeader } from '../../../../../../until/constant';
 const { TabPane } = Tabs
 const { Option } = Select
 function ResponseHeader() {
-  const dataH = ['accept', 'language']
   const { resHeader, setResHeader } = useContext(ApiCreateCtx)
   const handleFieldChange = (item, e, field) => {
     if (item.isLast && field === 'tag') {
@@ -45,7 +45,8 @@ function ResponseHeader() {
           <AutoComplete
             onSelect={e => handleFieldChange(item, e, 'tag')}
             onSearch={e => handleFieldChange(item, e, 'tag')}
-            dataSource={dataH}
+            dataSource={httpHeader}
+            defaultValue={item.tag}
           />
         )
       },
@@ -54,7 +55,7 @@ function ResponseHeader() {
     {
       title: '内容',
       render: item => {
-        return <Input onChange={e => handleFieldChange(item, e, 'content')} />
+        return <Input onChange={e => handleFieldChange(item, e, 'content')} defaultValue={item.content}/>
       },
       key: 'content'
     },
@@ -142,7 +143,7 @@ function ResponseParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => addRoot(item, e)} />
+        return <Input onChange={e => addRoot(item, e)} value={item.tag}/>
       }
     },
     {
@@ -156,6 +157,7 @@ function ResponseParam() {
             onChange={e => {
               handleFieldChange(item, e, '')
             }}
+            value={item.type}
           >
             <Option value="number">number</Option>
             <Option value="string">string</Option>

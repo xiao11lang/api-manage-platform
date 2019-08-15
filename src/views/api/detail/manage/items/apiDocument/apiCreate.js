@@ -95,8 +95,13 @@ export default function ApiCreate(props) {
     getApiInfo({
       id: props.apiId
     }).then(res => {
-      const { name, method, protocol } = res.info
-      setMeta({ name, method, protocol })
+      const { name, method, protocol,request,response,url,description } = res.info
+      setMeta({ name, method, protocol,url })
+      setDetailDes(description)
+      setReqParam(request.param)
+      setReqUrl(request.url)
+      setResHeader(response.header)
+      setResParam(response.param)
     })
   }, [props.apiId, props.mode])
   return (

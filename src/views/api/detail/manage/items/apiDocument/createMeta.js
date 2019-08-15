@@ -73,6 +73,7 @@ export default function CreateMeta(props) {
           onChange={e => {
             handleModify(e, 'url')
           }}
+          value={meta.url}
         />
       </div>
       <div className="meta-item">
