@@ -159,7 +159,7 @@ function ResponseParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => addRoot(item, e)} value={item.tag} />
+        return <Input onChange={e => addRoot(item, e)} defaultValue={item.name} />
       }
     },
     {
@@ -168,12 +168,11 @@ function ResponseParam() {
       render: item => {
         return (
           <Select
-            defaultValue="int"
             style={{ width: 100 }}
             onChange={e => {
-              handleFieldChange(item, e, '')
+              handleFieldChange(item, e, 'type')
             }}
-            value={item.type}
+            defaultValue={item.type}
           >
             <Option value="number">number</Option>
             <Option value="string">string</Option>
@@ -193,8 +192,9 @@ function ResponseParam() {
         return (
           <Switch
             onChange={e => {
-              handleFieldChange(item, e, '')
+              handleFieldChange(item, e, 'required')
             }}
+            defaultChecked={item.required}
           />
         )
       }
@@ -206,8 +206,9 @@ function ResponseParam() {
         return (
           <Input
             onChange={e => {
-              handleFieldChange(item, e, '')
+              handleFieldChange(item, e, 'des')
             }}
+            defaultValue={item.des}
           />
         )
       }
@@ -215,8 +216,15 @@ function ResponseParam() {
     {
       title: '示例',
       key: 'example',
-      render: () => {
-        return <Input />
+      render: (item) => {
+        return (
+          <Input
+            onChange={e => {
+              handleFieldChange(item, e, 'example')
+            }}
+            defaultValue={item.example}
+          />
+        )
       }
     },
     {

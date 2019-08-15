@@ -14,12 +14,13 @@ function ExampleItem(props) {
   ]
   const handleChange = (e, field) => {
     props.info[field] = typeof e === 'object' ? e.target.value : e
+    props.set({...props.info})
   }
   return (
     <div className="example-item">
       <div className="status-code">
         <div>HTTP Status Code</div>
-        <Input style={{ width: 200 }} onChange={e => handleChange(e, 'code')} defaultValue={props.info.code}/>
+        <Input style={{ width: 200 }} onChange={e => handleChange(e, 'code')} value={props.info.code}/>
       </div>
       <div className="content-type">
         <div>Content-Type</div>
@@ -27,7 +28,7 @@ function ExampleItem(props) {
           style={{ width: 200 }}
           dataSource={dataC}
           onChange={e => handleChange(e, 'type')}
-          defaultValue={props.info.type}
+          value={props.info.type}
         />
       </div>
       <div className="content-detail">
@@ -39,7 +40,7 @@ function ExampleItem(props) {
           style={{ height: 200, width: '100%' }}
           editorProps={{ $blockScrolling: true }}
           onChange={e => handleChange(e, 'content')}
-          defaultValue={props.info.content}
+          value={props.info.content}
         />
       </div>
     </div>
@@ -50,10 +51,10 @@ export default function Example(props) {
   return (
     <Tabs className="api-create-example" defaultActiveKey="1">
       <TabPane tab="成功示例" key="1">
-        <ExampleItem info={success} />
+        <ExampleItem info={success} set={props.setSuccess}/>
       </TabPane>
       <TabPane tab="失败示例" key="2">
-        <ExampleItem info={fail} />
+        <ExampleItem info={fail} type='fail' set={props.setFail}/>
       </TabPane>
     </Tabs>
   )

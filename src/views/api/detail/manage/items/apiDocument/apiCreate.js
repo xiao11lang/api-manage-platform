@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  createContext,
-  useContext,
-  useEffect
-} from 'react'
+import React, { useState, createContext, useContext, useEffect } from 'react'
 import { Tabs, Button, Icon, Modal } from 'antd'
 import ReactMde from 'react-mde'
 import * as Showdown from 'showdown'
@@ -50,16 +45,16 @@ export default function ApiCreate(props) {
     detail: [{ key: Math.random(), isRoot: true, isLast: true }]
   })
   const [detailDes, setDetailDes] = useState('')
-  const successExample = {
+  const [successExample, setSuccess] = useState({
     code: 200,
     type: 'text/plain',
     content: ''
-  }
-  const failExample = {
+  })
+  const [failExample, setFail] = useState({
     code: 404,
     type: 'text/html',
-    content: ''
-  }
+    content: 'not found'
+  })
   const save = () => {
     if (meta.url && meta.name) {
       const data = {
@@ -93,13 +88,25 @@ export default function ApiCreate(props) {
     getApiInfo({
       id: props.apiId
     }).then(res => {
-      const { name, method, protocol,request,response,url,description } = res.info
-      setMeta({ name, method, protocol,url })
+      const {
+        name,
+        method,
+        protocol,
+        request,
+        response,
+        url,
+        description,
+        result,
+      } = res.info
+      setMeta({ name, method, protocol, url })
       setDetailDes(description)
+      setReqHeader(request.header)
       setReqParam(request.param)
       setReqUrl(request.url)
       setResHeader(response.header)
       setResParam(response.param)
+      setSuccess(result.success)
+      setFail(result.fail)
     })
   }, [props.apiId, props.mode])
   return (
@@ -133,7 +140,12 @@ export default function ApiCreate(props) {
               <CreateMeta id={props.id} setMeta={setMeta} meta={meta} />
               <Request />
               <Response />
-              <Example success={successExample} fail={failExample} />
+              <Example
+                success={successExample}
+                fail={failExample}
+                setSuccess={setSuccess}
+                setFail={setFail}
+              />
             </>
           </ApiCreateCtx.Provider>
         </TabPane>

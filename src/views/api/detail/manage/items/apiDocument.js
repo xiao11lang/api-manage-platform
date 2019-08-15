@@ -74,6 +74,10 @@ export default function ApiDocument(props) {
     setCurShowDes('create')
     setMode('new')
   }
+  const hide=()=>{
+    setCurShowDes('entry')
+    setMode('new')
+  }
   const curItem = useMemo(() => {
     switch (curShowDes) {
       case 'entry':
@@ -87,9 +91,7 @@ export default function ApiDocument(props) {
               handleDeleteGroup={handleDeleteGroup}
             />
             <ApiList
-              showCreate={() => {
-                setCurShowDes('create')
-              }}
+              showCreate={showCreate}
               id={id}
               dataList={apiList}
               showIntro={showIntro}
@@ -101,9 +103,7 @@ export default function ApiDocument(props) {
       case 'create':
         return (
           <ApiCreate
-            hide={() => {
-              setCurShowDes('entry')
-            }}
+            hide={hide}
             id={id}
             mode={mode}
             apiId={apiId}
@@ -112,9 +112,7 @@ export default function ApiDocument(props) {
       case 'introduction':
         return (
           <ApiIntro
-            hide={() => {
-              setCurShowDes('entry')
-            }}
+            hide={hide}
             id={apiId}
           />
         )

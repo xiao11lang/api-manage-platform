@@ -67,14 +67,14 @@ function RequestHeader() {
       title: '必填',
       key: 'required',
       render: item => (
-        <Switch onChange={e => handleFieldChange(item, e, 'required')} />
+        <Switch onChange={e => handleFieldChange(item, e, 'required')} defaultChecked={item.required}/>
       )
     },
     {
       title: '内容',
       key: 'content',
       render: item => (
-        <Input onChange={e => handleFieldChange(item, e, 'content')} />
+        <Input onChange={e => handleFieldChange(item, e, 'content')} defaultValue={item.content}/>
       )
     },
     {
@@ -186,12 +186,11 @@ function RequestParam() {
       render: item => {
         return (
           <Select
-            defaultValue="int"
             style={{ width: 100 }}
             onChange={e => {
               handleFieldChange(item, e, 'type')
             }}
-            value={item.type}
+            defaultValue={item.type}
           >
             <Option value="number">number</Option>
             <Option value="string">string</Option>
@@ -213,7 +212,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'required')
             }}
-            checked={item.required}
+            defaultChecked={item.required}
           />
         )
       }
@@ -227,7 +226,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'des')
             }}
-            value={item.des}
+            defaultValue={item.des}
           />
         )
       }
@@ -241,7 +240,7 @@ function RequestParam() {
             onChange={e => {
               handleFieldChange(item, e, 'example')
             }}
-            value={item.example}
+            defaultValue={item.example}
           />
         )
       }
