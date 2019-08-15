@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import {
   Tabs,
   Table,
@@ -43,12 +43,6 @@ function ResponseHeader() {
       title: '标签',
       render: item => {
         return (
-          // <AutoComplete
-          //   onSelect={e => handleFieldChange(item, e, 'tag')}
-          //   onSearch={e => handleFieldChange(item, e, 'tag')}
-          //   dataSource={httpHeader}
-          //   defaultValue={item.tag}
-          // />
           <Input
             suffix={
               <Dropdown

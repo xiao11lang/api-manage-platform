@@ -5,7 +5,6 @@ import 'brace/theme/github'
 import {
   Tabs,
   Table,
-  AutoComplete,
   Switch,
   Input,
   Button,
@@ -16,40 +15,28 @@ import {
 } from 'antd'
 import { ApiCreateCtx } from './apiCreate'
 import { useSelectChange } from './../../../../../../hooks/useSelectValue'
-import getParent from '../../../../../../until/getParent';
-import HttpHeader from './../../../../../../components/httpHeader';
+import getParent from '../../../../../../until/getParent'
+import HttpHeader from './../../../../../../components/httpHeader'
 const { TabPane } = Tabs
 const { Option } = Select
 function RequestHeader() {
-  const { headerList, dispatch } = useContext(ApiCreateCtx)
-  const handleSelect = (item, v) => {
-    dispatch({
-      type: 'MODIFY',
-      item: { ...item, tag: v },
-      key: item.key
-    })
-    if (item.last) {
-      dispatch({
-        type: 'ADD',
-        item: {
-          last: true,
-          key: Math.random()
-        }
+  const { reqHeader, setReqHeader } = useContext(ApiCreateCtx)
+  const handleFieldChange = (item, e, field) => {
+    if (item.isLast && field === 'tag') {
+      item.isLast = false
+      reqHeader.push({
+        key: Math.random(),
+        isLast: true
       })
     }
-  }
-  const handleChange = (e, item, field) => {
-    dispatch({
-      type: 'MODIFY',
-      item: { ...item, [field]: typeof e === 'object' ? e.target.value : e },
-      key: item.key
-    })
+    item[field] = typeof e === 'object' ? e.target.value : e
+    setReqHeader([...reqHeader])
   }
   const handleDelete = item => {
-    dispatch({
-      type: 'DELETE',
-      key: item.key
+    const newHeader = reqHeader.filter(ite => {
+      return item.key !== ite.key
     })
+    setReqHeader([...newHeader])
   }
   const columnConfig = [
     {
@@ -57,15 +44,22 @@ function RequestHeader() {
       key: 'tag',
       render: item => {
         return (
-          // <AutoComplete
-          //   placeholder="accept"
-          //   dataSource={httpHeader}
-          //   filterOption={true}
-          //   onSelect={v => handleSelect(item, v)}
-          //   onSearch={v => handleSelect(item, v)}
-          //   allowClear
-          // />
-          <Input suffix={<Dropdown overlay={<HttpHeader onClick={(key)=>console.log(key)}/>}><Icon type='down'></Icon></Dropdown>} style={{width:200}} value={item.name}/>
+          <Input
+            suffix={
+              <Dropdown
+                overlay={
+                  <HttpHeader
+                    onClick={key => handleFieldChange(item, key, 'tag')}
+                  />
+                }
+              >
+                <Icon type="down" />
+              </Dropdown>
+            }
+            style={{ width: 200 }}
+            value={item.tag}
+            onChange={e => handleFieldChange(item, e, 'tag')}
+          />
         )
       }
     },
@@ -73,13 +67,15 @@ function RequestHeader() {
       title: '必填',
       key: 'required',
       render: item => (
-        <Switch onChange={e => handleChange(e, item, 'required')} />
+        <Switch onChange={e => handleFieldChange(item, e, 'required')} />
       )
     },
     {
       title: '内容',
       key: 'content',
-      render: item => <Input onChange={e => handleChange(e, item, 'content')} />
+      render: item => (
+        <Input onChange={e => handleFieldChange(item, e, 'content')} />
+      )
     },
     {
       title: '操作',
@@ -96,7 +92,7 @@ function RequestHeader() {
   return (
     <Table
       className="request-header"
-      dataSource={headerList}
+      dataSource={reqHeader}
       columns={columnConfig}
       pagination={false}
     />
@@ -179,7 +175,9 @@ function RequestParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => addRoot(item, e)} defaultValue={item.name}/>
+        return (
+          <Input onChange={e => addRoot(item, e)} defaultValue={item.name} />
+        )
       }
     },
     {

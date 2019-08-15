@@ -1,7 +1,6 @@
 import React, {
   useState,
   createContext,
-  useReducer,
   useContext,
   useEffect
 } from 'react'
@@ -15,7 +14,6 @@ import Request from './request'
 import Response from './response'
 import Example from './example'
 import { addApiInstance, getApiInfo } from '../../../../../../api/apiInstance'
-import { requestHeaderReducer } from '../../../../../../reducer/requestHeaderReducer'
 import { UserCtx } from './../../../../../../App'
 const { TabPane } = Tabs
 const converter = new Showdown.Converter({
@@ -29,8 +27,8 @@ export default function ApiCreate(props) {
   const { userInfo } = useContext(UserCtx)
   const [meta, setMeta] = useState({})
   const [selectedTab, setSelectedTab] = React.useState('write')
-  const [headerList, dispatch] = useReducer(requestHeaderReducer, [
-    { key: Math.random(), last: true }
+  const [reqHeader, setReqHeader] = useState([
+    { key: Math.random(), isLast: true }
   ])
   const [reqParam, setReqParam] = useState({
     paramType: 'form-data',
@@ -68,7 +66,7 @@ export default function ApiCreate(props) {
         projectId: props.id,
         meta: meta,
         request: {
-          header: headerList,
+          header: reqHeader,
           param: reqParam,
           url: reqUrl
         },
@@ -119,8 +117,8 @@ export default function ApiCreate(props) {
         <TabPane tab="API文档" key="1">
           <ApiCreateCtx.Provider
             value={{
-              headerList,
-              dispatch,
+              reqHeader,
+              setReqHeader,
               reqParam,
               setReqParam,
               reqUrl,
