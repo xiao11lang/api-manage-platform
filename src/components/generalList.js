@@ -1,9 +1,8 @@
 import React from 'react'
 import { Table, Button } from 'antd'
-import ApiTag, { MethodTag } from './apiTag'
-import format from './../../../../../../until/format'
+import format from '../until/format';
 const { Column } = Table
-export default function ApiList(props) {
+export default function GeneralList(props) {
   const columnConfig = [
     {
       title: 'APIs',
@@ -12,7 +11,6 @@ export default function ApiList(props) {
       render: (v, item) => {
         return (
           <>
-            <ApiTag status={item.status} />
             <span>{v}</span>
           </>
         )
@@ -25,7 +23,6 @@ export default function ApiList(props) {
       render: (v, item) => {
         return (
           <div className="api-url">
-            <MethodTag method={item.method} />
             <span>{v}</span>
           </div>
         )
@@ -63,13 +60,14 @@ export default function ApiList(props) {
     return <Column key={index}  {...column} />
   })
   return (
-    <div className="api-list-con">
+    <div className="general-list-con">
       <div className="list-top">
         <Button icon="plus" type="primary" onClick={props.showCreate}>
-          新建API
+          {props.createTitle}
         </Button>
       </div>
-      <Table dataSource={props.dataList}>{coulmns}</Table>
+      {/* <Table dataSource={props.dataList}>{coulmns}</Table> */}
+      {props.children}
     </div>
   )
 }

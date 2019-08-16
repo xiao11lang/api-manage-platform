@@ -1,9 +1,8 @@
 import React, { useState,useEffect } from 'react'
 import { Button, Modal, Input } from 'antd'
-import { useInputChange } from '../../../../../../hooks/useInputChange';
-import { getGroups,addTopGroup } from '../../../../../../api/apiGroup';
 import {MenuAction} from './menuAction'
-export default function ApiGroup(props) {
+import { useInputChange } from '../hooks/useInputChange';
+export default function GeneralGroup(props) {
   const [modalShow, setModalShow] = useState(false)
   const name = useInputChange('')
   const showModal = () => {
@@ -13,21 +12,21 @@ export default function ApiGroup(props) {
     if (!name.value.trim()) {
       return
     }
-    return addTopGroup({ name: name.value, project_id: props.id }).then(res => {
-      setModalShow(false)
-      props.dispatch({
-        type: 'ADD',
-        item: res.item
-      })
-    })
+    // return addTopGroup({ name: name.value, project_id: props.id }).then(res => {
+    //   setModalShow(false)
+    //   props.dispatch({
+    //     type: 'ADD',
+    //     item: res.item
+    //   })
+    // })
   }
   useEffect(() => {
-    getGroups({ id: props.id }).then(res => {
-      props.dispatch({
-        type: 'INIT',
-        list: res.list
-      })
-    })
+    // getGroups({ id: props.id }).then(res => {
+    //   props.dispatch({
+    //     type: 'INIT',
+    //     list: res.list
+    //   })
+    // })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const items = props.list.map(item => {

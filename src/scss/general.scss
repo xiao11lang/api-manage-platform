@@ -1,0 +1,43 @@
+.general-group-con {
+  min-width: 240px;
+  background: white;
+  .group-top {
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .group-body {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    overflow: scroll;
+    height: 100%;
+  }
+  .group-item {
+    height: 40px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    &.all {
+      height: 54px;
+    }
+  }
+}
+.general-list-con {
+  background: white;
+  flex-grow: 1;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  .list-top {
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}

@@ -1,35 +1,34 @@
 import React, { useState } from 'react'
 import { Dropdown, Menu, Modal, Input } from 'antd'
-import IconFont from './../../../../../../components/iconfont'
-import { modifyGroup, deleteGroup } from '../../../../../../api/apiGroup'
-import { useInputChange } from '../../../../../../hooks/useInputChange'
+import { useInputChange } from '../hooks/useInputChange';
+import IconFont from './iconfont';
 export function MenuAction(props) {
   const [modalShow, setModalShow] = useState(false)
   const name = useInputChange('')
   const handleModify = () => {
-    return modifyGroup({
-      id: props.id,
-      name: name.value
-    }).then(() => {
-      setModalShow(false)
-      props.dispatch({
-        type: 'MODIFY',
-        id: props.id,
-        name: name.value
-      })
-    })
+    // return modifyGroup({
+    //   id: props.id,
+    //   name: name.value
+    // }).then(() => {
+    //   setModalShow(false)
+    //   props.dispatch({
+    //     type: 'MODIFY',
+    //     id: props.id,
+    //     name: name.value
+    //   })
+    // })
   }
   const handleDelete = () => {
-    deleteGroup({
-      id: props.id,
-      projectId: props.projectId
-    }).then(() => {
-      props.dispatch({
-        type: 'DELETE',
-        id: props.id
-      })
-      props.handleDelete(props.id)
-    })
+    // deleteGroup({
+    //   id: props.id,
+    //   projectId: props.projectId
+    // }).then(() => {
+    //   props.dispatch({
+    //     type: 'DELETE',
+    //     id: props.id
+    //   })
+    //   props.handleDelete(props.id)
+    // })
   }
   return (
     <>

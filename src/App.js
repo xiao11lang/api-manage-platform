@@ -4,6 +4,8 @@ import { Switch, Route } from "react-router-dom";
 import { Main } from "./views/login/main";
 import { Home } from "./views/home/home";
 import { ManageDetail } from "./views/api/detail/manage/manageDetail";
+import './scss/main.scss'
+import './scss/general.scss'
 export const UserCtx = createContext(null);
 function App() {
   const [userInfo, setUserInfo] = useState({});
