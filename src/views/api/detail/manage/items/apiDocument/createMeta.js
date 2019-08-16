@@ -41,7 +41,7 @@ export default function CreateMeta(props) {
         <label>分组</label>
         <Select
           defaultValue={meta.group_id||'0'}
-          style={{ width: 200 }}
+          className='width-200'
           onChange={e => {
             handleModify(e, 'group')
           }}
@@ -54,7 +54,7 @@ export default function CreateMeta(props) {
         <label>状态</label>
         <Select
           value={meta.status}
-          style={{ width: 200 }}
+          className='width-200'
           onChange={e => {
             handleModify(e, 'status')
           }}

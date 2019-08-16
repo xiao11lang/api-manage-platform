@@ -53,7 +53,7 @@ export function ApplyPerson(props) {
           <>
             <Button
               type="primary"
-              style={{ marginRight: 20 }}
+              className='right-20'
               onClick={() => handleAgree(item)}
             >
               同意
@@ -78,7 +78,7 @@ export function ApplyPerson(props) {
     <>
       <Table
         dataSource={dataSource}
-        style={{ marginTop: 20 }}
+        className='top-20'
         columns={columnConfig}
       />
     </>

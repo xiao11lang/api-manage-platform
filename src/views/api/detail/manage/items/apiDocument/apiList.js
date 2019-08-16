@@ -47,10 +47,10 @@ export default function ApiList(props) {
       render: (item) => {
         return (
           <>
-            <Button type="primary" style={{ marginRight: 10 }} onClick={()=>props.edit(item.id)}>
+            <Button type="primary" className='right-10' onClick={()=>props.edit(item.id)}>
               编辑
             </Button>
-            <Button type="primary" style={{ marginRight: 10 }} onClick={()=>props.showIntro(item.id)}>
+            <Button type="primary" className='right-10' onClick={()=>props.showIntro(item.id)}>
               查看
             </Button>
             <Button type="danger" onClick={()=>props.handleDelete(item.id)}>删除</Button>

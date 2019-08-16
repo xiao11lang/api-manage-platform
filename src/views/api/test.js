@@ -37,7 +37,7 @@ export function Test(){
     })
     return (
         <>
-            <Table dataSource={dataSource} style={{marginTop:20}}>
+            <Table dataSource={dataSource} className='top-20'>
                 {coulmns}
             </Table>
         </>

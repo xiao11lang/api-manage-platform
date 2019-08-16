@@ -20,12 +20,12 @@ function ExampleItem(props) {
     <div className="example-item">
       <div className="status-code">
         <div>HTTP Status Code</div>
-        <Input style={{ width: 200 }} onChange={e => handleChange(e, 'code')} value={props.info.code}/>
+        <Input className='width-200' onChange={e => handleChange(e, 'code')} value={props.info.code}/>
       </div>
       <div className="content-type">
         <div>Content-Type</div>
         <AutoComplete
-          style={{ width: 200 }}
+          className='width-200'
           dataSource={dataC}
           onChange={e => handleChange(e, 'type')}
           value={props.info.type}

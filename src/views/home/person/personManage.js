@@ -34,7 +34,7 @@ export function PersonManage(props) {
       {props.showExtraRoute ? (
         <>
           <div className="person-manage-top">
-            <h2 style={{ fontWeight: "bold" }}>人员管理</h2>
+            <h2 className='bold'>人员管理</h2>
             <p>
               <b>TeamId</b>
               <input

@@ -122,10 +122,10 @@ export default function ApiCreate(props) {
     <div className="api-create">
       <div className="api-create-top">
         <div onClick={props.hide}>
-          <Icon type="rollback" style={{ marginRight: 10 }} />
+          <Icon type="rollback" className='right-10' />
           <span>返回API列表</span>
         </div>
-        <Button type="primary" style={{ marginLeft: 10 }} onClick={save}>
+        <Button type="primary" className='left-10' onClick={save}>
           保存
         </Button>
       </div>

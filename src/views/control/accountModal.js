@@ -32,8 +32,8 @@ export function AccountModal(props) {
         destroyOnClose={true}
         style={{ height: 500 }}
       >
-        <Layout style={{ height: "100%" }}>
-          <Sider theme="light" style={{ height: "100%" }}>
+        <Layout className='height-full'>
+          <Sider theme="light" className='height-full'>
             <Menu
               mode="inline"
               defaultSelectedKeys={[key]}

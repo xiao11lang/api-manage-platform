@@ -85,7 +85,7 @@ function Param(props) {
       columns={props.column}
       dataSource={dataSource}
       pagination={false}
-      style={{ paddingBottom: 16 }}
+      className='bottom-20'
     />
   )
 }
@@ -119,7 +119,7 @@ export default function ApiIntro(props) {
       ) : (
         <div className="api-intro">
           <div onClick={props.hide} className="api-intro-top">
-            <Icon type="rollback" style={{ marginRight: 10 }} />
+            <Icon type="rollback" className='right-10' />
             <span>返回API列表</span>
           </div>
           <div className="api-intro-main">

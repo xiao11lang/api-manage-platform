@@ -1,6 +1,42 @@
-.flex{
-    display: flex;
+.flex {
+  display: flex;
 }
-.height-full{
-    height: 100%
+.height-full {
+  height: 100%;
+}
+.width-full {
+  width: 100%;
+}
+.top-10 {
+  margin-top: 10px;
+}
+.left-10 {
+  margin-left: 10px;
+}
+.right-10 {
+  margin-right: 10px;
+}
+.bottom-10 {
+  margin-bottom: 10px;
+}
+.top-20 {
+  margin-top: 20px;
+}
+.left-20 {
+  margin-left: 20px;
+}
+.right-20 {
+  margin-right: 20px;
+}
+.bottom-20 {
+  margin-bottom: 20px;
+}
+.width-100 {
+  width: 100px;
+}
+.width-200 {
+  width: 200px;
+}
+.bold {
+  font-weight: bold;
 }

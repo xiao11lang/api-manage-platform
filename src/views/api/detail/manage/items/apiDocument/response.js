@@ -55,7 +55,7 @@ function ResponseHeader() {
                 <Icon type="down" />
               </Dropdown>
             }
-            style={{ width: 200 }}
+            className='width-200'
             value={item.tag}
             onChange={e => handleFieldChange(item, e, 'tag')}
           />
@@ -168,7 +168,7 @@ function ResponseParam() {
       render: item => {
         return (
           <Select
-            style={{ width: 100 }}
+            className='width-100'
             onChange={e => {
               handleFieldChange(item, e, 'type')
             }}
@@ -235,7 +235,7 @@ function ResponseParam() {
           <>
             <Button
               type="primary"
-              style={{ marginRight: 10 }}
+              className='right-10'
               onClick={() => handleAdd(item)}
             >
               添加

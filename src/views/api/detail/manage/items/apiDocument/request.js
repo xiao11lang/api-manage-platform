@@ -56,7 +56,7 @@ function RequestHeader() {
                 <Icon type="down" />
               </Dropdown>
             }
-            style={{ width: 200 }}
+            className='width-200'
             value={item.tag}
             onChange={e => handleFieldChange(item, e, 'tag')}
           />
@@ -186,7 +186,7 @@ function RequestParam() {
       render: item => {
         return (
           <Select
-            style={{ width: 100 }}
+            className='width-100'
             onChange={e => {
               handleFieldChange(item, e, 'type')
             }}
@@ -254,7 +254,7 @@ function RequestParam() {
             {reqParam.paramType === 'json' ? (
               <Button
                 type="primary"
-                style={{ marginRight: 10 }}
+                className='right-10'
                 onClick={() => handleAdd(item)}
               >
                 添加
@@ -344,7 +344,7 @@ function UrlParam() {
         return (
           <Select
             defaultValue="int"
-            style={{ width: 100 }}
+            className='width-100'
             onChange={e => handleFieldChange(item, e, 'type')}
           >
             <Option value="number">number</Option>

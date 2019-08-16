@@ -17,7 +17,7 @@ export function TestModal(props) {
         <TextArea rows={4}></TextArea>
       </div>
       <div className='manage-modal-footer'>
-        <Button style={{marginRight:10}} onClick={props.hideModal}>取消</Button>
+        <Button className='right-10' onClick={props.hideModal}>取消</Button>
         <Button type='primary'>确认</Button>
       </div>
     </div>

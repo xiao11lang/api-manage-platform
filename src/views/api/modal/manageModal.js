@@ -48,7 +48,7 @@ export function ManageModal(props) {
         </Select>
       </div>
       <div className="manage-modal-footer">
-        <Button style={{ marginRight: 10 }} onClick={props.hideModal}>
+        <Button className='right-10' onClick={props.hideModal}>
           取消
         </Button>
         <Button type="primary" onClick={handleAdd}>

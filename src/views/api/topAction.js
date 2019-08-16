@@ -59,7 +59,7 @@ export function TopAction(props) {
             <Option value="all">全部</Option>
             <Option value="API">API</Option>
           </Select>
-          <Search placeholder="搜索" style={{ width: 200 }} />
+          <Search placeholder="搜索" className='width-200' />
         </Group>
       </div>
       <Modal visible={modalShow} footer={null} title={title} closable={false}>

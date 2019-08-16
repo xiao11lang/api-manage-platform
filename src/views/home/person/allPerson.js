@@ -44,7 +44,7 @@ export function AllPerson(props) {
         return (
           <Select
             defaultValue={item.userRole}
-            style={{ width: 200 }}
+            className='width-200'
             onChange={v => {
               handleChange(v, item.id);
             }}
@@ -91,7 +91,7 @@ export function AllPerson(props) {
     <>
       <Table
         dataSource={dataSource}
-        style={{ marginTop: 20 }}
+        className='top-20'
         columns={columnConfig}
       />
     </>

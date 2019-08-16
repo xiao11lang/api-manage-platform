@@ -87,7 +87,7 @@ export function Manage(props) {
       render: (v, item) => {
         return (
           <Select
-            style={{ width: 100 }}
+            className='width-100'
             defaultValue={v}
             onChange={e => {
               handleModify(e, item, 'project_type')
@@ -111,14 +111,14 @@ export function Manage(props) {
           <>
             <Button
               type="primary"
-              style={{ marginRight: 10 }}
+              className='right-10'
               onClick={() => handleSave(item)}
             >
               保存
             </Button>
             <Button
               type="primary"
-              style={{ marginRight: 10 }}
+              className='right-10'
               onClick={() => goToDetail(item.id)}
             >
               查看
@@ -142,7 +142,7 @@ export function Manage(props) {
   })
   return (
     <>
-      <Table dataSource={list} style={{ marginTop: 20 }}>
+      <Table dataSource={list} className='top-20'>
         {coulmns}
       </Table>
     </>

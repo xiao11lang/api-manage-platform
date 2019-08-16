@@ -59,7 +59,7 @@ export function TeamManage(props) {
         <div className="title">
           <div className="card-title">工作组名称</div>
           <Input
-            style={{ marginBottom: 10 }}
+            className='bottom-10'
             value={name}
             onChange={handleChange}
             placeholder={props.teamInfo.name}
@@ -81,7 +81,7 @@ export function TeamManage(props) {
           </div>
           <Select
             defaultValue="none"
-            style={{ width: 200, marginTop: 10 }}
+            className='width-200 top-10'
             onSelect={changeRole}
           >
             <Option value="none">不设置</Option>
@@ -99,7 +99,7 @@ export function TeamManage(props) {
         <div>
           转让组之后，您将失去该组的管理权限并退出当前的工作组，这意味着您在被重新加入该工作组之前无法看到该工作组。这是一个不可恢复的操作，请谨慎对待！
         </div>
-        <Button type="primary" style={{ marginTop: 10 }}>
+        <Button type="primary" className='top-10'>
           转让工作组
         </Button>
       </Card>
@@ -109,7 +109,7 @@ export function TeamManage(props) {
           一旦删除了组，组内所有项目、权限、成员，项目中所有内容等都将会被永久删除。并且您的付费记录也会被永久删除，剩余的使用期限无法转移或者赎回。
         </div>
         <div>这是一个不可恢复的操作，请谨慎对待！</div>
-        <Button type="danger" style={{ marginTop: 10 }} onClick={showDelete}>
+        <Button type="danger" className='top-10' onClick={showDelete}>
           删除工作组
         </Button>
       </Card>

@@ -116,12 +116,12 @@ export function CreateModal(props) {
           </div>
         </Card>
         {show ? (
-          <Card className="join-team" style={{ marginTop: 10 }}>
+          <Card className="join-team" className='top-10'>
             <p className="title">[加入] 一个现有的工作空间</p>
             <Input placeholder="请输入工作组id" onInput={handleInput} />
             <Button
               type="primary"
-              style={{ marginTop: 10 }}
+              className='top-10'
               onClick={checkTeamExist}
             >
               查询
