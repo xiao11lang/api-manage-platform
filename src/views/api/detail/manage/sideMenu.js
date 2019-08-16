@@ -13,29 +13,29 @@ const routeMap = {
     key: '2',
     icon: 'iconAPIwendang'
   },
-  apiTest: {
-    name: 'API测试',
-    key: '3',
-    icon: 'iconshandian'
-  },
+  // apiTest: {
+  //   name: 'API测试',
+  //   key: '3',
+  //   icon: 'iconshandian'
+  // },
   statusDocument: {
     name: '状态码文档',
-    key: '4',
+    key: '3',
     icon: 'iconwendang2'
   },
   projectDoucment: {
     name: '项目文档',
-    key: '5',
+    key: '4',
     icon: 'iconwendang1'
   },
   testEnviroment: {
     name: '测试环境',
-    key: '6',
+    key: '5',
     icon: 'iconceshihuanjing'
   },
   projectManage: {
     name: '项目管理',
-    key: '7',
+    key: '6',
     icon: 'iconwenzhanghuoke-'
   }
 }

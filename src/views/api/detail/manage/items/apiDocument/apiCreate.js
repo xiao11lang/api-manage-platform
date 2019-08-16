@@ -104,8 +104,10 @@ export default function ApiCreate(props) {
         url,
         description,
         result,
+        status,
+        group_id
       } = res.info
-      setMeta({ name, method, protocol, url })
+      setMeta({ name, method, protocol, url,status,group_id })
       setDetailDes(description)
       setReqHeader(request.header)
       setReqParam(request.param)
