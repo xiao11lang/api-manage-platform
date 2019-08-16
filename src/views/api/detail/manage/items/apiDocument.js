@@ -114,6 +114,7 @@ export default function ApiDocument(props) {
           <ApiIntro
             hide={hide}
             id={apiId}
+            list={list}
           />
         )
       default:
