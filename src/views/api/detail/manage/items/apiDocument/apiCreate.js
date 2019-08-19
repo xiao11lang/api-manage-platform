@@ -10,6 +10,7 @@ import Response from './response'
 import Example from './example'
 import { addApiInstance, getApiInfo,updateApi } from '../../../../../../api/apiInstance'
 import { UserCtx } from './../../../../../../App'
+import deleteEmpty from '../../../../../../until/deleteEmpty';
 const { TabPane } = Tabs
 const converter = new Showdown.Converter({
   tables: true,
@@ -93,7 +94,8 @@ export default function ApiCreate(props) {
   useEffect(() => {
     if (props.mode === 'new') return
     getApiInfo({
-      id: props.apiId
+      id: props.apiId,
+      parse: false
     }).then(res => {
       const {
         name,

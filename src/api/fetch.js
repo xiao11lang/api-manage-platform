@@ -25,6 +25,10 @@ export function fetch(options) {
               centered:true
             })
           }
+          if(response.config.interceptor&&typeof response.config.interceptor==='function'){
+            console.log(response.config);
+            data=response.config.interceptor(data)
+          }
           return data;
         },
         err => {

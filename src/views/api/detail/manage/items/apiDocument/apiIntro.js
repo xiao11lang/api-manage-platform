@@ -85,7 +85,7 @@ function Param(props) {
       columns={props.column}
       dataSource={dataSource}
       pagination={false}
-      className='bottom-20'
+      className="bottom-20"
     />
   )
 }
@@ -97,7 +97,7 @@ export default function ApiIntro(props) {
   const [info, setInfo] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
-    getApiInfo({ id: props.id }).then(res => {
+    getApiInfo({ id: props.id,parse: true }).then(res => {
       setInfo(res.info)
       setIsLoading(false)
     })
@@ -119,7 +119,7 @@ export default function ApiIntro(props) {
       ) : (
         <div className="api-intro">
           <div onClick={props.hide} className="api-intro-top">
-            <Icon type="rollback" className='right-10' />
+            <Icon type="rollback" className="right-10" />
             <span>返回API列表</span>
           </div>
           <div className="api-intro-main">
@@ -157,9 +157,11 @@ export default function ApiIntro(props) {
                 <>
                   <FrontTitle title="Body 请求参数">
                     <Tag color="#333">{request.param.paramType}</Tag>
-                    <Tag color="#333">
-                      最外层结构为{request.param.jsonRootType}
-                    </Tag>
+                    {request.param.jsonRootType === 'json' ? (
+                      <Tag color="#333">
+                        最外层结构为{request.param.jsonRootType}
+                      </Tag>
+                    ) : null}
                   </FrontTitle>
                   <Param data={request.param.detail} column={reqGetColumn} />
                 </>
@@ -176,9 +178,11 @@ export default function ApiIntro(props) {
                 <>
                   <FrontTitle title="返回参数">
                     <Tag color="#333">{response.param.paramType}</Tag>
-                    <Tag color="#333">
-                      最外层结构为{response.param.jsonRootType}
-                    </Tag>
+                    {response.param.jsonRootType === 'json' ? (
+                      <Tag color="#333">
+                        最外层结构为{response.param.jsonRootType}
+                      </Tag>
+                    ) : null}
                   </FrontTitle>
                   <Param data={response.param.detail} column={reqGetColumn} />
                 </>

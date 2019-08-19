@@ -25,14 +25,14 @@ export default function CreateMeta(props) {
   })
   const selectBefore = (
     <Select
-      defaultValue="Http://"
+      value={meta.protocol||'http'}
       style={{ width: 90 }}
       onChange={e => {
         handleModify(e, 'protocol')
       }}
     >
-      <Option value="Http://">Http://</Option>
-      <Option value="Https://">Https://</Option>
+      <Option value="http">Http://</Option>
+      <Option value="https">Https://</Option>
     </Select>
   )
   return (
@@ -40,7 +40,7 @@ export default function CreateMeta(props) {
       <div className="meta-item">
         <label>分组</label>
         <Select
-          defaultValue={meta.group_id||'0'}
+          value={meta.group_id||'0'}
           className='width-200'
           onChange={e => {
             handleModify(e, 'group')
@@ -53,7 +53,7 @@ export default function CreateMeta(props) {
       <div className="meta-item">
         <label>状态</label>
         <Select
-          value={meta.status}
+          value={meta.status||'enabled'}
           className='width-200'
           onChange={e => {
             handleModify(e, 'status')
