@@ -67,6 +67,23 @@ export default function CreateMeta(props) {
         </Select>
       </div>
       <div className="meta-item">
+        <label>方法</label>
+        <Select
+          value={meta.method||'get'}
+          className='width-200'
+          onChange={e => {
+            handleModify(e, 'method')
+          }}
+        >
+          <Option value="head">HEAD</Option>
+          <Option value="get">GET</Option>
+          <Option value="post">POST</Option>
+          <Option value="delete">DELETE</Option>
+          <Option value="put">PUT</Option>
+          <Option value="options">OPTIONS</Option>
+        </Select>
+      </div>
+      <div className="meta-item">
         <label>URI</label>
         <Input
           addonBefore={selectBefore}
