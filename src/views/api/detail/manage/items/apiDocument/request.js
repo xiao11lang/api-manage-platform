@@ -158,17 +158,21 @@ function RequestParam() {
         return ite.key !== item.key
       })
     } else {
-      item.parent.children = item.parent.children.filter(ite => {
+      let parent = getParent(reqParam.detail, item)
+      parent.children = parent.children.filter(ite => {
         return ite.key !== item.key
       })
-      if (!item.parent.children.length) {
-        delete item.parent.children
+      if (!parent.children.length) {
+        delete parent.children
         // 无子字段时清除children，antd表格在数据元素含children时会出现+号，即使children数组为空
       }
     }
     setReqParam({
       ...reqParam
     })
+  }
+  const handleEditorChange = value =>{
+    reqParam.detail = value
   }
   const columnConfig = [
     {
@@ -305,6 +309,8 @@ function RequestParam() {
           name="UNIQUE_ID_OF_DIV"
           style={{ height: 100, width: '100%' }}
           editorProps={{ $blockScrolling: true }}
+          onChange={handleEditorChange}
+          defaultValue={reqParam.detail}
         />
       )}
     </div>

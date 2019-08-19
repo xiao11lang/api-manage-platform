@@ -54,7 +54,7 @@ export function TopAction(props) {
             </Button>
           </div>
         )}
-        <Group compact>
+        <Group compact className='flex'>
           <Select defaultValue="all">
             <Option value="all">全部</Option>
             <Option value="API">API</Option>
