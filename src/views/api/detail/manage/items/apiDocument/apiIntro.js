@@ -4,6 +4,7 @@ import ApiTag, { MethodTag, ProtocolTag } from './apiTag'
 import * as Showdown from 'showdown'
 import { getApiInfo } from '../../../../../../api/apiInstance'
 import format from './../../../../../../until/format'
+import Editor from './../../../../../../components/editor'
 const converter = new Showdown.Converter({
   tables: true,
   simplifiedAutoLink: true,
@@ -89,15 +90,11 @@ function Param(props) {
     />
   )
 }
-function Pre(data) {
-  const parseData = JSON.stringify(data, null, 4)
-  return <pre>{parseData}</pre>
-}
 export default function ApiIntro(props) {
   const [info, setInfo] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
-    getApiInfo({ id: props.id,parse: true }).then(res => {
+    getApiInfo({ id: props.id, parse: true }).then(res => {
       setInfo(res.info)
       setIsLoading(false)
     })
@@ -192,10 +189,18 @@ export default function ApiIntro(props) {
               <FrontTitle title="返回示例" />
               <Tabs defaultActiveKey="1">
                 <TabPane key="1" tab="成功示例">
-                  <Pre data={result.success.content} />
+                  <Editor
+                    value={result.success.content}
+                    readOnly
+                    style={{ height: 200, width: '100%' }}
+                  />
                 </TabPane>
                 <TabPane key="2" tab="失败示例">
-                  <Pre data={result.fail.content} />
+                  <Editor
+                    value={result.fail.content}
+                    readOnly
+                    style={{ height: 200, width: '100%' }}
+                  />
                 </TabPane>
               </Tabs>
             </div>
