@@ -79,7 +79,7 @@ function FrontTitle(props) {
     </div>
   )
 }
-function Param(props) {
+function ParamTable(props) {
   const dataSource = props.data.slice(0, props.data.length - 1)
   return (
     <Table
@@ -89,6 +89,39 @@ function Param(props) {
       className="bottom-20"
     />
   )
+}
+function MultipleParam(props) {
+  const { detail, paramType, jsonRootType } = props.data
+  if (typeof detail === 'object') {
+    if (detail.length > 1) {
+      return (
+        <>
+          <FrontTitle title={props.title}>
+            <Tag color="#333">{paramType}</Tag>
+            {paramType === 'json' ? (
+              <Tag color="#333">最外层结构为{jsonRootType}</Tag>
+            ) : null}
+          </FrontTitle>
+          <ParamTable data={detail} column={reqGetColumn} />
+        </>
+      )
+    }
+    return null
+  } else {
+    if (detail) {
+      return (
+        <>
+          <FrontTitle title={props.title} />
+          <Editor
+            readOnly
+            value={detail}
+            style={{ height: 200, width: '100%' }}
+          />
+        </>
+      )
+    }
+    return null
+  }
 }
 export default function ApiIntro(props) {
   const [info, setInfo] = useState({})
@@ -141,49 +174,25 @@ export default function ApiIntro(props) {
               {request.header.length > 1 ? (
                 <>
                   <FrontTitle title="请求头部" />
-                  <Param data={request.header} column={reqHeaderColumn} />
+                  <ParamTable data={request.header} column={reqHeaderColumn} />
                 </>
               ) : null}
               {request.url.length > 1 ? (
                 <>
                   <FrontTitle title="GET参数" />
-                  <Param data={request.url} column={reqGetColumn} />
+                  <ParamTable data={request.url} column={reqGetColumn} />
                 </>
               ) : null}
-              {request.param.detail.length > 1 ? (
-                <>
-                  <FrontTitle title="Body 请求参数">
-                    <Tag color="#333">{request.param.paramType}</Tag>
-                    {request.param.jsonRootType === 'json' ? (
-                      <Tag color="#333">
-                        最外层结构为{request.param.jsonRootType}
-                      </Tag>
-                    ) : null}
-                  </FrontTitle>
-                  <Param data={request.param.detail} column={reqGetColumn} />
-                </>
-              ) : null}
+              <MultipleParam data={request.param} title="Body请求参数" />
             </div>
             <div className="api-intro-response">
               {response.header.length > 1 ? (
                 <>
                   <FrontTitle title="返回头部" />
-                  <Param data={response.header} column={resHeaderColumn} />
+                  <ParamTable data={response.header} column={resHeaderColumn} />
                 </>
               ) : null}
-              {response.param.detail.length > 1 ? (
-                <>
-                  <FrontTitle title="返回参数">
-                    <Tag color="#333">{response.param.paramType}</Tag>
-                    {response.param.jsonRootType === 'json' ? (
-                      <Tag color="#333">
-                        最外层结构为{response.param.jsonRootType}
-                      </Tag>
-                    ) : null}
-                  </FrontTitle>
-                  <Param data={response.param.detail} column={reqGetColumn} />
-                </>
-              ) : null}
+              <MultipleParam data={response.param} title="返回参数" />
             </div>
             <div className="api-intro-example">
               <FrontTitle title="返回示例" />
