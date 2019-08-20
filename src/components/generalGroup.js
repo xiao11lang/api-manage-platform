@@ -12,13 +12,7 @@ export default function GeneralGroup(props) {
     if (!name.value.trim()) {
       return
     }
-    // return addTopGroup({ name: name.value, project_id: props.id }).then(res => {
-    //   setModalShow(false)
-    //   props.dispatch({
-    //     type: 'ADD',
-    //     item: res.item
-    //   })
-    // })
+    props.add()
   }
   useEffect(() => {
     // getGroups({ id: props.id }).then(res => {

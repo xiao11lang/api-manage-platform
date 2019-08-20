@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Dropdown, Menu, Modal, Input } from 'antd'
 import IconFont from './../../../../../../components/iconfont'
 import { modifyGroup, deleteGroup } from '../../../../../../api/apiGroup'
 import { useInputChange } from '../../../../../../hooks/useInputChange'
+import { UserCtx } from './../../../../../../App'
 export function MenuAction(props) {
   const [modalShow, setModalShow] = useState(false)
   const name = useInputChange('')
+  const { userInfo } = useContext(UserCtx)
   const handleModify = () => {
     return modifyGroup({
       id: props.id,
@@ -22,7 +24,8 @@ export function MenuAction(props) {
   const handleDelete = () => {
     deleteGroup({
       id: props.id,
-      projectId: props.projectId
+      projectId: props.projectId,
+      operator: userInfo.name
     }).then(() => {
       props.dispatch({
         type: 'DELETE',

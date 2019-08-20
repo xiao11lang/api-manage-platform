@@ -3,7 +3,8 @@ import React, {
   useState,
   useEffect,
   useMemo,
-  useCallback
+  useCallback,
+  useContext
 } from 'react'
 import { apiGroupReducer } from '../../../../../reducer/apiGroupReducer'
 import ApiList from './apiDocument/apiList'
@@ -11,6 +12,7 @@ import ApiGroup from './apiDocument/apiGroup'
 import ApiCreate from './apiDocument/apiCreate'
 import { getApiInstances, deleteApi } from '../../../../../api/apiInstance'
 import ApiIntro from './apiDocument/apiIntro'
+import { UserCtx } from './../../../../../App'
 export default function ApiDocument(props) {
   const id = props.search.split('=')[1]
   const [list, dispatch] = useReducer(apiGroupReducer, [])
@@ -18,10 +20,11 @@ export default function ApiDocument(props) {
   const [groupId, setGroupId] = useState('')
   const [curShowDes, setCurShowDes] = useState('entry')
   const [apiId, setApiId] = useState('')
-  const [mode,setMode]=useState('new')
+  const [mode, setMode] = useState('new')
+  const { userInfo } = useContext(UserCtx)
   useEffect(() => {
-    if(curShowDes!=='entry'){
-      return 
+    if (curShowDes !== 'entry') {
+      return
     }
     getApiInstances({
       projectId: id
@@ -31,7 +34,7 @@ export default function ApiDocument(props) {
       })
       setDataList(res.list)
     })
-  }, [id,curShowDes])
+  }, [id, curShowDes])
   const apiList = useMemo(() => {
     if (!groupId) {
       return dataList
@@ -45,14 +48,15 @@ export default function ApiDocument(props) {
     setApiId(id)
   }
   const handleDelete = useCallback(
-    async id => {
-      await deleteApi({ id: id })
+    async apiId => {
+      await deleteApi({ id: apiId, operator: userInfo.name, projectId: id })
       setDataList(
         dataList.filter(item => {
-          return item.id !== id
+          return item.id !== apiId
         })
       )
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dataList]
   )
   const handleDeleteGroup = useCallback(
@@ -65,16 +69,16 @@ export default function ApiDocument(props) {
     },
     [dataList]
   )
-  const handleEdit=(id)=>{
+  const handleEdit = id => {
     setCurShowDes('create')
     setMode('edit')
     setApiId(id)
   }
-  const showCreate=()=>{
+  const showCreate = () => {
     setCurShowDes('create')
     setMode('new')
   }
-  const hide=()=>{
+  const hide = () => {
     setCurShowDes('entry')
     setMode('new')
   }
@@ -101,22 +105,9 @@ export default function ApiDocument(props) {
           </>
         )
       case 'create':
-        return (
-          <ApiCreate
-            hide={hide}
-            id={id}
-            mode={mode}
-            apiId={apiId}
-          />
-        )
+        return <ApiCreate hide={hide} id={id} mode={mode} apiId={apiId} />
       case 'introduction':
-        return (
-          <ApiIntro
-            hide={hide}
-            id={apiId}
-            list={list}
-          />
-        )
+        return <ApiIntro hide={hide} id={apiId} list={list} />
       default:
         return (
           <>
@@ -139,7 +130,7 @@ export default function ApiDocument(props) {
           </>
         )
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiId, apiList, curShowDes, id, list, mode])
   return (
     <>
