@@ -4,7 +4,7 @@ export default function GeneralList(props) {
   return (
     <div className="general-list-con">
       <div className="list-top">
-        <Button icon="plus" type="primary" onClick={props.showCreate}>
+        <Button icon="plus" type="primary" onClick={props.add}>
           {props.createTitle}
         </Button>
       </div>

@@ -7,3 +7,10 @@ export function addStatusInstance(data) {
     modalShow: true
   })
 }
+export function getStatusInstances(params) {
+  return fetch({
+    url: '/status/instance',
+    method: 'get',
+    params: params
+  })
+}
