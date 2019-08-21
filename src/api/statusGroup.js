@@ -7,11 +7,11 @@ export function addTopGroup(data) {
     modalShow: true
   })
 }
-export function getGroups(param) {
+export function getGroups(params) {
   return fetch({
     url: 'status/groups',
     method: 'get',
-    param: param
+    params: params
   })
 }
 export function modifyGroup(data) {
@@ -23,8 +23,8 @@ export function modifyGroup(data) {
 }
 export function deleteGroup(data) {
   return fetch({
-    url: '/status/group',
-    method: 'delete',
+    url: '/status/deleteGroup',
+    method: 'post',
     data: data
   })
 }

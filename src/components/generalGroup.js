@@ -12,22 +12,17 @@ export default function GeneralGroup(props) {
     if (!name.value.trim()) {
       return
     }
-    props.add()
+    setModalShow(false)
+    props.add(name.value)
   }
   useEffect(() => {
-    // getGroups({ id: props.id }).then(res => {
-    //   props.dispatch({
-    //     type: 'INIT',
-    //     list: res.list
-    //   })
-    // })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [])
   const items = props.list.map(item => {
     return (
       <div key={item.id} className="group-item" onClick={()=>props.setGroupId(item.id)}>
         {item.name}
-        <MenuAction id={item.id} dispatch={props.dispatch} projectId={props.id} handleDelete={props.handleDeleteGroup}/>
+        <MenuAction id={item.id} dispatch={props.dispatch} projectId={props.id} handleDelete={props.delete}/>
       </div>
     )
   })
