@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Button, Select, Input } from 'antd'
-import GeneralGroup from './../../../../../components/generalGroup'
-import GeneralList from './../../../../../components/generalList'
 import {
   addTopGroup,
   getGroups,
   deleteGroup
 } from './../../../../../api/statusGroup'
-import SimpleModal from '../../../../../components/simpleModal'
+import {
+  SimpleModal,
+  GeneralGroup,
+  GeneralList
+} from '../../../../../components'
 import {
   addStatusInstance,
   getStatusInstances
