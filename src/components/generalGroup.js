@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import {MenuAction} from './menuAction'
 import { useInputChange } from '../hooks/useInputChange';
@@ -15,12 +15,9 @@ export default function GeneralGroup(props) {
     setModalShow(false)
     props.add(name.value)
   }
-  useEffect(() => {
-    
-  }, [])
   const items = props.list.map(item => {
     return (
-      <div key={item.id} className="group-item" onClick={()=>props.setGroupId(item.id)}>
+      <div key={item.id} className="group-item" onClick={()=>props.itemClick(item.id)}>
         {item.name}
         <MenuAction id={item.id} dispatch={props.dispatch} projectId={props.id} handleDelete={props.delete}/>
       </div>
@@ -35,7 +32,7 @@ export default function GeneralGroup(props) {
           </Button>
         </div>
         <div className="group-body">
-          <div className="group-item all" onClick={()=>props.setGroupId('')}>所有分组</div>
+          <div className="group-item all" onClick={()=>props.itemClick('')}>所有分组</div>
           {items}
         </div>
       </div>
