@@ -1,21 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Table, Button, Select, Input } from 'antd'
-import {
-  addTopGroup,
-  getGroups,
-  deleteGroup
-} from './../../../../../api/statusGroup'
-import {
-  SimpleModal,
-  GeneralGroup,
-  GeneralList
-} from '../../../../../components'
+import { addTopGroup, getGroups, deleteGroup } from 'api/statusGroup'
+import { SimpleModal, GeneralGroup, GeneralList } from '@/components'
 import {
   addStatusInstance,
   getStatusInstances,
   deleteStatusInstance,
   updateStatusInstance
-} from './../../../../../api/statusInstance'
+} from 'api/statusInstance'
 import format from '../../../../../until/format'
 const { Option } = Select
 export default function StatusDocument(props) {
@@ -49,18 +41,17 @@ export default function StatusDocument(props) {
       )
     })
   } //删除分组
-  const handleStatusAdd = () => {
+  const handleStatusAdd = async () => {
     if (mode === 'new') {
-      addStatusInstance({
+      const res = await addStatusInstance({
         name: name,
         projectId: id,
         groupId: group.value,
         code: code
-      }).then(res => {
-        setCodeList([...codeList, res.item])
       })
+      setCodeList([...codeList, res.item])
     } else {
-      updateStatusInstance({
+      await updateStatusInstance({
         ...instance,
         ...{
           name: name,
@@ -68,6 +59,10 @@ export default function StatusDocument(props) {
           groupId: group
         }
       })
+      const res = await getStatusInstances({
+        id: id
+      })
+      setCodeList(res.list)
     }
   } //添加或修改状态码
   const modifyInstance = item => {
