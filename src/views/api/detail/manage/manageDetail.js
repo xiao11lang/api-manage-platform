@@ -7,6 +7,7 @@ import ManageHeader from './manageHeader'
 import './manage.scss'
 import ApiDocument from './items/apiDocument'
 import StatusDocument from './items/statusDocument';
+import ProjectDocument from './items/projectDocument';
 const { Content } = Layout
 export function ManageDetail(props) {
   const url = props.match.url
@@ -50,6 +51,7 @@ export function ManageDetail(props) {
             />
             <Route path={`${url}/apiDocument`} render={() => <ApiDocument search={search}/>} />
             <Route path={`${url}/statusDocument`} render={() => <StatusDocument search={search}/>} />
+            <Route path={`${url}/projectDocument`} render={() => <ProjectDocument search={search}/>} />
           </Switch>
         </Content>
       </Layout>

@@ -23,7 +23,7 @@ const routeMap = {
     key: '3',
     icon: 'iconwendang2'
   },
-  projectDoucment: {
+  projectDocument: {
     name: '项目文档',
     key: '4',
     icon: 'iconwendang1'
