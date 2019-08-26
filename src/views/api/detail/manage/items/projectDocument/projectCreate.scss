@@ -1,0 +1,11 @@
+.api-project-meta{
+    background: white;
+    padding:10px;
+    &>div{
+        align-items: center;
+    }
+    label{
+        min-width: 50px;
+    }
+    margin-bottom: 16px;
+}

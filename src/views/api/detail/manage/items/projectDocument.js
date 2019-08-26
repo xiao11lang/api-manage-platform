@@ -1,26 +1,17 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { Table, Button, Select, Input } from 'antd'
+import { Table, Button } from 'antd'
 import { addTopGroup, getGroups, deleteGroup } from 'api/statusGroup'
-import { SimpleModal, GeneralGroup, GeneralList } from '@/components'
-import {
-  addStatusInstance,
-  getStatusInstances,
-  deleteStatusInstance,
-  updateStatusInstance
-} from 'api/statusInstance'
+import { GeneralGroup, GeneralList } from '@/components'
+import { getProjectDocuments, deleteProjectDocument } from 'api/projectDocument'
 import format from '../../../../../until/format'
-const { Option } = Select
+import ProjectCreate from './projectDocument/projectCreate'
 export default function ProjectDocument(props) {
   const id = props.search.split('=')[1]
   const [groupList, setGroupList] = useState([])
-  const [modalShow, setModalShow] = useState(false)
-  const [codeList, setCodeList] = useState([])
+  const [createShow, setCreateShow] = useState(false)
+  const [list, setList] = useState([])
   const [groupId, setGroupId] = useState('')
-  const [name, setName] = useState('')
-  const [code, setCode] = useState('')
-  const [group, setGroup] = useState('0')
-  const [mode, setMode] = useState('new')
-  const [instance, setInstance] = useState({})
+  const [curDoc, setCurDoc] = useState(null)
   const handleAdd = name => {
     addTopGroup({
       name: name,
@@ -41,49 +32,24 @@ export default function ProjectDocument(props) {
       )
     })
   } //删除分组
-  const handleStatusAdd = async () => {
-    if (mode === 'new') {
-      const res = await addStatusInstance({
-        name: name,
-        projectId: id,
-        groupId: group.value,
-        code: code
-      })
-      setCodeList([...codeList, res.item])
-    } else {
-      await updateStatusInstance({
-        ...instance,
-        ...{
-          name: name,
-          code: code,
-          groupId: group
-        }
-      })
-      const res = await getStatusInstances({
-        id: id
-      })
-      setCodeList(res.list)
-    }
-  } //添加或修改状态码
-  const modifyInstance = item => {
-    setMode('edit')
-    setModalShow(true)
-    setInstance(item)
-    setName(item.name)
-    setCode(item.code)
-    setGroup(item.group_id)
-  } //修改状态码
-  const handleStatusDelete = statusId => {
-    deleteStatusInstance({
-      id: statusId,
-      projectId: id
+  const handleDocAdd = () => {
+    setCreateShow(true)
+    setCurDoc(null)
+  }
+  const modifyDocument = item => {
+    setCreateShow(true)
+    setCurDoc(item)
+  } //修改文档
+  const handleStatusDelete = projectId => {
+    deleteProjectDocument({
+      id: projectId
     }).then(() => {
-      const list = codeList.filter(item => {
-        return item.id !== statusId
+      const filterList = list.filter(item => {
+        return item.id !== projectId
       })
-      setCodeList([...list])
+      setList([...filterList])
     })
-  } //删除状态码
+  } //删除文档
   const filterCode = id => {
     setGroupId(id)
   } //按组筛选
@@ -95,38 +61,31 @@ export default function ProjectDocument(props) {
     })
   }, [id]) //获取分组
   useEffect(() => {
-    getStatusInstances({
+    if(createShow) return 
+    getProjectDocuments({
       id: id
     }).then(res => {
-      setCodeList(res.list)
+      setList(res.list)
     })
-  }, [id]) //获取状态码
+  }, [id,createShow]) //获取文档
   const dataList = useMemo(() => {
     if (!groupId) {
-      return codeList
+      return list
     } else {
-      return codeList.filter(item => {
+      return list.filter(item => {
         return item.group_id === groupId
       })
     }
-  }, [codeList, groupId])
-  const groupSelect = useMemo(() => {
-    return groupList.map(gr => {
-      return (
-        <Option value={gr.id} key={gr.id}>
-          {gr.name}
-        </Option>
-      )
-    })
-  }, [groupList])
+  }, [list, groupId])
   const columnConfig = [
     {
-      title: '状态码',
-      dataIndex: 'code'
+      title: '名称',
+      dataIndex: 'name'
     },
     {
-      title: '描述',
-      dataIndex: 'name'
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      render: v => <>{format(v)}</>
     },
     {
       title: '更新时间',
@@ -141,9 +100,16 @@ export default function ProjectDocument(props) {
             <Button
               type="primary"
               className="right-10"
-              onClick={() => modifyInstance(item)}
+              onClick={() => modifyDocument(item)}
             >
               编辑
+            </Button>
+            <Button
+              type="primary"
+              className="right-10"
+              onClick={() => modifyDocument(item)}
+            >
+              查看
             </Button>
             <Button type="danger" onClick={() => handleStatusDelete(item.id)}>
               删除
@@ -155,38 +121,26 @@ export default function ProjectDocument(props) {
   ]
   return (
     <div className="api-status-document flex height-full">
-      <GeneralGroup
-        list={groupList}
-        add={handleAdd}
-        delete={handleDelete}
-        itemClick={filterCode}
-      />
-      <GeneralList createTitle="新建" add={() => setModalShow(true)}>
-        <Table dataSource={dataList} columns={columnConfig} rowKey="id" />
-      </GeneralList>
-      <SimpleModal
-        modalShow={modalShow}
-        hide={() => setModalShow(false)}
-        onOk={handleStatusAdd}
-        simple={false}
-        title={mode === 'new' ? '新建一个状态码' : '修改状态码'}
-      >
+      {!createShow ? (
         <>
-          <label className="block bottom-10">选择分组</label>
-          <Select
-            className="width-full"
-            value={group}
-            onChange={v => setGroup(v)}
-          >
-            {<Option value={0}>默认分组</Option>}
-            {groupSelect}
-          </Select>
-          <label className="block bottom-10 top-10">状态码</label>
-          <Input value={code} onChange={e => setCode(e.target.value)} />
-          <label className="block bottom-10 top-10">描述</label>
-          <Input value={name} onChange={e => setName(e.target.value)} />
+          <GeneralGroup
+            list={groupList}
+            add={handleAdd}
+            delete={handleDelete}
+            itemClick={filterCode}
+          />
+          <GeneralList createTitle="新建" add={handleDocAdd}>
+            <Table dataSource={dataList} columns={columnConfig} rowKey="id" />
+          </GeneralList>
         </>
-      </SimpleModal>
+      ) : (
+        <ProjectCreate
+          hide={() => setCreateShow(false)}
+          groupList={groupList}
+          id={id}
+          doc={curDoc}
+        />
+      )}
     </div>
   )
 }
