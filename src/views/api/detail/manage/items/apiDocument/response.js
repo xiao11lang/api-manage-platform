@@ -10,13 +10,13 @@ import {
   Dropdown,
   Icon
 } from 'antd'
-import { useSelectChange } from '../../../../../../hooks/useSelectValue'
+import { useSelectChange } from 'hooks/useSelectValue'
 import { ApiCreateCtx } from './apiCreate'
 import AceEditor from 'react-ace'
 import 'brace/mode/javascript'
 import 'brace/theme/github'
-import getParent from './../../../../../../until/getParent'
-import HttpHeader from './../../../../../../components/httpHeader'
+import getParent from 'until/getParent'
+import { HttpHeader } from 'components'
 const { TabPane } = Tabs
 const { Option } = Select
 function ResponseHeader() {
@@ -55,7 +55,7 @@ function ResponseHeader() {
                 <Icon type="down" />
               </Dropdown>
             }
-            className='width-200'
+            className="width-200"
             value={item.tag}
             onChange={e => handleFieldChange(item, e, 'tag')}
           />
@@ -155,7 +155,7 @@ function ResponseParam() {
       ...resParam
     })
   }
-  const handleEditorChange = value =>{
+  const handleEditorChange = value => {
     resParam.detail = value
   }
   const columnConfig = [
@@ -163,7 +163,9 @@ function ResponseParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => addRoot(item, e)} defaultValue={item.name} />
+        return (
+          <Input onChange={e => addRoot(item, e)} defaultValue={item.name} />
+        )
       }
     },
     {
@@ -172,7 +174,7 @@ function ResponseParam() {
       render: item => {
         return (
           <Select
-            className='width-100'
+            className="width-100"
             onChange={e => {
               handleFieldChange(item, e, 'type')
             }}
@@ -220,7 +222,7 @@ function ResponseParam() {
     {
       title: '示例',
       key: 'example',
-      render: (item) => {
+      render: item => {
         return (
           <Input
             onChange={e => {
@@ -239,7 +241,7 @@ function ResponseParam() {
           <>
             <Button
               type="primary"
-              className='right-10'
+              className="right-10"
               onClick={() => handleAdd(item)}
             >
               添加

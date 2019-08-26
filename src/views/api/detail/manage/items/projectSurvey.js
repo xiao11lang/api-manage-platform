@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import format from '../../../../../until/format'
-import { getProject } from '../../../../../api/apiProject'
+import format from 'until/format'
+import { getProject } from 'api/apiProject'
 const itemMap = {
   name: '项目名称',
   interface_number: '接口数目',

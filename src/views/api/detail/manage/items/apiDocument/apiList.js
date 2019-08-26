@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Button } from 'antd'
 import ApiTag, { MethodTag } from './apiTag'
-import format from './../../../../../../until/format'
+import format from 'until/format'
 const { Column } = Table
 export default function ApiList(props) {
   const columnConfig = [

@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { Dropdown, Menu, Modal, Input } from 'antd'
-import IconFont from './../../../../../../components/iconfont'
-import { modifyGroup, deleteGroup } from '../../../../../../api/apiGroup'
-import { useInputChange } from '../../../../../../hooks/useInputChange'
-import { UserCtx } from './../../../../../../App'
+import { IconFont } from 'components'
+import { modifyGroup, deleteGroup } from 'api/apiGroup'
+import { useInputChange } from 'hooks/useInputChange'
+import { UserCtx } from '@/App'
 export function MenuAction(props) {
   const [modalShow, setModalShow] = useState(false)
   const name = useInputChange('')

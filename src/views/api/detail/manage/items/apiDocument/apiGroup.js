@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import { Button, Modal, Input } from 'antd'
-import { useInputChange } from '../../../../../../hooks/useInputChange';
-import { getGroups,addTopGroup } from '../../../../../../api/apiGroup';
+import { useInputChange } from 'hooks/useInputChange';
+import { getGroups,addTopGroup } from 'api/apiGroup';
 import {MenuAction} from './menuAction'
 export default function ApiGroup(props) {
   const [modalShow, setModalShow] = useState(false)

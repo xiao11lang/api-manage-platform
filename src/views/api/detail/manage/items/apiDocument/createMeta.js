@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select } from 'antd'
-import { getGroups } from '../../../../../../api/apiGroup'
+import { getGroups } from 'api/apiGroup'
 const { Option } = Select
 
 export default function CreateMeta(props) {

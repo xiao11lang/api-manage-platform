@@ -8,7 +8,7 @@ import {
   deleteStatusInstance,
   updateStatusInstance
 } from 'api/statusInstance'
-import format from '../../../../../until/format'
+import format from 'until/format'
 const { Option } = Select
 export default function StatusDocument(props) {
   const id = props.search.split('=')[1]

@@ -8,8 +8,8 @@ import CreateMeta from './createMeta'
 import Request from './request'
 import Response from './response'
 import Example from './example'
-import { addApiInstance, getApiInfo,updateApi } from '../../../../../../api/apiInstance'
-import { UserCtx } from './../../../../../../App'
+import { addApiInstance, getApiInfo,updateApi } from 'api/apiInstance'
+import { UserCtx } from '@/App'
 const { TabPane } = Tabs
 const converter = new Showdown.Converter({
   tables: true,

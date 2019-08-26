@@ -10,6 +10,8 @@ module.exports = override(
     '@': path.resolve(__dirname, './src'),
     api: path.resolve(__dirname, './src/api'),
     hooks: path.resolve(__dirname, './src/hooks'),
-    reducer: path.resolve(__dirname, './src/reducer')
+    reducer: path.resolve(__dirname, './src/reducer'),
+    until: path.resolve(__dirname, './src/until'),
+    components: path.resolve(__dirname, './src/components')
   })
 )

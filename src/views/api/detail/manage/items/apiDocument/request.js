@@ -14,9 +14,9 @@ import {
   Dropdown
 } from 'antd'
 import { ApiCreateCtx } from './apiCreate'
-import { useSelectChange } from './../../../../../../hooks/useSelectValue'
-import getParent from '../../../../../../until/getParent'
-import HttpHeader from './../../../../../../components/httpHeader'
+import { useSelectChange } from 'hooks/useSelectValue'
+import getParent from 'until/getParent'
+import { HttpHeader } from 'components'
 const { TabPane } = Tabs
 const { Option } = Select
 function RequestHeader() {
@@ -56,7 +56,7 @@ function RequestHeader() {
                 <Icon type="down" />
               </Dropdown>
             }
-            className='width-200'
+            className="width-200"
             value={item.tag}
             onChange={e => handleFieldChange(item, e, 'tag')}
           />
@@ -67,14 +67,20 @@ function RequestHeader() {
       title: '必填',
       key: 'required',
       render: item => (
-        <Switch onChange={e => handleFieldChange(item, e, 'required')} defaultChecked={item.required}/>
+        <Switch
+          onChange={e => handleFieldChange(item, e, 'required')}
+          defaultChecked={item.required}
+        />
       )
     },
     {
       title: '内容',
       key: 'content',
       render: item => (
-        <Input onChange={e => handleFieldChange(item, e, 'content')} defaultValue={item.content}/>
+        <Input
+          onChange={e => handleFieldChange(item, e, 'content')}
+          defaultValue={item.content}
+        />
       )
     },
     {
@@ -171,7 +177,7 @@ function RequestParam() {
       ...reqParam
     })
   }
-  const handleEditorChange = value =>{
+  const handleEditorChange = value => {
     reqParam.detail = value
   }
   const columnConfig = [
@@ -190,7 +196,7 @@ function RequestParam() {
       render: item => {
         return (
           <Select
-            className='width-100'
+            className="width-100"
             onChange={e => {
               handleFieldChange(item, e, 'type')
             }}
@@ -258,7 +264,7 @@ function RequestParam() {
             {reqParam.paramType === 'json' ? (
               <Button
                 type="primary"
-                className='right-10'
+                className="right-10"
                 onClick={() => handleAdd(item)}
               >
                 添加
@@ -350,7 +356,7 @@ function UrlParam() {
         return (
           <Select
             defaultValue="int"
-            className='width-100'
+            className="width-100"
             onChange={e => handleFieldChange(item, e, 'type')}
           >
             <Option value="number">number</Option>

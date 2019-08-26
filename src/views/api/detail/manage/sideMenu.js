@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Menu, Icon } from 'antd'
-import IconFont from './../../../../components/iconfont'
+import { IconFont } from 'components'
 const { Sider } = Layout
 const routeMap = {
   projectSurvey: {

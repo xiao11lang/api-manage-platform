@@ -2,8 +2,8 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { Icon, Divider, Tag, Table, Tabs, Spin } from 'antd'
 import ApiTag, { MethodTag, ProtocolTag } from './apiTag'
 import * as Showdown from 'showdown'
-import { getApiInfo } from '../../../../../../api/apiInstance'
-import format from './../../../../../../until/format'
+import { getApiInfo } from 'api/apiInstance'
+import format from 'until/format'
 import Editor from '@/components/editor'
 const converter = new Showdown.Converter({
   tables: true,

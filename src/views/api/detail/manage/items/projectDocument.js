@@ -3,7 +3,7 @@ import { Table, Button } from 'antd'
 import { addTopGroup, getGroups, deleteGroup } from 'api/statusGroup'
 import { GeneralGroup, GeneralList } from '@/components'
 import { getProjectDocuments, deleteProjectDocument } from 'api/projectDocument'
-import format from '../../../../../until/format'
+import format from 'until/format'
 import ProjectCreate from './projectDocument/projectCreate'
 export default function ProjectDocument(props) {
   const id = props.search.split('=')[1]

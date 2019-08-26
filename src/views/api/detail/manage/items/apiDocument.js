@@ -6,13 +6,13 @@ import React, {
   useCallback,
   useContext
 } from 'react'
-import { apiGroupReducer } from '../../../../../reducer/apiGroupReducer'
+import { apiGroupReducer } from 'reducer/apiGroupReducer'
 import ApiList from './apiDocument/apiList'
 import ApiGroup from './apiDocument/apiGroup'
 import ApiCreate from './apiDocument/apiCreate'
-import { getApiInstances, deleteApi } from '../../../../../api/apiInstance'
+import { getApiInstances, deleteApi } from 'api/apiInstance'
 import ApiIntro from './apiDocument/apiIntro'
-import { UserCtx } from './../../../../../App'
+import { UserCtx } from '@/App'
 export default function ApiDocument(props) {
   const id = props.search.split('=')[1]
   const [list, dispatch] = useReducer(apiGroupReducer, [])
