@@ -5,10 +5,11 @@ import { GeneralGroup, GeneralList } from '@/components'
 import { getProjectDocuments, deleteProjectDocument } from 'api/projectDocument'
 import format from 'until/format'
 import ProjectCreate from './projectDocument/projectCreate'
+import ProjectIntro from './projectDocument/projectIntro'
 export default function ProjectDocument(props) {
   const id = props.search.split('=')[1]
   const [groupList, setGroupList] = useState([])
-  const [createShow, setCreateShow] = useState(false)
+  const [type, setType] = useState('entry')
   const [list, setList] = useState([])
   const [groupId, setGroupId] = useState('')
   const [curDoc, setCurDoc] = useState(null)
@@ -33,13 +34,17 @@ export default function ProjectDocument(props) {
     })
   } //删除分组
   const handleDocAdd = () => {
-    setCreateShow(true)
+    setType('edit')
     setCurDoc(null)
   }
   const modifyDocument = item => {
-    setCreateShow(true)
+    setType('edit')
     setCurDoc(item)
   } //修改文档
+  const previewDocument = item => {
+    setType('intro')
+    setCurDoc(item)
+  }
   const handleStatusDelete = projectId => {
     deleteProjectDocument({
       id: projectId
@@ -61,13 +66,13 @@ export default function ProjectDocument(props) {
     })
   }, [id]) //获取分组
   useEffect(() => {
-    if(createShow) return 
+    if (type !== 'entry') return
     getProjectDocuments({
       id: id
     }).then(res => {
       setList(res.list)
     })
-  }, [id,createShow]) //获取文档
+  }, [id, type]) //获取文档
   const dataList = useMemo(() => {
     if (!groupId) {
       return list
@@ -107,7 +112,7 @@ export default function ProjectDocument(props) {
             <Button
               type="primary"
               className="right-10"
-              onClick={() => modifyDocument(item)}
+              onClick={() => previewDocument(item)}
             >
               查看
             </Button>
@@ -119,9 +124,9 @@ export default function ProjectDocument(props) {
       }
     }
   ]
-  return (
-    <div className="api-status-document flex height-full">
-      {!createShow ? (
+  const children = useMemo(() => {
+    if (type === 'entry') {
+      return (
         <>
           <GeneralGroup
             list={groupList}
@@ -133,14 +138,26 @@ export default function ProjectDocument(props) {
             <Table dataSource={dataList} columns={columnConfig} rowKey="id" />
           </GeneralList>
         </>
-      ) : (
+      )
+    } else if (type === 'edit') {
+      return (
         <ProjectCreate
-          hide={() => setCreateShow(false)}
+          hide={() => setType('entry')}
           groupList={groupList}
           id={id}
           doc={curDoc}
         />
-      )}
+      )
+    } else {
+      return (
+        <ProjectIntro hide={() => setType('entry')} detail={curDoc.detail} />
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [curDoc, dataList, groupList, id, type])
+  return (
+    <div className="api-status-document flex height-full">
+      {children}
     </div>
   )
 }
