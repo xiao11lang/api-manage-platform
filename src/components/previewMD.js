@@ -10,6 +10,7 @@ export default function PreviewMD(props) {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: converter.makeHtml(props.detail) }}
+      style={props.style}
     ></div>
   )
 }

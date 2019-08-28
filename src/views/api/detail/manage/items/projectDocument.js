@@ -82,6 +82,12 @@ export default function ProjectDocument(props) {
       })
     }
   }, [list, groupId])
+  const groupName = useMemo(() => {
+    if(!curDoc) return 
+    return groupList.filter(gr => {
+      return gr.id === curDoc.group_id
+    })[0].name
+  }, [curDoc, groupList])
   const columnConfig = [
     {
       title: '名称',
@@ -150,14 +156,10 @@ export default function ProjectDocument(props) {
       )
     } else {
       return (
-        <ProjectIntro hide={() => setType('entry')} detail={curDoc.detail} />
+        <ProjectIntro hide={() => setType('entry')} doc={curDoc} groupName={groupName}/>
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curDoc, dataList, groupList, id, type])
-  return (
-    <div className="api-status-document flex height-full">
-      {children}
-    </div>
-  )
+  return <div className="api-status-document flex height-full">{children}</div>
 }
