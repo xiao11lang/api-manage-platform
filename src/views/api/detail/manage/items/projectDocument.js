@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Table, Button } from 'antd'
-import { addTopGroup, getGroups, deleteGroup } from 'api/statusGroup'
+import { addTopGroup, getGroups, deleteGroup } from 'api/projectGroup'
 import { GeneralGroup, GeneralList } from '@/components'
 import { getProjectDocuments, deleteProjectDocument } from 'api/projectDocument'
 import format from 'until/format'
@@ -72,7 +72,7 @@ export default function ProjectDocument(props) {
     }).then(res => {
       setList(res.list)
     })
-  }, [id, type]) //获取文档
+  }, [id, type, groupList.length]) //获取文档
   const dataList = useMemo(() => {
     if (!groupId) {
       return list
@@ -83,10 +83,11 @@ export default function ProjectDocument(props) {
     }
   }, [list, groupId])
   const groupName = useMemo(() => {
-    if(!curDoc) return 
-    return groupList.filter(gr => {
+    if (!curDoc || !groupList.length) return
+    const curGr = groupList.filter(gr => {
       return gr.id === curDoc.group_id
-    })[0].name
+    })[0]
+    return curGr ? curGr.name : '默认分组'
   }, [curDoc, groupList])
   const columnConfig = [
     {
@@ -156,7 +157,11 @@ export default function ProjectDocument(props) {
       )
     } else {
       return (
-        <ProjectIntro hide={() => setType('entry')} doc={curDoc} groupName={groupName}/>
+        <ProjectIntro
+          hide={() => setType('entry')}
+          doc={curDoc}
+          groupName={groupName}
+        />
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
