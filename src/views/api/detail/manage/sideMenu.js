@@ -27,17 +27,17 @@ const routeMap = {
     name: '项目文档',
     key: '4',
     icon: 'iconwendang1'
-  },
-  testEnviroment: {
-    name: '测试环境',
-    key: '5',
-    icon: 'iconceshihuanjing'
-  },
-  projectManage: {
-    name: '项目管理',
-    key: '6',
-    icon: 'iconwenzhanghuoke-'
   }
+  // testEnviroment: {
+  //   name: '测试环境',
+  //   key: '5',
+  //   icon: 'iconceshihuanjing'
+  // },
+  // projectManage: {
+  //   name: '项目管理',
+  //   key: '6',
+  //   icon: 'iconwenzhanghuoke-'
+  // }
 }
 function getKey() {
   const hashArr = window.location.hash.split('/')
