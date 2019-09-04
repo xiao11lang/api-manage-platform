@@ -31,7 +31,7 @@ export function Api(props) {
   }, [key, teamInfo])
   return (
     <>
-      <TopAction dispatch={manageDispatch} />
+      <TopAction dispatch={manageDispatch} id={teamInfo.id}/>
       <Switch>
         <Route
           path={`${props.match.url}/manage`}
@@ -40,13 +40,14 @@ export function Api(props) {
               list={manageList}
               dispatch={manageDispatch}
               history={history}
+              id={teamInfo.id}
             />
           )}
         />
         <Route
           path={`${props.match.url}/test`}
           render={({ history }) => (
-            <Test list={testList} dispatch={testDispatch} history={history} />
+            <Test list={testList} dispatch={testDispatch} history={history} id={teamInfo.id}/>
           )}
         />
       </Switch>
