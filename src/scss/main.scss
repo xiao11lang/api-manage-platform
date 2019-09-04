@@ -4,6 +4,9 @@
 .block{
   display: block!important
 }
+.inline-block{
+  display: inline-block!important
+}
 .height-full {
   height: 100%;
 }
@@ -66,4 +69,9 @@
 }
 .font-22{
   font-size: 22px
+}
+.ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
 }
