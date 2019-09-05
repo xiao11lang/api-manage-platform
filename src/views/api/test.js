@@ -1,10 +1,16 @@
-import React, { useEffect } from 'react'
-import { Table, Button, Input, Tooltip } from 'antd'
-import { getProjects, deleteProject } from 'api/testProject'
+import React, { useEffect, useState } from 'react'
+import { Table, Button, Input, Tooltip, Modal } from 'antd'
+import { getProjects, deleteProject, updateProject } from 'api/testProject'
+import { useInputChange } from 'hooks/useInputChange'
 import format from 'until/format'
+import { SimpleModal } from '@/components'
 const { Column } = Table
-
+const { TextArea } = Input
 export function Test(props) {
+  const name = useInputChange('')
+  const version = useInputChange('')
+  const [modalShow, setModalShow] = useState(false)
+  const des = useInputChange('')
   useEffect(() => {
     if (!props.id) return
     getProjects({
@@ -28,19 +34,38 @@ export function Test(props) {
       }
     } catch (e) {}
   }
+  const handleUpdate = id => {
+    if (!name.value) {
+      return
+    }
+    updateProject({
+      projectId: id,
+      value: {
+        name: name.value,
+        version: version.value
+      }
+    })
+  }
+  const handleDesChange = () => {
+    setModalShow(false)
+    Modal.info({
+      title: '修改成功，请点击保存',
+      okText:'确认'
+    })
+  }
   const columnConfig = [
     {
       title: '名称',
       dataIndex: 'name',
       render(v) {
-        return <Input defaultValue={v} />
+        return <Input {...name} value={name.value||v}  />
       }
     },
     {
       title: '版本号',
       dataIndex: 'version',
       render(v) {
-        return <Input defaultValue={v} />
+        return <Input placeholder={v} {...version} />
       }
     },
     {
@@ -50,7 +75,12 @@ export function Test(props) {
       render(v) {
         return (
           <Tooltip title={v}>
-            <div className="ellipsis width-200 inline-block">{v}</div>
+            <div
+              className="ellipsis width-200 inline-block"
+              onClick={() => setModalShow(true)}
+            >
+              {v}
+            </div>
           </Tooltip>
         )
       }
@@ -67,7 +97,11 @@ export function Test(props) {
       render: item => {
         return (
           <>
-            <Button type="primary" className="right-10">
+            <Button
+              type="primary"
+              className="right-10"
+              onClick={() => handleUpdate(item.id)}
+            >
               保存
             </Button>
             <Button type="primary" className="right-10">
@@ -90,6 +124,14 @@ export function Test(props) {
       <Table dataSource={props.list} className="top-20" rowKey="id">
         {coulmns}
       </Table>
+      <SimpleModal
+        hide={() => setModalShow(false)}
+        title="修改描述"
+        modalShow={modalShow}
+        onOk={handleDesChange}
+      >
+        <TextArea {...des} />
+      </SimpleModal>
     </>
   )
 }
