@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Table, Button, Input, Tooltip } from 'antd'
-import { getProjects } from 'api/testProject'
+import { getProjects, deleteProject } from 'api/testProject'
 import format from 'until/format'
 const { Column } = Table
 
@@ -17,6 +17,17 @@ export function Test(props) {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
+  const handleDelete = async id => {
+    try {
+      const { status } = await deleteProject({ id })
+      if (status === 1) {
+        props.dispatch({
+          type: 'DELETE',
+          id
+        })
+      }
+    } catch (e) {}
+  }
   const columnConfig = [
     {
       title: '名称',
@@ -33,13 +44,13 @@ export function Test(props) {
       }
     },
     {
-      title: '描述', 
+      title: '描述',
       dataIndex: 'project_des',
-      align:'center',
+      align: 'center',
       render(v) {
         return (
           <Tooltip title={v}>
-            <div className='ellipsis width-200 inline-block'>{v}</div>
+            <div className="ellipsis width-200 inline-block">{v}</div>
           </Tooltip>
         )
       }
@@ -62,7 +73,9 @@ export function Test(props) {
             <Button type="primary" className="right-10">
               查看
             </Button>
-            <Button type="danger">删除</Button>
+            <Button type="danger" onClick={() => handleDelete(item.id)}>
+              删除
+            </Button>
           </>
         )
       },

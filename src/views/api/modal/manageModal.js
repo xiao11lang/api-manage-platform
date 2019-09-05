@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Input, Select, Button } from 'antd'
 import { addProject } from '../../../api/apiProject'
 import { useInputChange } from '../../../hooks/useInputChange'
-import { TeamCtx } from './../../home/home'
 import { useSelectChange } from '../../../hooks/useSelectValue'
 import format from '../../../until/format';
 const { Option } = Select
@@ -10,13 +9,12 @@ export function ManageModal(props) {
   const name = useInputChange('')
   const version = useInputChange('')
   const type = useSelectChange('web')
-  const teamInfo = useContext(TeamCtx)
   const handleAdd = () => {
     addProject({
       name: name.value,
       version: version.value,
       type: type.value,
-      teamId: teamInfo.id
+      teamId: props.id
     }).then(res => {
       props.hideModal()
       props.dispatch({

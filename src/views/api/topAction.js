@@ -1,29 +1,29 @@
-import React, { useState,useMemo,useContext } from 'react'
-import { Button, Input, Select,Modal } from 'antd'
+import React, { useState, useMemo, useContext } from 'react'
+import { Button, Input, Select, Modal } from 'antd'
 import IconFont from './../../components/iconfont'
-import { ManageModal } from './modal/manageModal';
+import { ManageModal } from './modal/manageModal'
 import { ApiCtx } from '../home/home'
-import { TestModal } from './modal/testModal';
+import { TestModal } from './modal/testModal'
 
 const Group = Input.Group
 const Search = Input.Search
 const { Option } = Select
 export function TopAction(props) {
   const [actionShow, setActionShow] = useState(false)
-  const [modalShow,setModalShow]=useState(false)
+  const [modalShow, setModalShow] = useState(false)
   const key = useContext(ApiCtx)
-  const title=useMemo(()=>{
-    return key!=='3'?'新建项目':'新建自动化测试'
-  },[key])
-  const showModal=()=>{
+  const title = useMemo(() => {
+    return key !== '3' ? '新建项目' : '新建自动化测试'
+  }, [key])
+  const showModal = () => {
     setModalShow(true)
   }
-  const hideModal=()=>{
+  const hideModal = () => {
     setModalShow(false)
   }
   return (
     <>
-      <p>{key!=='3'?'API研发管理':'API自动化测试'}</p>
+      <p>{key !== '3' ? 'API研发管理' : 'API自动化测试'}</p>
       <div className="api-top">
         {!actionShow ? (
           <div className="left-top">
@@ -54,16 +54,30 @@ export function TopAction(props) {
             </Button>
           </div>
         )}
-        <Group compact className='flex'>
+        <Group compact className="flex">
           <Select defaultValue="all">
             <Option value="all">全部</Option>
             <Option value="API">API</Option>
           </Select>
-          <Search placeholder="搜索" className='width-200' />
+          <Search placeholder="搜索" className="width-200" />
         </Group>
       </div>
       <Modal visible={modalShow} footer={null} title={title} closable={false}>
-          {key!=='3'?<ManageModal hideModal={hideModal} key={key} dispatch={props.dispatch}/>:<TestModal hideModal={hideModal} key={key}/>}
+        {key !== '3' ? (
+          <ManageModal
+            hideModal={hideModal}
+            key={key}
+            dispatch={props.manageDispatch}
+            id={props.id}
+          />
+        ) : (
+          <TestModal
+            hideModal={hideModal}
+            key={key}
+            dispatch={props.testDispatch}
+            id={props.id}
+          />
+        )}
       </Modal>
     </>
   )

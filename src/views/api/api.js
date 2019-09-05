@@ -31,7 +31,7 @@ export function Api(props) {
   }, [key, teamInfo])
   return (
     <>
-      <TopAction dispatch={manageDispatch} id={teamInfo.id}/>
+      <TopAction manageDispatch={manageDispatch} id={teamInfo.id} testDispatch={testDispatch}/>
       <Switch>
         <Route
           path={`${props.match.url}/manage`}

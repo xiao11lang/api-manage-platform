@@ -1,14 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Input, Button, Modal } from 'antd'
 import { addProject } from 'api/testProject'
 import { useInputChange } from 'hooks/useInputChange'
-import { TeamCtx } from '@/views/home/home'
+import format from 'until/format'
 const { TextArea } = Input
 export function TestModal(props) {
   const name = useInputChange('')
   const version = useInputChange('')
   const des = useInputChange('')
-  const teamInfo = useContext(TeamCtx)
   const handleAdd = () => {
     if (!name.value) {
       Modal.error({
@@ -20,7 +19,17 @@ export function TestModal(props) {
       name: name.value,
       des: des.value,
       version: version.value,
-      teamId: teamInfo.id
+      teamId: props.id
+    }).then(res => {
+      props.hideModal()
+      props.dispatch({
+        type: 'ADD',
+        item: {
+          ...res.item,
+          key: res.item.id,
+          updatedAt: format(res.item.updatedAt)
+        }
+      })
     })
   }
   return (
