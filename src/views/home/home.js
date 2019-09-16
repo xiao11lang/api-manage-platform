@@ -12,14 +12,14 @@ import { TeamManage } from './workTeam/teamManage'
 import { AccountModal } from './../control/accountModal'
 import { PersonManage } from './person/personManage'
 import { messages } from '../../reducer/messageReducer';
-
+import getKey from 'until/getKey'
 const { Content } = Layout
 export const ApiCtx = createContext()
 export const MesCtx = createContext()
 export const TeamCtx = createContext()
 export function Home(props) {
   const [collapse, setCollapse] = useState(false) //左侧折叠
-  const [key, setKey] = useState(2) //左侧选项
+  const [key, setKey] = useState(getKey()) //左侧选项
   const [messageShow, setMessageShow] = useState(false) //消息模态框
   const [accountModalShow, setAccountShow] = useState(false) //消息模态框key
   const [mesKey, setMesKey] = useState(0) //消息模态框key

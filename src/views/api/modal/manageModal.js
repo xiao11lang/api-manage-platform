@@ -11,7 +11,7 @@ export function ManageModal(props) {
   if (info) {
     n = info.name;
     v = info.version;
-    t = info.type;
+    t = info.project_type;
     i = info.id;
   }
   const name = useInputChange(n || "");
