@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table, Button } from "antd";
-import { deleteProject } from "../../api/apiProject";
+import { deleteProject, getProjects } from "../../api/apiProject";
+import format from "until/format";
 const { Column } = Table;
 export function Manage(props) {
   const { list, dispatch } = props;
+  useEffect(() => {
+    if (!props.id) return;
+    getProjects({
+      teamId: props.id
+    }).then(res => {
+      props.dispatch({
+        type: "INIT",
+        list: res.list
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.id]);
   const handleDelete = item => {
     deleteProject({ projectId: item.id }).then(() => {
       dispatch({ type: "DELETE", id: item.id });
@@ -27,7 +40,10 @@ export function Manage(props) {
     },
     {
       title: "最后更新时间",
-      dataIndex: "updatedAt"
+      dataIndex: "updatedAt",
+      render(v) {
+        return format(v);
+      }
     },
     {
       title: "操作",

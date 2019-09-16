@@ -1,17 +1,18 @@
 import React from "react";
 import { Input, Select, Button } from "antd";
-import { addProject } from "../../../api/apiProject";
+import { addProject, modifyProject } from "../../../api/apiProject";
 import { useInputChange } from "../../../hooks/useInputChange";
 import { useSelectChange } from "../../../hooks/useSelectValue";
 import format from "../../../until/format";
 const { Option } = Select;
 export function ManageModal(props) {
-  let n,v,t;
-  let info=props.info
-  if(info){
-    n=info.name;
-    v=info.version
-    t=info.type
+  let n, v, t, i;
+  let info = props.info;
+  if (info) {
+    n = info.name;
+    v = info.version;
+    t = info.type;
+    i = info.id;
   }
   const name = useInputChange(n || "");
   const version = useInputChange(v || "");
@@ -30,6 +31,27 @@ export function ManageModal(props) {
           ...res.item,
           key: res.item.id,
           updatedAt: format(res.item.updatedAt)
+        }
+      });
+    });
+  };
+  const handleModify = () => {
+    const value = {
+      name: name.value,
+      version: version.value,
+      project_type: type.value
+    };
+    modifyProject({
+      projectId: i,
+      value: value
+    }).then(() => {
+      props.hideModal();
+      props.dispatch({
+        type: "MODIFY",
+        id:i,
+        item: {
+          ...value,
+          updatedAt: format()
         }
       });
     });
@@ -56,7 +78,10 @@ export function ManageModal(props) {
         <Button className="right-10" onClick={props.hideModal}>
           取消
         </Button>
-        <Button type="primary" onClick={handleAdd}>
+        <Button
+          type="primary"
+          onClick={props.mode === "new" ? handleAdd : handleModify}
+        >
           确认
         </Button>
       </div>

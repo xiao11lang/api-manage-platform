@@ -25,6 +25,7 @@ export function updateProject(data) {
   return fetch({
     url: '/test/project/update',
     method: 'post',
-    data: data
+    data: data,
+    modalShow: true
   })
 }

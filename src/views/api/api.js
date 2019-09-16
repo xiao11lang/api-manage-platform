@@ -1,19 +1,11 @@
-import React, {
-  useEffect,
-  useReducer,
-  useContext,
-  useState,
-  useMemo
-} from "react";
+import React, { useReducer, useContext, useState, useMemo } from "react";
 import { Button, Modal } from "antd";
 import { Manage } from "./manage";
 import { Test } from "./test";
 import { Switch, Route } from "react-router-dom";
-import { getProjects } from "../../api/apiProject";
 import "./api.scss";
 import { ApiCtx, TeamCtx } from "./../home/home";
 import { apiManageReducer } from "./../../reducer/apiManageReducer";
-import format from "../../until/format";
 import { apiTestReducer } from "./../../reducer/apiTestReducer";
 import { ManageModal } from "./modal/manageModal";
 import { TestModal } from "./modal/testModal";
@@ -30,21 +22,6 @@ export function Api(props) {
       key !== "3" ? "项目" : "自动化测试"
     }`;
   }, [mode, key]);
-  useEffect(() => {
-    if (key && teamInfo.id) {
-      getProjects({
-        teamId: teamInfo.id
-      }).then(res => {
-        const list = res.list.map(item => {
-          return Object.assign({}, item, {
-            key: item.id,
-            updatedAt: format(item.updatedAt)
-          });
-        });
-        manageDispatch({ type: "INIT", list: list });
-      });
-    }
-  }, [key, teamInfo]);
   const handleNew = () => {
     setInfo({});
     setMode("new");
@@ -90,12 +67,12 @@ export function Api(props) {
           )}
         />
       </Switch>
-      <Modal visible={modalShow} footer={null} title={title} closable={false}>
+      <Modal visible={modalShow} footer={null} title={title} closable={false} destroyOnClose>
         {key !== "3" ? (
           <ManageModal
             hideModal={hideModal}
             key={key}
-            dispatch={props.manageDispatch}
+            dispatch={manageDispatch}
             id={props.id}
             mode={mode}
             info={info}
@@ -104,7 +81,7 @@ export function Api(props) {
           <TestModal
             hideModal={hideModal}
             key={key}
-            dispatch={props.testDispatch}
+            dispatch={testDispatch}
             id={props.id}
             mode={mode}
             info={info}
