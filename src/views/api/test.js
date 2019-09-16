@@ -102,7 +102,7 @@ export function Test(props) {
               className="right-10"
               onClick={() => handleUpdate(item.id)}
             >
-              保存
+              编辑
             </Button>
             <Button type="primary" className="right-10">
               查看

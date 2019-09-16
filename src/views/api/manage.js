@@ -114,7 +114,7 @@ export function Manage(props) {
               className='right-10'
               onClick={() => handleSave(item)}
             >
-              保存
+              编辑
             </Button>
             <Button
               type="primary"
