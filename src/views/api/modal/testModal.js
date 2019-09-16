@@ -1,19 +1,26 @@
-import React from 'react'
-import { Input, Button, Modal } from 'antd'
-import { addProject } from 'api/testProject'
-import { useInputChange } from 'hooks/useInputChange'
-import format from 'until/format'
-const { TextArea } = Input
+import React from "react";
+import { Input, Button, Modal } from "antd";
+import { addProject } from "api/testProject";
+import { useInputChange } from "hooks/useInputChange";
+import format from "until/format";
+const { TextArea } = Input;
 export function TestModal(props) {
-  const name = useInputChange('')
-  const version = useInputChange('')
-  const des = useInputChange('')
+  let n,v,d;
+  let info=props.info
+  if(info){
+    n=info.name;
+    v=info.version
+    d=info.project_des
+  }
+  const name = useInputChange(n || "");
+  const version = useInputChange(v || "");
+  const des = useInputChange(d || "");
   const handleAdd = () => {
     if (!name.value) {
       Modal.error({
-        title: '项目名不可为空'
-      })
-      return
+        title: "项目名不可为空"
+      });
+      return;
     }
     addProject({
       name: name.value,
@@ -21,17 +28,17 @@ export function TestModal(props) {
       version: version.value,
       teamId: props.id
     }).then(res => {
-      props.hideModal()
+      props.hideModal();
       props.dispatch({
-        type: 'ADD',
+        type: "ADD",
         item: {
           ...res.item,
           key: res.item.id,
           updatedAt: format(res.item.updatedAt)
         }
-      })
-    })
-  }
+      });
+    });
+  };
   return (
     <div className="test-modal-con">
       <div>
@@ -55,5 +62,5 @@ export function TestModal(props) {
         </Button>
       </div>
     </div>
-  )
+  );
 }

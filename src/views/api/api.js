@@ -2,14 +2,12 @@ import React, {
   useEffect,
   useReducer,
   useContext,
-  useCallback,
   useState,
   useMemo
 } from "react";
 import { Button, Modal } from "antd";
 import { Manage } from "./manage";
 import { Test } from "./test";
-import { TopAction } from "./topAction";
 import { Switch, Route } from "react-router-dom";
 import { getProjects } from "../../api/apiProject";
 import "./api.scss";
@@ -17,7 +15,6 @@ import { ApiCtx, TeamCtx } from "./../home/home";
 import { apiManageReducer } from "./../../reducer/apiManageReducer";
 import format from "../../until/format";
 import { apiTestReducer } from "./../../reducer/apiTestReducer";
-import { SimpleModal } from "components";
 import { ManageModal } from "./modal/manageModal";
 import { TestModal } from "./modal/testModal";
 export function Api(props) {
@@ -25,11 +22,14 @@ export function Api(props) {
   const teamInfo = useContext(TeamCtx);
   const [manageList, manageDispatch] = useReducer(apiManageReducer);
   const [testList, testDispatch] = useReducer(apiTestReducer);
-  const [mode, setMode] = useState('new');
+  const [mode, setMode] = useState("new");
   const [modalShow, setModalShow] = useState(false);
+  const [info, setInfo] = useState({});
   const title = useMemo(() => {
-    return key !== "3" ? "新建项目" : "新建自动化测试";
-  }, [key]);
+    return `${mode === "new" ? "新建" : "修改"}${
+      key !== "3" ? "项目" : "自动化测试"
+    }`;
+  }, [mode, key]);
   useEffect(() => {
     if (key && teamInfo.id) {
       getProjects({
@@ -45,14 +45,16 @@ export function Api(props) {
       });
     }
   }, [key, teamInfo]);
-  const handleNew = useCallback(() => {
-    setMode('new')
+  const handleNew = () => {
+    setInfo({});
+    setMode("new");
     setModalShow(true);
-  }, [key]);
-  const handleModify = useCallback(() => {
-    setMode('modify')
+  };
+  const handleModify = info => {
+    setInfo(info);
+    setMode("modify");
     setModalShow(true);
-  }, [key]);
+  };
   const hideModal = () => {
     setModalShow(false);
   };
@@ -96,6 +98,7 @@ export function Api(props) {
             dispatch={props.manageDispatch}
             id={props.id}
             mode={mode}
+            info={info}
           />
         ) : (
           <TestModal
@@ -104,6 +107,7 @@ export function Api(props) {
             dispatch={props.testDispatch}
             id={props.id}
             mode={mode}
+            info={info}
           />
         )}
       </Modal>

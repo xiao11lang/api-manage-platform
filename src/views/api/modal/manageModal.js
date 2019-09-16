@@ -1,14 +1,21 @@
-import React from 'react'
-import { Input, Select, Button } from 'antd'
-import { addProject } from '../../../api/apiProject'
-import { useInputChange } from '../../../hooks/useInputChange'
-import { useSelectChange } from '../../../hooks/useSelectValue'
-import format from '../../../until/format';
-const { Option } = Select
+import React from "react";
+import { Input, Select, Button } from "antd";
+import { addProject } from "../../../api/apiProject";
+import { useInputChange } from "../../../hooks/useInputChange";
+import { useSelectChange } from "../../../hooks/useSelectValue";
+import format from "../../../until/format";
+const { Option } = Select;
 export function ManageModal(props) {
-  const name = useInputChange('')
-  const version = useInputChange('')
-  const type = useSelectChange('web')
+  let n,v,t;
+  let info=props.info
+  if(info){
+    n=info.name;
+    v=info.version
+    t=info.type
+  }
+  const name = useInputChange(n || "");
+  const version = useInputChange(v || "");
+  const type = useSelectChange(t || "web");
   const handleAdd = () => {
     addProject({
       name: name.value,
@@ -16,17 +23,17 @@ export function ManageModal(props) {
       type: type.value,
       teamId: props.id
     }).then(res => {
-      props.hideModal()
+      props.hideModal();
       props.dispatch({
-        type: 'ADD',
+        type: "ADD",
         item: {
           ...res.item,
           key: res.item.id,
           updatedAt: format(res.item.updatedAt)
         }
-      })
-    })
-  }
+      });
+    });
+  };
   return (
     <>
       <div>
@@ -39,14 +46,14 @@ export function ManageModal(props) {
       </div>
       <div>
         <label>项目类型</label>
-        <Select defaultValue="web" style={{ display: 'block' }} {...type}>
+        <Select defaultValue="web" style={{ display: "block" }} {...type}>
           <Option value="web">WEB</Option>
           <Option value="app">App</Option>
           <Option value="pc">PC</Option>
         </Select>
       </div>
       <div className="manage-modal-footer">
-        <Button className='right-10' onClick={props.hideModal}>
+        <Button className="right-10" onClick={props.hideModal}>
           取消
         </Button>
         <Button type="primary" onClick={handleAdd}>
@@ -54,5 +61,5 @@ export function ManageModal(props) {
         </Button>
       </div>
     </>
-  )
+  );
 }
