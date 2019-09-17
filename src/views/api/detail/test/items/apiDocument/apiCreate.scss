@@ -1,0 +1,69 @@
+.api-create {
+  width: 100%;
+  .api-create-top {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    div {
+      cursor: pointer;
+    }
+  }
+  .ant-tabs-nav-wrap {
+    background: white;
+  }
+  .api-create-meta {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    .meta-item {
+      display: flex;
+      height: 40px;
+      align-items: center;
+      label {
+        width: 50px;
+      }
+    }
+  }
+  .api-create-request {
+    margin-top: 16px;
+    background: white;
+    border-radius: 5px;
+    .request-param {
+      .param-switch {
+        margin: 0 0 16px 16px;
+      }
+      .ant-table-row td:first-child {
+        display: flex;
+        align-items: center;
+      }
+      .ace-github .ace_print-margin {
+        width: 0;
+      }
+      .param-json-root {
+        padding: 0 0 16px 16px;
+        label {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+  .api-create-example {
+    background: white;
+    margin-top: 16px;
+    padding-left: 16px;
+    .ace-github .ace_print-margin {
+      width: 0;
+    }
+    .example-item>div{
+        &.status-code>div{
+            margin-bottom: 10px
+        }
+        &>div{
+            margin-top: 10px 
+        }
+    }
+  }
+}

@@ -27,6 +27,9 @@ export function Test(props) {
       }
     } catch (e) {}
   };
+  const goToDetail = id => {
+    props.history.push(`/api/test/projectSurvey?id=${id}`);
+  };
   const columnConfig = [
     {
       title: "名称",
@@ -67,7 +70,7 @@ export function Test(props) {
             >
               编辑
             </Button>
-            <Button type="primary" className="right-10">
+            <Button type="primary" className="right-10" onClick={()=>goToDetail(item.id)}>
               查看
             </Button>
             <Button type="danger" onClick={() => handleDelete(item.id)}>

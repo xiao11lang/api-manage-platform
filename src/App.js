@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { Main } from "./views/login/main";
 import { Home } from "./views/home/home";
 import { ManageDetail } from "./views/api/detail/manage/manageDetail";
+import { TestDetail } from "./views/api/detail/test/testDetail";
 import './scss/main.scss'
 import './scss/general.scss'
 export const UserCtx = createContext(null);
@@ -28,6 +29,10 @@ function App() {
           <Route
             path="/api/manage"
             component={ManageDetail}
+          />
+          <Route
+            path="/api/test"
+            component={TestDetail}
           />
         </Switch>
       </UserCtx.Provider>

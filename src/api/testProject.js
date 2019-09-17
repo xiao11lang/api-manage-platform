@@ -9,6 +9,13 @@ export function addProject(data) {
 }
 export function getProjects(params) {
   return fetch({
+    url: '/test/projects',
+    method: 'get',
+    params: params
+  })
+}
+export function getProject(params) {
+  return fetch({
     url: '/test/project',
     method: 'get',
     params: params
