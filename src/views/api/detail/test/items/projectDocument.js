@@ -1,31 +1,18 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Table, Button } from "antd";
 import { addTopGroup, getGroups, deleteGroup } from "api/testGroup";
+import { getTestInstances } from "api/testInstance";
 import { GeneralGroup, GeneralList } from "@/components";
-import {
-  getProjectDocuments,
-  deleteProjectDocument
-} from "api/projectDocument";
 import format from "until/format";
 import ApiCreate from "./apiDocument/apiCreate";
-import { SimpleModal } from "components";
-import { Input, Select } from "antd";
-import { useInputChange } from 'hooks/useInputChange';
-import { useSelectChange } from 'hooks/useSelectValue'
-const {Option}=Select
 export default function ProjectDocument(props) {
   const id = props.search.split("=")[1];
   const [groupList, setGroupList] = useState([]);
-  const [type, setType] = useState("entry");
   const [list, setList] = useState([]);
   const [groupId, setGroupId] = useState("");
-  const [curDoc, setCurDoc] = useState(null);
   const [showTest, setTestShow] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [mode, setMode] = useState('new')
-  const name=useInputChange('')
-  const des=useInputChange('')
-  const group=useSelectChange('')
+  const [mode, setMode] = useState("new");
+  const [instance, setInstance] = useState({})
   const handleAdd = name => {
     addTopGroup({
       name: name,
@@ -47,26 +34,14 @@ export default function ProjectDocument(props) {
     });
   }; //删除分组
   const handleTestAdd = () => {
+    setMode('new')
     setTestShow(true);
   };
-  const handleInstanceAdd = () => {
-    setModalShow(true);
-  };
-  
-  const modifyDocument = item => {
-    setType("edit");
-    setCurDoc(item);
-  }; //修改文档
-  const handleStatusDelete = projectId => {
-    deleteProjectDocument({
-      id: projectId
-    }).then(() => {
-      const filterList = list.filter(item => {
-        return item.id !== projectId;
-      });
-      setList([...filterList]);
-    });
-  }; //删除文档
+  const handleEdit=(ins)=>{
+    setMode('edit')
+    setTestShow(true);
+    setInstance(ins)
+  }
   const filterCode = id => {
     setGroupId(id);
   }; //按组筛选
@@ -78,13 +53,12 @@ export default function ProjectDocument(props) {
     });
   }, [id]); //获取分组
   useEffect(() => {
-    if (type !== "entry") return;
-    getProjectDocuments({
+    getTestInstances({
       id: id
     }).then(res => {
-      setList(res.list);
+      setList(res.list)
     });
-  }, [id, type, groupList.length]); //获取文档
+  }, [id]); //获取分组
   const dataList = useMemo(() => {
     if (!groupId) {
       return list;
@@ -98,11 +72,6 @@ export default function ProjectDocument(props) {
     {
       title: "用例名称",
       dataIndex: "name"
-    },
-    {
-      title: "类型",
-      dataIndex: "type",
-      render: v => <>{format(v)}</>
     },
     {
       title: "最近测试结果",
@@ -119,30 +88,16 @@ export default function ProjectDocument(props) {
       render(item) {
         return (
           <>
-            <Button
-              type="primary"
-              className="right-10"
-              onClick={() => modifyDocument(item)}
-            >
-              测试
+            <Button type="primary" className="right-10" onClick={()=>handleEdit(item)}>
+              编辑
             </Button>
-            <Button type="danger" onClick={() => handleStatusDelete(item.id)}>
-              删除
-            </Button>
+            <Button type="danger">删除</Button>
           </>
         );
       }
     }
   ];
-  const groupSelect = useMemo(() => {
-    return groupList.map(gr => {
-      return (
-        <Option value={gr.id} key={gr.id}>
-          {gr.name}
-        </Option>
-      )
-    })
-  }, [groupList])
+  
   return (
     <div className="api-status-document flex height-full">
       {!showTest ? (
@@ -158,31 +113,8 @@ export default function ProjectDocument(props) {
           </GeneralList>
         </>
       ) : (
-        <ApiCreate mode='new'/>
+        <ApiCreate mode={mode} group={groupList} id={id} instance={instance} hide={()=>setTestShow(false)}/>
       )}
-      <SimpleModal
-        modalShow={modalShow}
-        hide={() => setModalShow(false)}
-        onOk={handleInstanceAdd}
-        simple={false}
-        title={mode === "new" ? "新建一个用例" : "修改用例"}
-      >
-        <>
-          <label className="block bottom-10 top-10">用例名称</label>
-          <Input {...name} />
-          <label className="block bottom-10">选择分组</label>
-          <Select
-            className="width-full"
-            {...group}
-          >
-            {<Option value={0}>默认分组</Option>}
-            {groupSelect}
-          </Select>
-
-          <label className="block bottom-10 top-10">描述</label>
-          <Input {...des} />
-        </>
-      </SimpleModal>
     </div>
   );
 }

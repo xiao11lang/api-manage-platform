@@ -9,22 +9,29 @@ export function addTestInstance(data) {
 }
 export function deleteStatusInstance(data) {
   return fetch({
-    url: '/status/delete',
+    url: '/test/delete',
     method: 'post',
     data: data
   })
 }
-export function getStatusInstances(params) {
+export function getTestInstances(params) {
   return fetch({
-    url: '/status/instance',
+    url: '/test/instances',
+    method: 'get',
+    params: params
+  })
+}
+export function getTestInstanceInfo(params) {
+  return fetch({
+    url: '/test/instance',
     method: 'get',
     params: params
   })
 }
 
-export function updateStatusInstance(data) {
+export function updateTestInstance(data) {
   return fetch({
-    url: '/status/update',
+    url: '/test/update',
     method: 'post',
     data: data
   })

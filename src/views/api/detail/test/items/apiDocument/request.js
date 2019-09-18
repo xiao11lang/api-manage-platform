@@ -5,7 +5,6 @@ import 'brace/theme/github'
 import {
   Tabs,
   Table,
-  Switch,
   Input,
   Button,
   Radio,
@@ -62,16 +61,6 @@ function RequestHeader() {
           />
         )
       }
-    },
-    {
-      title: '必填',
-      key: 'required',
-      render: item => (
-        <Switch
-          onChange={e => handleFieldChange(item, e, 'required')}
-          defaultChecked={item.required}
-        />
-      )
     },
     {
       title: '内容',
@@ -191,64 +180,13 @@ function RequestParam() {
       }
     },
     {
-      title: '类型',
-      key: 'type',
-      render: item => {
-        return (
-          <Select
-            className="width-100"
-            onChange={e => {
-              handleFieldChange(item, e, 'type')
-            }}
-            defaultValue={item.type}
-          >
-            <Option value="number">number</Option>
-            <Option value="string">string</Option>
-            <Option value="object">object</Option>
-            <Option value="array">array</Option>
-            <Option value="file">file</Option>
-            <Option value="boolean">boolean</Option>
-            <Option value="null">null</Option>
-          </Select>
-        )
-      }
-    },
-    {
-      title: '必填',
-      key: 'required',
-      render: item => {
-        return (
-          <Switch
-            onChange={e => {
-              handleFieldChange(item, e, 'required')
-            }}
-            defaultChecked={item.required}
-          />
-        )
-      }
-    },
-    {
-      title: '说明',
-      key: 'des',
+      title: '内容',
+      key: 'content',
       render: item => {
         return (
           <Input
             onChange={e => {
-              handleFieldChange(item, e, 'des')
-            }}
-            defaultValue={item.des}
-          />
-        )
-      }
-    },
-    {
-      title: '示例',
-      key: 'example',
-      render: item => {
-        return (
-          <Input
-            onChange={e => {
-              handleFieldChange(item, e, 'example')
+              handleFieldChange(item, e, 'content')
             }}
             defaultValue={item.example}
           />
@@ -346,49 +284,14 @@ function UrlParam() {
       title: '参数名',
       key: 'name',
       render: item => {
-        return <Input onChange={e => handleFieldChange(item, e, 'name')} />
+        return <Input onChange={e => handleFieldChange(item, e, 'name')} defaultValue={item.name}/>
       }
     },
     {
-      title: '类型',
-      key: 'type',
+      title: '内容',
+      key: 'content',
       render: item => {
-        return (
-          <Select
-            defaultValue="int"
-            className="width-100"
-            onChange={e => handleFieldChange(item, e, 'type')}
-          >
-            <Option value="number">number</Option>
-            <Option value="string">string</Option>
-            <Option value="object">object</Option>
-            <Option value="array">array</Option>
-            <Option value="file">file</Option>
-            <Option value="boolean">boolean</Option>
-            <Option value="null">null</Option>
-          </Select>
-        )
-      }
-    },
-    {
-      title: '必填',
-      key: 'required',
-      render: item => {
-        return <Switch onChange={e => handleFieldChange(item, e, 'required')} />
-      }
-    },
-    {
-      title: '说明',
-      key: 'des',
-      render: item => {
-        return <Input onChange={e => handleFieldChange(item, e, 'des')} />
-      }
-    },
-    {
-      title: '示例',
-      key: 'example',
-      render: item => {
-        return <Input onChange={e => handleFieldChange(item, e, 'example')} />
+        return <Input onChange={e => handleFieldChange(item, e, 'content')} defaultValue={item.content}/>
       }
     },
     {

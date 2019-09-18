@@ -73,7 +73,7 @@ export function Api(props) {
             hideModal={hideModal}
             key={key}
             dispatch={manageDispatch}
-            id={props.id}
+            id={teamInfo.id}
             mode={mode}
             info={info}
           />
@@ -82,7 +82,7 @@ export function Api(props) {
             hideModal={hideModal}
             key={key}
             dispatch={testDispatch}
-            id={props.id}
+            id={teamInfo.id}
             mode={mode}
             info={info}
           />

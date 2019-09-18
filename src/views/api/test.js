@@ -29,6 +29,7 @@ export function Test(props) {
   };
   const goToDetail = id => {
     props.history.push(`/api/test/projectSurvey?id=${id}`);
+    localStorage.setItem('teamId',props.id)
   };
   const columnConfig = [
     {
@@ -70,7 +71,11 @@ export function Test(props) {
             >
               编辑
             </Button>
-            <Button type="primary" className="right-10" onClick={()=>goToDetail(item.id)}>
+            <Button
+              type="primary"
+              className="right-10"
+              onClick={() => goToDetail(item.id)}
+            >
               查看
             </Button>
             <Button type="danger" onClick={() => handleDelete(item.id)}>

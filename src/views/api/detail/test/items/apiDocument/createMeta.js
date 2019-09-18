@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Input, Select } from 'antd'
-import { getGroups } from 'api/apiGroup'
 const { Option } = Select
 
 export default function CreateMeta(props) {
-  const [group, setGroup] = useState([])
   const { meta, setMeta } = props
   const handleModify = (e, field) => {
     typeof e === 'object'
       ? setMeta({ ...meta, [field]: e.target.value })
       : setMeta({ ...meta, [field]: e })
   }
-  useEffect(() => {
-    getGroups({ id: props.id }).then(res => {
-      setGroup(res.list)
-    })
-  }, [props.id])
-  const groupList = group.map(gr => {
+  const groupList = props.group.map(gr => {
     return (
       <Option key={gr.id} value={gr.id}>
         {gr.name}
@@ -43,7 +36,7 @@ export default function CreateMeta(props) {
           value={meta.group_id||'0'}
           className='width-200'
           onChange={e => {
-            handleModify(e, 'group')
+            handleModify(e, 'group_id')
           }}
         >
           <Option value="0">默认分组</Option>
