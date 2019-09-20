@@ -36,3 +36,11 @@ export function updateTestInstance(data) {
     data: data
   })
 }
+export function mockTest(data) {
+  return fetch({
+    url: '/test/mock',
+    method: 'post',
+    data: data
+  })
+}
+

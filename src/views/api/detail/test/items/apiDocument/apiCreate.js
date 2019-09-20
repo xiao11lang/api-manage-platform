@@ -1,16 +1,21 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
-import { Button, Icon, Modal, Select,Table } from "antd";
+import { Button, Icon, Modal, Select, Table } from "antd";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import "./apiCreate.scss";
 import CreateMeta from "./createMeta";
 import Request from "./request";
-import { addTestInstance, updateTestInstance } from "api/testInstance";
+import {
+  addTestInstance,
+  updateTestInstance,
+  mockTest
+} from "api/testInstance";
 import { UserCtx } from "@/App";
 import { SimpleModal } from "components";
 import { getProjects } from "api/apiProject";
 import { getApiInstances } from "api/apiInstance";
+import checkUrl from "until/checkUrl";
 const { Option } = Select;
-const {Column}=Table
+const { Column } = Table;
 export const ApiCreateCtx = createContext({});
 export default function ApiCreate(props) {
   const { userInfo } = useContext(UserCtx);
@@ -30,8 +35,8 @@ export default function ApiCreate(props) {
     }
   ]);
   const [modalShow, setModalShow] = useState(false);
-  const [apiList, setApiList] = useState([]);//api项目
-  const [instance, setInstances] = useState([])
+  const [apiList, setApiList] = useState([]); //api项目
+  const [instance, setInstances] = useState([]);
   const save = () => {
     if (meta.url && meta.name) {
       const data = {
@@ -63,7 +68,7 @@ export default function ApiCreate(props) {
       teamId: localStorage.getItem("teamId")
     }).then(res => {
       setApiList(res.list);
-    });//导入api文档信息
+    }); //导入api文档信息
     if (props.mode === "new") return;
     const { header, param, url } = props.instance.request;
     setMeta(props.instance);
@@ -75,19 +80,36 @@ export default function ApiCreate(props) {
     if (e !== "0") {
       getApiInstances({
         projectId: e
-      }).then((res)=>{
-        setInstances(res.list)
+      }).then(res => {
+        setInstances(res.list);
       });
     }
-  };//导入文档选择
-  const handleImport=(info)=>{
+  }; //导入文档选择
+  const handleImport = info => {
     const { header, param, url } = info.request;
-    setModalShow(false)
-    setMeta(info)
+    setModalShow(false);
+    setMeta(info);
     setReqHeader(header);
     setReqParam(param);
     setReqUrl(url);
-  }
+  }; //导入api
+  const handleTest = () => {
+    if (!meta.url || !checkUrl(meta.url)) {
+      Modal.error({
+        title: "非法的url"
+      });
+      return;
+    }
+    const headers = {};
+    reqHeader.slice(0, reqHeader.length).forEach(hea => {
+      headers[hea.tag] = hea.content;
+    });
+    mockTest({
+      url: (meta.protocol || "http") + "://" + meta.url,
+      method: meta.method,
+      headers: headers
+    });
+  };
   const options = apiList.map(item => {
     return (
       <Option value={item.id} key={item.id}>
@@ -97,31 +119,35 @@ export default function ApiCreate(props) {
   });
   const columnConfig = [
     {
-      title: 'APIs',
-      dataIndex: 'name',
-      key:'name',
+      title: "APIs",
+      dataIndex: "name",
+      key: "name"
     },
     {
-      title: 'URL',
-      dataIndex: 'url',
-      key:'url'
+      title: "URL",
+      dataIndex: "url",
+      key: "url"
     },
     {
-      title: '操作',
-      render: (item) => {
+      title: "操作",
+      render: item => {
         return (
           <>
-            <Button type="primary" className='right-10' onClick={()=>handleImport(item)}>
+            <Button
+              type="primary"
+              className="right-10"
+              onClick={() => handleImport(item)}
+            >
               导入测试
             </Button>
           </>
-        )
+        );
       }
     }
-  ]
+  ];
   const columns = columnConfig.map((column, index) => {
-    return <Column key={index}  {...column} />
-  })
+    return <Column key={index} {...column} />;
+  });
   return (
     <div className="api-create">
       <div className="api-create-top">
@@ -143,6 +169,9 @@ export default function ApiCreate(props) {
             导入
           </Button>
         ) : null}
+        <Button type="primary" className="left-10" onClick={handleTest}>
+          测试
+        </Button>
       </div>
       <ApiCreateCtx.Provider
         value={{
@@ -181,7 +210,17 @@ export default function ApiCreate(props) {
               {options}
             </Select>
           </div>
-          <Table dataSource={instance}>{columns}</Table>
+          <Table
+            rowKey="id"
+            dataSource={instance}
+            size="middle"
+            pagination={{
+              defaultPageSize: 5,
+              showQuickJumper: true
+            }}
+          >
+            {columns}
+          </Table>
         </div>
       </SimpleModal>
     </div>
