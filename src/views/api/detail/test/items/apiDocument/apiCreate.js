@@ -101,13 +101,27 @@ export default function ApiCreate(props) {
       return;
     }
     const headers = {};
-    reqHeader.slice(0, reqHeader.length).forEach(hea => {
+    const params = {...reqParam}
+    const urlParams = {};
+    reqHeader.slice(0, reqHeader.length - 1).forEach(hea => {
       headers[hea.tag] = hea.content;
     });
+    reqUrl.slice(0, reqHeader.length).forEach(url => {
+      urlParams[url.name] = url.content;
+    });
+    const { paramType, detail } = reqParam;
+    if (paramType !== "raw") {
+      params.detail={}
+      detail.slice(0, detail.length - 1).forEach((item)=>{
+        params.detail[item.name]=item.content
+      });
+    }
     mockTest({
       url: (meta.protocol || "http") + "://" + meta.url,
       method: meta.method,
-      headers: headers
+      headers: headers,
+      params: params,
+      urlParams
     });
   };
   const options = apiList.map(item => {
@@ -203,7 +217,7 @@ export default function ApiCreate(props) {
             <label>项目</label>
             <Select
               defaultValue="0"
-              className="width-200 left-20"
+              className="width-200 left-20 bottom-20"
               onSelect={e => handleSelect(e)}
             >
               <Option value="0">选择项目</Option>
