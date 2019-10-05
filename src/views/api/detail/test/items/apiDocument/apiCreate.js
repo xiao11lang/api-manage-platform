@@ -4,6 +4,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import "./apiCreate.scss";
 import CreateMeta from "./createMeta";
 import Request from "./request";
+import Response from "./response";
 import {
   addTestInstance,
   updateTestInstance,
@@ -37,6 +38,7 @@ export default function ApiCreate(props) {
   const [modalShow, setModalShow] = useState(false);
   const [apiList, setApiList] = useState([]); //api项目
   const [instance, setInstances] = useState([]);
+  const [response, setResponse] = useState(null);
   const save = () => {
     if (meta.url && meta.name) {
       const data = {
@@ -101,7 +103,7 @@ export default function ApiCreate(props) {
       return;
     }
     const headers = {};
-    const params = {...reqParam}
+    const params = { ...reqParam };
     const urlParams = {};
     reqHeader.slice(0, reqHeader.length - 1).forEach(hea => {
       headers[hea.tag] = hea.content;
@@ -111,17 +113,20 @@ export default function ApiCreate(props) {
     });
     const { paramType, detail } = reqParam;
     if (paramType !== "raw") {
-      params.detail={}
-      detail.slice(0, detail.length - 1).forEach((item)=>{
-        params.detail[item.name]=item.content
+      params.detail = {};
+      detail.slice(0, detail.length - 1).forEach(item => {
+        params.detail[item.name] = item.content;
       });
     }
+    let start = new Date().getTime();
     mockTest({
       url: (meta.protocol || "http") + "://" + meta.url,
       method: meta.method,
       headers: headers,
       params: params,
       urlParams
+    }).then(res => {
+      setResponse({ ...res.res, time: new Date().getTime() - start });
     });
   };
   const options = apiList.map(item => {
@@ -205,6 +210,8 @@ export default function ApiCreate(props) {
             group={props.group}
           />
           <Request />
+
+          {response ? <Response response={response} /> : null}
         </>
       </ApiCreateCtx.Provider>
       <SimpleModal
