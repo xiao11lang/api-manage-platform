@@ -1,14 +1,14 @@
 export default function deleteEmpty(data) {
-  if (typeof data==='object') {
+  if (typeof data==='object'&&data!=null) {
     Object.keys(data).forEach(key => {
-      if (data[key].children) {
-        data[key].children = data[key].children.slice(
-          0,
-          data[key].children.length - 1
-        )
-      } else {
-        deleteEmpty(data[key])
+      if(Array.isArray(data[key])){
+        data[key].forEach((item)=>{
+          if(item.children){
+            item.children=item.children.slice(0,item.children.length-1)
+          }
+        })
       }
+      deleteEmpty(data[key])
     })
   }
   return data
